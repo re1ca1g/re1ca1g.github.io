@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="https://moe.jitsu.top/r18">
-  <link rel="icon" href="https://moe.jitsu.top/r18">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png?q-sign-algorithm=sha1&amp;q-ak=AKIDpegVDZ8AvdeOl9y_QSyKyK12a20XFhyhuJhBwLSuvHKsekbKEMUta0rN08zvHAq-&amp;q-sign-time=1718111967;1718115567&amp;q-key-time=1718111967;1718115567&amp;q-header-list=host&amp;q-url-param-list=ci-process&amp;q-signature=ca65ad0048078ce47a981f916f01c8647a2c19f8&amp;x-cos-security-token=COGKjqm1WneMq7j3Ly0fjeAhJ9WUkQUae48a32f30adec122c1e45bfb27d90f77q621KK_kJiZmuCniurmq9gxXuyet9caxp3hErKJXOpDvGpjXE_N920YezRSvaRvqmjxbv0giIhObLK5-FZ6Vm23lwoBvKnFPYFRlDEvzuLFDMtpgDzewuBa2dOpXm8_EO9f3Al7BSoZEWhVaAJJfBrpOQxl0dNfWn4gbZ_PgFiQa4QfzEWKEIU3fOkGK9Jui&amp;ci-process=originImage">
+  <link rel="icon" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png?q-sign-algorithm=sha1&amp;q-ak=AKIDpegVDZ8AvdeOl9y_QSyKyK12a20XFhyhuJhBwLSuvHKsekbKEMUta0rN08zvHAq-&amp;q-sign-time=1718111967;1718115567&amp;q-key-time=1718111967;1718115567&amp;q-header-list=host&amp;q-url-param-list=ci-process&amp;q-signature=ca65ad0048078ce47a981f916f01c8647a2c19f8&amp;x-cos-security-token=COGKjqm1WneMq7j3Ly0fjeAhJ9WUkQUae48a32f30adec122c1e45bfb27d90f77q621KK_kJiZmuCniurmq9gxXuyet9caxp3hErKJXOpDvGpjXE_N920YezRSvaRvqmjxbv0giIhObLK5-FZ6Vm23lwoBvKnFPYFRlDEvzuLFDMtpgDzewuBa2dOpXm8_EO9f3Al7BSoZEWhVaAJJfBrpOQxl0dNfWn4gbZ_PgFiQa4QfzEWKEIU3fOkGK9Jui&amp;ci-process=originImage">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -407,7 +407,7 @@
 <p>将公钥写入我们挂载到docker的磁盘文件中</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">cp -avx <span class="hljs-regexp">/test/</span>home<span class="hljs-regexp">/ubuntu/</span>.ssh<span class="hljs-regexp">/id_rsa.pub /</span>test<span class="hljs-regexp">/home/u</span>buntu<span class="hljs-regexp">/.ssh/</span>authorized_keys<span class="hljs-comment">#看挂载到哪个文件夹下就是哪个文件下</span><br>echo &gt; <span class="hljs-regexp">/test/</span>home<span class="hljs-regexp">/ubuntu/</span>.ssh/authorized_keys<br>echo <span class="hljs-string">&#x27;生成的.pub文件的内容&#x27;</span> &gt; <span class="hljs-regexp">/test/</span>home<span class="hljs-regexp">/ubuntu/</span>.ssh/authorized_keys<br>cat <span class="hljs-regexp">/test/</span>home<span class="hljs-regexp">/ubuntu/</span>.ssh/authorized_keys<br></code></pre></td></tr></table></figure>
 
-<p>直接ssh连 私钥连接 ssh -i test <a href="mailto:&#x75;&#x62;&#117;&#x6e;&#116;&#x75;&#x40;&#49;&#x39;&#50;&#x2e;&#x31;&#54;&#x38;&#x2e;&#53;&#50;&#46;&#x32;&#x30;">&#x75;&#x62;&#117;&#x6e;&#116;&#x75;&#x40;&#49;&#x39;&#50;&#x2e;&#x31;&#54;&#x38;&#x2e;&#53;&#50;&#46;&#x32;&#x30;</a></p>
+<p>直接ssh连 私钥连接 ssh -i test <a href="mailto:&#x75;&#x62;&#117;&#x6e;&#116;&#x75;&#64;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#56;&#46;&#53;&#x32;&#46;&#x32;&#48;">&#x75;&#x62;&#117;&#x6e;&#116;&#x75;&#64;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#56;&#46;&#53;&#x32;&#46;&#x32;&#48;</a></p>
 <p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/image-20231120190438171.png" srcset="/img/loading.gif" lazyload alt="image-20231120190438171"></p>
 <p>至此拿下第二台主机 上线msf</p>
 <p>上线msf后记得更新路由！！</p>
