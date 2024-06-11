@@ -1,0 +1,870 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="刷题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="misc刷题（信息附加）">
+<meta property="og:url" content="http://example.com/2023/05/26/misc/misc1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="刷题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251822927.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251825792.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251825010.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251825199.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251826495.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251826104.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251827268.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251828423.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251828925.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251828483.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251829795.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251829665.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305261612400.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305261612289.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305261613849.png">
+<meta property="og:image" content="c:/Users/23167/AppData/Roaming/Typora/typora-user-images/image-20230529165153643.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291653062.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291655788.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291655301.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291655652.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291656458.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291659679.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291659067.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291659871.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291700576.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291701026.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291702455.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291702431.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291702878.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291704315.png">
+<meta property="article:published_time" content="2023-05-26T08:18:00.000Z">
+<meta property="article:modified_time" content="2024-06-11T03:35:42.769Z">
+<meta property="article:author" content="Re1ca1g">
+<meta property="article:tag" content="ctfshow">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251822927.png">
+  
+  
+  
+  <title>misc刷题（信息附加） - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>reicalg·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="misc刷题（信息附加）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-26 16:18" pubdate>
+          2023年5月26日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">misc刷题（信息附加）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="misc刷题（信息附加）"><a href="#misc刷题（信息附加）" class="headerlink" title="misc刷题（信息附加）"></a>misc刷题（信息附加）</h1><h2 id="信息附加"><a href="#信息附加" class="headerlink" title="信息附加"></a>信息附加</h2><h3 id="Misc3"><a href="#Misc3" class="headerlink" title="Misc3"></a>Misc3</h3><blockquote>
+<p>Bpgview.exe 的使用 当文件后缀是bpg使用</p>
+</blockquote>
+<blockquote>
+<img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251822927.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+</blockquote>
+<h3 id="misc5"><a href="#misc5" class="headerlink" title="misc5"></a>misc5</h3><blockquote>
+<p>图片隐写</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251825792.png" srcset="/img/loading.gif" lazyload></p>
+</blockquote>
+<h3 id="misc6"><a href="#misc6" class="headerlink" title="misc6"></a>misc6</h3><p>同理</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251825010.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="misc7"><a href="#misc7" class="headerlink" title="misc7"></a>misc7</h3><blockquote>
+<p>同理 不放照片了</p>
+</blockquote>
+<h3 id="misc8"><a href="#misc8" class="headerlink" title="misc8"></a>misc8</h3><p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251825199.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>使用foremost分离图片</p>
+</blockquote>
+<blockquote>
+<p>方法<a target="_blank" rel="noopener" href="https://blog.csdn.net/john_david_/article/details/87273152">foremost使用简介</a></p>
+</blockquote>
+<h3 id="misc9"><a href="#misc9" class="headerlink" title="misc9"></a>misc9</h3><blockquote>
+<p>用winhex查找</p>
+</blockquote>
+<h3 id="misc10"><a href="#misc10" class="headerlink" title="misc10"></a>misc10</h3><blockquote>
+<p>图片文件的分离</p>
+</blockquote>
+<p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251826495.png" srcset="/img/loading.gif" lazyload><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251826104.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>根据提示搞 要将runas&#x3D;root</p>
+</blockquote>
+<h3 id="misc11"><a href="#misc11" class="headerlink" title="misc11"></a>misc11</h3><p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251827268.png" srcset="/img/loading.gif" lazyload alt="image-20230525182748221"></p>
+<blockquote>
+<p>利用tweakpng 对png文件idat（数据）对图片内容改写</p>
+</blockquote>
+<p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251828423.png" srcset="/img/loading.gif" lazyload alt="image-20230525182805387"></p>
+<blockquote>
+<p>删除不同的数据块所获得的内容也不同</p>
+</blockquote>
+<h3 id="misc12"><a href="#misc12" class="headerlink" title="misc12"></a>misc12</h3><p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251828925.png" srcset="/img/loading.gif" lazyload alt="image-20230525182820884"></p>
+<blockquote>
+<p>按f7预览</p>
+</blockquote>
+<blockquote>
+<p>从头逐个删除idat直至出现</p>
+</blockquote>
+<blockquote>
+<p>具体原因不清楚   idat的length应该是一样的 常规删除不一样的</p>
+</blockquote>
+<h3 id="misc13"><a href="#misc13" class="headerlink" title="misc13"></a>misc13</h3><blockquote>
+<p>抽象的题目</p>
+</blockquote>
+<blockquote>
+<p>图片用winhex打开图片 发现有类似flag的东西？</p>
+</blockquote>
+<blockquote>
+<p>  然后分析一个间隔一个的出现</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251828483.png" srcset="/img/loading.gif" lazyload alt="image-20230525182858447"></p>
+</blockquote>
+<blockquote>
+<p>那么将十六进制转化为byte类型再用切片提取flag</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251829795.png" srcset="/img/loading.gif" lazyload alt="image-20230525182939765"> </p>
+<h3 id="misc14"><a href="#misc14" class="headerlink" title="misc14"></a>misc14</h3><p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305251829665.png" srcset="/img/loading.gif" lazyload alt="image-20230525182953629"></p>
+<blockquote>
+<p>Binwalk查看整个文件的块内容</p>
+</blockquote>
+<blockquote>
+<p>可以发现发现 有四个文件块 </p>
+</blockquote>
+<blockquote>
+<p>用dd命令进行分解 dd if&#x3D;源文件 of&#x3D;输出文件 skip&#x3D;跳过的大小 count&#x3D;提取文件的大小 bs&#x3D;块大小 这边DECIMAL 是指的上一个文件的大小</p>
+</blockquote>
+<blockquote>
+<p>应该先查看文件的类型然后 对对应的文件进行分离</p>
+</blockquote>
+<h3 id="misc15"><a href="#misc15" class="headerlink" title="misc15"></a>misc15</h3><blockquote>
+<p>用winhex查找</p>
+</blockquote>
+<p> 无图.jpg</p>
+<h3 id="misc16"><a href="#misc16" class="headerlink" title="misc16"></a>misc16</h3><blockquote>
+<p>用binwalk进行分离 得到文件夹下里面寻找</p>
+</blockquote>
+<p> 再次无图.jpg</p>
+<h3 id="misc17"><a href="#misc17" class="headerlink" title="misc17"></a>misc17</h3><blockquote>
+<p>新工具的使用 zsteg 此工具可以对png 和bmp文件中隐写的数据进行分离 </p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_52941926/article/details/121536324">zsteg使用方法</a></p>
+</blockquote>
+<blockquote>
+<p>建议以后如果不会好好看</p>
+</blockquote>
+<blockquote>
+<p>可以先使用zsteg &lt;文件名&gt; –all 查看所有组合</p>
+</blockquote>
+<p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305261612400.png" srcset="/img/loading.gif" lazyload alt="image-20230526161238348"></p>
+<blockquote>
+<p>这边发现是只有extradata:0模式下有隐藏内容</p>
+</blockquote>
+<blockquote>
+<p>所以对此进行分离</p>
+</blockquote>
+<p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305261612289.png" srcset="/img/loading.gif" lazyload alt="image-20230526161256254"></p>
+<blockquote>
+<p>然后打开发现是乱码 然后就查答案 发现可以binwalk再次进行分离</p>
+</blockquote>
+<p> <img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305261613849.png" srcset="/img/loading.gif" lazyload alt="image-20230526161300816"></p>
+<blockquote>
+<p>然后就分离出来了 </p>
+</blockquote>
+<h3 id="misc18"><a href="#misc18" class="headerlink" title="misc18"></a>misc18</h3><blockquote>
+<p>藏在详细信息里</p>
+</blockquote>
+<p><img src="C:/Users/23167/AppData/Roaming/Typora/typora-user-images/image-20230529165153643.png" srcset="/img/loading.gif" lazyload alt="image-20230529165153643"> </p>
+<blockquote>
+<p>就没啥好说的，多留意就行</p>
+</blockquote>
+<h3 id="misc19"><a href="#misc19" class="headerlink" title="misc19"></a>misc19</h3><blockquote>
+<p>使用新工具exiftool查看图片的详细内容 </p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291653062.png" srcset="/img/loading.gif" lazyload alt="image-20230529165312013"></p>
+<blockquote>
+<p>使用exiftool能看到一些隐藏的参数，所以这道隐写题 将flag放于document name 和host nname中</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291655788.png" srcset="/img/loading.gif" lazyload alt="image-20230529165521755"></p>
+<blockquote>
+<p>那么同理 18题的也可以用这个工具查看</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291655301.png" srcset="/img/loading.gif" lazyload alt="image-20230529165534249"> </p>
+<h3 id="misc20"><a href="#misc20" class="headerlink" title="misc20"></a>misc20</h3><blockquote>
+<p>还是用exiftool查看文件信息</p>
+</blockquote>
+<blockquote>
+<p>发现在comment里有文字隐写</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291655652.png" srcset="/img/loading.gif" lazyload alt="image-20230529165555621"></p>
+<h3 id="misc21"><a href="#misc21" class="headerlink" title="misc21"></a>misc21<img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291656458.png" srcset="/img/loading.gif" lazyload alt="image-20230529165632408"></h3><blockquote>
+<p>题目给出的提示是要在序号里找</p>
+</blockquote>
+<blockquote>
+<p>但是唯一一个serial number很显然不符合flag格式</p>
+</blockquote>
+<blockquote>
+<p>这时发现有四段xy信息是一串长度相同的数字</p>
+</blockquote>
+<blockquote>
+<p>第一个想法就是连起来然后去拿十六进制，但是不对，后来尝试一段一段转化就得到了</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291659679.png" srcset="/img/loading.gif" lazyload alt="image-20230529165900646"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291659067.png" srcset="/img/loading.gif" lazyload alt="image-20230529165926034"></p>
+</blockquote>
+<h3 id="misc22"><a href="#misc22" class="headerlink" title="misc22"></a>misc22<img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291659871.png" srcset="/img/loading.gif" lazyload alt="image-20230529165931825"></h3><blockquote>
+<p>这道题是先用exiftool查看文件信息</p>
+</blockquote>
+<blockquote>
+<p>发现最后一行有thumbnail image 代表这张图片是有缩略图的</p>
+</blockquote>
+<blockquote>
+<p>使用命令进行分离缩略图</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291700576.png" srcset="/img/loading.gif" lazyload alt="image-20230529170045544"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.32r.com/soft/86104.html">如果不懂exiftool有啥参数能用看这</a></p>
+</blockquote>
+<blockquote>
+<p>另一个方法</p>
+</blockquote>
+<blockquote>
+<p>使用magicexif也能直接查看缩略图信息</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291701026.png" srcset="/img/loading.gif" lazyload alt="image-20230529170140988"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291702455.png" srcset="/img/loading.gif" lazyload alt="image-20230529170201419"></p>
+<h3 id="misc23"><a href="#misc23" class="headerlink" title="misc23"></a>misc23</h3><blockquote>
+<p>这道题涉及了时间戳隐写</p>
+</blockquote>
+<blockquote>
+<p>首先exiftool查看文件的具体信息，发现多了四个时间信息，而且这个时间信息非常异常，不符合正常逻辑，所以得想到时间戳隐写</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291702431.png" srcset="/img/loading.gif" lazyload alt="image-20230529170207389"></p>
+<blockquote>
+<p>时间戳是1970年的一月一日到所在时间的总秒数所以求出四个时间戳然后hex得到其flag值</p>
+</blockquote>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291702878.png" srcset="/img/loading.gif" lazyload alt="image-20230529170218838"></p>
+<p>41</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202305291704315.png" srcset="/img/loading.gif" lazyload alt="image-20230529170425260"></p>
+<p>这道题就是十六进制结合了图像隐写，将flag值隐藏于f001 组合的图像中</p>
+<p>属于长见识的一道题</p>
+<h2 id="信息附加的总结："><a href="#信息附加的总结：" class="headerlink" title="信息附加的总结："></a>信息附加的总结：</h2><blockquote>
+<p>做这类题目时首先查看文件类型，通过一些特殊的文件打开器打开 例如bpg文件可以用bpgview.exe打开  如果能直接打开最好，一些就是直接放在图片里的，当然这种情况虽少但不是没有。补充，有的照片会藏在缩略图里了，在exiftool查看时会告诉，当然也可以用exif元图片查看器查看。</p>
+</blockquote>
+<blockquote>
+<p>   其次，查看文件的详细属性，这里可以Windows下直接在属性里看，当然也可用linux里的exiftool 直接查看，这边推荐直接用第二种方式 直接，方便。此步骤是看看详细内容中有没有一些信息，留意一些奇奇怪怪的属性，比如啥照片会有xy坐标信息的，啥照片会有奇奇怪怪的时间戳的，留意就行。</p>
+</blockquote>
+<blockquote>
+<p>​	然后就是对文件内容进行查看了，常规就是拖入winhex或者010editor查看 当然也可以在linux用hexdump命令查看，有的是会放在ASCII码中，有的就会放在16进制编码中，比如就像愚人节那道题41，常规先ctrl +F搜索一遍，加上对一些文件头文件尾进行查询，如果有那么要进行分离，这边可以foremost文件分离，或者使用binwalk+dd命令进行分离。这里补充binwalk查看的是文件块，就是文件头到文件尾的那种，对于png图片文件，也可以用tweakpng，这类题目一般是对图片idat块增加删除，从而改变图片文件，开F7预览从上至下删除idat文件块就行。</p>
+</blockquote>
+<blockquote>
+<p>对于文件隐写，直接用zsteg检测就完事了，会给出隐写内容</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Misc/" class="category-chain-item">Misc</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ctfshow/" class="print-no-link">#ctfshow</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>misc刷题（信息附加）</div>
+      <div>http://example.com/2023/05/26/misc/misc1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年5月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/29/misc/misc2/" title="misc刷题（文件结构）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">misc刷题（文件结构）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

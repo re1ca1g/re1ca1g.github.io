@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="渗透测试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="暗月项目四（完整渗透测试）">
+<meta property="og:url" content="http://example.com/2023/07/01/penetration/4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="渗透测试">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306112054777.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306112056939.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306112103816.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306121509909.png">
+<meta property="og:image" content="c:/Users/23167/AppData/Roaming/Typora/typora-user-images/image-20230612154425537.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306121600839.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306121603759.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306250951130.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251001538.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251008176.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251015609.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251711750.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251711785.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251716192.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307061716006.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241107956.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241043543.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241045107.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241112877.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241454779.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307252208247.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307252210072.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307261032479.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307261033400.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311009701.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311013387.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311533391.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311541727.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311543608.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311733681.png">
+<meta property="article:published_time" content="2023-07-01T11:57:00.000Z">
+<meta property="article:modified_time" content="2023-12-26T06:52:51.437Z">
+<meta property="article:author" content="Re1ca1g">
+<meta property="article:tag" content="渗透测试">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306112054777.png">
+  
+  
+  
+  <title>暗月项目四（完整渗透测试） - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>reicalg·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="暗月项目四（完整渗透测试）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-07-01 19:57" pubdate>
+          2023年7月1日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          823 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">暗月项目四（完整渗透测试）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="项目四（完整渗透测试）"><a href="#项目四（完整渗透测试）" class="headerlink" title="项目四（完整渗透测试）"></a>项目四（完整渗透测试）</h3><h2 id="主机扫描"><a href="#主机扫描" class="headerlink" title="主机扫描"></a>主机扫描</h2><h3 id="1-nmap-sn"><a href="#1-nmap-sn" class="headerlink" title="(1)nmap-sn"></a>(1)nmap-sn</h3><p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306112054777.png" srcset="/img/loading.gif" lazyload alt="image-20230611205450303"></p>
+<h3 id="2-netdiscover-i"><a href="#2-netdiscover-i" class="headerlink" title="(2)netdiscover -i"></a>(2)netdiscover -i</h3><p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306112056939.png" srcset="/img/loading.gif" lazyload alt="image-20230611205651833"></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>首先用masscan扫描</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306112103816.png" srcset="/img/loading.gif" lazyload alt="image-20230611210309546"></p>
+<p>然后再用nmap进行端口探测</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306121509909.png" srcset="/img/loading.gif" lazyload alt="image-20230612150949554"></p>
+<p>通过对端口的解析，可以看每个端口对应的服务</p>
+<h2 id="改dns服务器地址"><a href="#改dns服务器地址" class="headerlink" title="改dns服务器地址"></a>改dns服务器地址</h2><p>发现是由dns53 端口开启的，靶机应该是有dns服务的，所以要先把dns服务器改成靶机地址</p>
+<p>（1）Windows</p>
+<p><img src="C:/Users/23167/AppData/Roaming/Typora/typora-user-images/image-20230612154425537.png" srcset="/img/loading.gif" lazyload alt="image-20230612154425537"></p>
+<p>（2）kali</p>
+<p> &#x2F;etc&#x2F;resolv.conf</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306121600839.png" srcset="/img/loading.gif" lazyload alt="image-20230612160048638"></p>
+<h2 id="wfuzz爆破子域名"><a href="#wfuzz爆破子域名" class="headerlink" title="wfuzz爆破子域名"></a>wfuzz爆破子域名</h2><p>wfuzz学习地址<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45869039/article/details/108874749">wfuzz学习_wfuzz参数_</a></p>
+<p>&#x2F;usr&#x2F;share&#x2F;amass&#x2F;wordlists&#x2F;subdomains-top1mil-110000.txt kali自带的子域名爆破字典</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306121603759.png" srcset="/img/loading.gif" lazyload alt="image-20230612160330695"></p>
+<p>new www ww2 WWW </p>
+<h2 id="第一个网站的渗透（new-）"><a href="#第一个网站的渗透（new-）" class="headerlink" title="第一个网站的渗透（new.）"></a>第一个网站的渗透（new.）</h2><p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306250951130.png" srcset="/img/loading.gif" lazyload alt="image-20230625095057736"></p>
+<p>是一个dedecms类型网站 </p>
+<p>一般dedecms是有固定的目录结构的，那么根据目录结构能访问到其他页面</p>
+<p>如果像我这种小白不了解dedecms的话，可以先扫描一遍该网站的目录结构</p>
+<p>用<a href="%5B(54%E6%9D%A1%E6%B6%88%E6%81%AF">dirbuster</a> Web渗透之信息收集——目录扫描从御剑到Dirbuster_Mr. Wanderer的博客-CSDN博客](<a target="_blank" rel="noopener" href="https://blog.csdn.net/Mr_Wanderer/article/details/107410457))%E5%85%88%E6%89%AB%E6%8F%8F%E4%B8%80%E8%BE%B9%E7%BD%91%E7%AB%99%E7%9B%AE%E5%BD%95">https://blog.csdn.net/Mr_Wanderer/article/details/107410457))先扫描一边网站目录</a> 用御剑效果差不多，看在本机还是kali里完成实验了</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251001538.png" srcset="/img/loading.gif" lazyload alt="image-20230625100119420"></p>
+<p>查看dedecms版本号，网上找对应的exp，</p>
+<p>版本号的相对路径：&#x2F;data&#x2F;admin&#x2F;ver.txt</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251008176.png" srcset="/img/loading.gif" lazyload alt="image-20230625100820990"></p>
+<p>20150618是存在漏洞的 <a target="_blank" rel="noopener" href="http://www.hekaiyu.cn/hacker/3060.html">Dedecms 20150618 注入漏洞</a></p>
+<p>根据文章实现exp</p>
+<p>member模块开启，可以注册登录</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251015609.png" srcset="/img/loading.gif" lazyload alt="image-20230625101514441"></p>
+<p>先注册一个账号</p>
+<p>增加一个分类<img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251711750.png" srcset="/img/loading.gif" lazyload alt="image-20230625171115401"></p>
+<p>利用给的exp能跑出admin账号的密码md5值</p>
+<p>该exp需要获取一个登录账号的cookie（requests包中） 需要在python2环境下运行</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251711785.png" srcset="/img/loading.gif" lazyload alt="image-20230625171131658"></p>
+<p>获得admin账号密码进行登录</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202306251716192.png" srcset="/img/loading.gif" lazyload alt="image-20230625171627055"></p>
+<p>获取权限后上传小马</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307061716006.png" srcset="/img/loading.gif" lazyload alt="image-20230706171558794"></p>
+<p>拿蚁剑连后上传大马（ASPXSpy2014.aspx admin）查看是否可执行cmd文件，然后开始提权</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241107956.png" srcset="/img/loading.gif" lazyload alt="image-20230724110742886"></p>
+<p>生成攻击载荷</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241043543.png" srcset="/img/loading.gif" lazyload alt="image-20230724104346468"></p>
+<p>查看服务器可写目录，然后上传攻击载荷</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241045107.png" srcset="/img/loading.gif" lazyload alt="image-20230724104545057"></p>
+<p>反弹shell</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241112877.png" srcset="/img/loading.gif" lazyload alt="image-20230724111207836"></p>
+<p>有关msfconsole的使用可以重开一篇</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307241454779.png" srcset="/img/loading.gif" lazyload alt="image-20230724145454737"></p>
+<p>监听后连上</p>
+<p>然后提权 首先用use post&#x2F;multi&#x2F;recon&#x2F;local_exploit_suggester跑一边可以利用的exp</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307252208247.png" srcset="/img/loading.gif" lazyload alt="image-20230725220840944"></p>
+<p>跑完以后就看模块利用 不会使用模块可以百度一下</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307252210072.png" srcset="/img/loading.gif" lazyload alt="image-20230725221029006"></p>
+<p>提成功了获得系统权限</p>
+<p>然后找flag 可以先在meterpreter下先 <code>search -f *flag*</code></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307261032479.png" srcset="/img/loading.gif" lazyload alt="image-20230726103234108"></p>
+<p>然后再进入shell 查看内容（玄学卡实在不行重新弹一个shell回来）</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307261033400.png" srcset="/img/loading.gif" lazyload alt="image-20230726103315356"></p>
+<h2 id="第二个域名渗透（ww2）"><a href="#第二个域名渗透（ww2）" class="headerlink" title="第二个域名渗透（ww2）"></a>第二个域名渗透（ww2）</h2><h3 id="gobuster-目录扫描"><a href="#gobuster-目录扫描" class="headerlink" title="gobuster 目录扫描"></a>gobuster 目录扫描</h3><p>感觉和dirbuster效果差也差不多， 具体操作 相对可以</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311009701.png" srcset="/img/loading.gif" lazyload alt="image-20230731100905532"></p>
+<p>比dirbuster功能相对多一点，能扫dns，fuzz，tftp？ 我感觉需要一个相对清楚的目录结构，dirbuster可能会更适合一点，如果是查看该网站有什么特定类型文件，那就gobuster，当然功能性上也是gobuster nice</p>
+<p>gobuster dir -u <a target="_blank" rel="noopener" href="http://ww2.cc123.com/">http://ww2.cc123.com</a> -w &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;dirbuster&#x2F;directory-list-2.3-medium.txt -x “aspx,html” -o ww2dir</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311013387.png" srcset="/img/loading.gif" lazyload alt="image-20230731101327317"></p>
+<p>扫完简单看一下有哪些aspx和html，html占据较大部分，有一些aspx可以实现动态交互，然后找漏洞</p>
+<h3 id="sql注入漏洞"><a href="#sql注入漏洞" class="headerlink" title="sql注入漏洞"></a>sql注入漏洞</h3><p>老的静态网站， sql语言   select	 * from ### username&#x3D;‘  ’ and password &#x3D; ‘#####’</p>
+<p>存在注入select	 * from ### username&#x3D;‘ xxxx - - ’ and password &#x3D; ‘#####’</p>
+<p>注释掉后面的代码，从而绕过</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311533391.png" srcset="/img/loading.gif" lazyload alt="image-20230731153300162"></p>
+<p>message.aspx存在xss漏洞</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311541727.png" srcset="/img/loading.gif" lazyload alt="image-20230731154125653"></p>
+<p>这个留言留到admin管理系统中</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311543608.png" srcset="/img/loading.gif" lazyload alt="image-20230731154322534"></p>
+<p>附一条xss常见攻击脚本<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/36b3578a6629">XSS攻击常识及常见的XSS攻击脚本汇总</a>     和笼统危害<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/353097872">XSS漏洞及利用</a></p>
+<p>本地是搭建了xsstool利用工具的  admin 1234567</p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/202307311733681.png" srcset="/img/loading.gif" lazyload alt="image-20230731173313399"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Penetration/" class="category-chain-item">Penetration</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="print-no-link">#渗透测试</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>暗月项目四（完整渗透测试）</div>
+      <div>http://example.com/2023/07/01/penetration/4/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年7月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/07/05/tool/1/" title="相关工具使用（未整理版）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">相关工具使用（未整理版）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/06/web/web2/" title="文件上传刷题">
+                        <span class="hidden-mobile">文件上传刷题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
