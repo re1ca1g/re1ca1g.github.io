@@ -1,0 +1,1122 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <link rel="icon" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="实验：PE文件结构分析实验一、 实验目的 掌握PE文件基本结构 掌握PE文件分析常用工具的使用  二、实验环境操作系统：Windows 7&#x2F;8&#x2F;10 实验对象：PE文件（实验主机随机选取，如notepad.exe） 实验软件：HxD，ExeinfoPE，PEViewer，LordPE，PEiD 三、实验内容1. 实验背景​        PE文件是Windows操作系统中可执行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PE文件结构分析实验">
+<meta property="og:url" content="http://example.com/2024/10/24/111/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%E5%AE%9E%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Re1ca1gの小破站">
+<meta property="og:description" content="实验：PE文件结构分析实验一、 实验目的 掌握PE文件基本结构 掌握PE文件分析常用工具的使用  二、实验环境操作系统：Windows 7&#x2F;8&#x2F;10 实验对象：PE文件（实验主机随机选取，如notepad.exe） 实验软件：HxD，ExeinfoPE，PEViewer，LordPE，PEiD 三、实验内容1. 实验背景​        PE文件是Windows操作系统中可执行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/113b5189-3638-496f-82ed-672bcd913c39">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/1939ae4e-9e76-45b9-ad59-e7d03ecc93c8">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/48bbdbd3-82ca-4101-b3b8-f7dbd8b64e2a">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/1d7a3607-78c6-44c6-bdd9-0405154bb5eb">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/4b169243-420e-4a09-8df7-5a4619ea1125">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/d2413a6a-6c35-4ba5-a8bd-70addc5682c8">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/d346913a-1dbb-4353-af09-bccc2a5d6351">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/498c2c64-5d85-4d73-a7d8-923bf59e8ecd">
+<meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
+<meta property="article:modified_time" content="2024-10-29T08:54:46.240Z">
+<meta property="article:author" content="Re1ca1g">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/113b5189-3638-496f-82ed-672bcd913c39">
+  
+  
+  
+  <title>PE文件结构分析实验 - Re1ca1gの小破站</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>re1ca1g·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://www.98qy.com/sjbz/api.php') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.6)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="PE文件结构分析实验"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-24 14:23" pubdate>
+          2024年10月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">PE文件结构分析实验</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="实验：PE文件结构分析实验"><a href="#实验：PE文件结构分析实验" class="headerlink" title="实验：PE文件结构分析实验"></a>实验：PE文件结构分析实验</h1><h2 id="一、-实验目的"><a href="#一、-实验目的" class="headerlink" title="一、 实验目的"></a>一、 实验目的</h2><ol>
+<li>掌握PE文件基本结构</li>
+<li>掌握PE文件分析常用工具的使用</li>
+</ol>
+<h2 id="二、实验环境"><a href="#二、实验环境" class="headerlink" title="二、实验环境"></a>二、实验环境</h2><p>操作系统：Windows 7&#x2F;8&#x2F;10</p>
+<p>实验对象：PE文件（实验主机随机选取，如notepad.exe）</p>
+<p>实验软件：<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/HxDSetup.zip">HxD</a>，<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/ExeinfoPE%20v0.0.6.1%20II.zip">ExeinfoPE</a>，PEViewer，<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/LordPE14.zip">LordPE</a>，<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/PEiD.0.95.zip">PEiD</a></p>
+<h2 id="三、实验内容"><a href="#三、实验内容" class="headerlink" title="三、实验内容"></a>三、实验内容</h2><h3 id="1-实验背景"><a href="#1-实验背景" class="headerlink" title="1. 实验背景"></a>1. 实验背景</h3><p>​        PE文件是Windows操作系统中可执行的程序文件。PE是Portable Executable的缩写，意为“可移植的、可执行的”，表示一个可执行文件可以在多种操作系统中运行。PE文件格式是在UNIX可执行文件COFF（Common Object File Format，通用对象文件格式）基础上创建而成的。常见的EXE，DLL，OBJ，SYS等都是PE文件。</p>
+<p>​        许多恶意程序都是PE文件，拥有PE文件结构，因此学习和掌握PE文件结构是深入学习恶意代码分析课程的基础知识储备。</p>
+<h3 id="2-实验内容"><a href="#2-实验内容" class="headerlink" title="2.实验内容"></a>2.实验内容</h3><p>​        PE文件是二进制格式文件，具有复杂的格式定义，每个字节都赋予了特定的含义。为了方便描述，通常会借助C语言中结构体定义的方式来说明每个有意义的字段。</p>
+<p>​        PE文件格式为了兼容DOS时代的可执行程序，因此在PE文件头部使用了完整的DOS头部数据结构，紧跟在DOS头后面就是PE数据结构。</p>
+<p>​        PE头部数据结构可以分成两个部分，一个是PE头，另一个是PE节区。</p>
+<p>​        PE头中包含文件执行时所需的一般信息，包括执行文件时最初执行代码的起始部分信息，驱动应用程序的平台信息等。</p>
+<p>​        PE节区中包含组成程序的汇编代码，通常恶意代码分析中逆向分析的对象；源代码中声明的全局变量与static变量；以及程序中使用的图片、文档文件等资源。</p>
+<p>​        PE文件结构如图 1所示。本次实验需要使用常用的PE文件查看分析软件工具，对Windows中的PE文件进行分析，查找主要的组成结构，对关键的数据，如IMAGE_DOS_HEADER和IMAGE_NT_HEADER结构体的数据进行查看，了解掌握关键字段，如<strong>e_lfanew</strong>，PE标志字段……</p>
+<p><img src="http://wxjb.jspi.cn/g/query/113b5189-3638-496f-82ed-672bcd913c39" srcset="/img/loading.gif" lazyload alt="pe文件结构"></p>
+<center> 图1 PE文件结构</center>
+
+<blockquote>
+<p>关于PE结构，还可以参考<a target="_blank" rel="noopener" href="http://wxjb.jspi.cn/g/query/d80785e7-3589-4dad-a587-63cb814d536c">PE文件格式图解</a>，<a target="_blank" rel="noopener" href="http://wxjb.jspi.cn/g/query/17558797-daf8-4eef-b1bc-2ecceef13d67">PE文件结构样例图解</a>，<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/debug/pe-format">PE格式微软定义</a></p>
+</blockquote>
+<h2 id="四、实验步骤"><a href="#四、实验步骤" class="headerlink" title="四、实验步骤"></a>四、实验步骤</h2><h3 id="1-观察DOS头部数据"><a href="#1-观察DOS头部数据" class="headerlink" title="1. 观察DOS头部数据"></a>1. 观察DOS头部数据</h3><p>​        DOS头的作用是兼容MS-DOS操作系统中的可执行文件，对于32位PE文件来说，DOS所起的作用就是显示一行文字，提示用户：我需要在32位Windows上才可以运行，通常是显示为：“This program cannot be run in DOS mode”。</p>
+<p>为了能清晰的说明DOS头的结构，通常会使用C语言结构体定义的方式表示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">IMAGE_DOS_HEADER</span> &#123;</span>      <span class="hljs-comment">// DOS .EXE header</span><br>    WORD   e_magic;                     <span class="hljs-comment">// Magic number: 0x5a4d</span><br>    WORD   e_cblp;                      <span class="hljs-comment">// Bytes on last page of file</span><br>    WORD   e_cp;                        <span class="hljs-comment">// Pages in file</span><br>    WORD   e_crlc;                      <span class="hljs-comment">// Relocations</span><br>    WORD   e_cparhdr;                   <span class="hljs-comment">// Size of header in paragraphs</span><br>    WORD   e_minalloc;                  <span class="hljs-comment">// Minimum extra paragraphs needed</span><br>    WORD   e_maxalloc;                  <span class="hljs-comment">// Maximum extra paragraphs needed</span><br>    WORD   e_ss;                        <span class="hljs-comment">// Initial (relative) SS value</span><br>    WORD   e_sp;                        <span class="hljs-comment">// Initial SP value</span><br>    WORD   e_csum;                      <span class="hljs-comment">// Checksum</span><br>    WORD   e_ip;                        <span class="hljs-comment">// Initial IP value</span><br>    WORD   e_cs;                        <span class="hljs-comment">// Initial (relative) CS value</span><br>    WORD   e_lfarlc;                    <span class="hljs-comment">// File address of relocation table</span><br>    WORD   e_ovno;                      <span class="hljs-comment">// Overlay number</span><br>    WORD   e_res[<span class="hljs-number">4</span>];                    <span class="hljs-comment">// Reserved words</span><br>    WORD   e_oemid;                     <span class="hljs-comment">// OEM identifier (for e_oeminfo)</span><br>    WORD   e_oeminfo;                   <span class="hljs-comment">// OEM information; e_oemid specific</span><br>    WORD   e_res2[<span class="hljs-number">10</span>];                  <span class="hljs-comment">// Reserved words</span><br>    LONG   e_lfanew;                    <span class="hljs-comment">// File address of new exe header 0x3c</span><br>  &#125; IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;<br></code></pre></td></tr></table></figure>
+
+<p>​        以上定义的结构体中，第一个字段，e_magic，是2字节宽度的整数，值是常数0x4D5A，用文本编辑器查看该值为‘MZ’，如图 2使用“HxD”软件打开操作系统自带的“画图”（c:\windows\SysWoW64\mspaint.exe）程序文件开头显示，需要说明的是配图是在Windows7 32位环境下打开的文件，所以显示路径是system32文件夹，但现在Windows10 64位实验环境下，需要更改为SysWow64文件夹中。以下所有文档配图均按照这个规则查看。</p>
+<blockquote>
+<p>​         本课程实验分析环境为Windows64位，如果分析32位系统自带的程序，例如记事本（notepad.exe）就应该打开<code>C:\Windows\SysWoW64\notepad.exe</code>，而不能打开System32文件夹内的64位程序版本。</p>
+</blockquote>
+<p><img src="http://wxjb.jspi.cn/g/query/1939ae4e-9e76-45b9-ad59-e7d03ecc93c8" srcset="/img/loading.gif" lazyload alt="mspaint文件分析"></p>
+<center> 图2 mspaint.exe的e_magic字段</center>
+
+<p>​        IMAGE_DOS_HEADER结构最后一个字段e_lfanew是4字节数据，用来表示DOS头之后的PE头的位置，即相对文件起始地址的偏移位置。<strong>通过IMAGE_DOS_HEADER结构体各字段的长度可以计算出e_lfanew字段是位于文件头偏移0x3c位置</strong>，图 2中其值为0x000000E8，这里请特别注意长度为4字节的数据，在文件中存储使用了小端存储，也就是32位数据中低位先存储，这样E8会先存储在0x3c位置，而且3个字节的0会以此向后保存。这是在文件中阅读数据时需要注意的。</p>
+<blockquote>
+<p>​        通常的PE文件DOS头结构是稳定的，所以0x3C这个数据可以记忆下来，通过这个文件的偏移，能够快速定位PE头位置。<br>​        PE文件中数组是按照低地址到高地址查看，其他数据都是按照小端存储查看，特别需要注意的是如果是整数数字，那么元素之间是按照从低地址到高地址，但是每个元素自身的4个字节是按照小端存储，所以需要倒过来看！</p>
+</blockquote>
+<h3 id="2-查看PE头数据"><a href="#2-查看PE头数据" class="headerlink" title="2. 查看PE头数据"></a>2. 查看PE头数据</h3><p>​        PE头也称为NT头，微软公司在其开发文档winnt.h头文件中进行了如下定义。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">IMAGE_NT_HEADERS</span> &#123;</span><br>    DWORD Signature;                        <span class="hljs-comment">// Signature == 0x00004550， 4字节</span><br>    IMAGE_FILE_HEADER FileHeader;           <span class="hljs-comment">// 20（0x14）字节</span><br>    IMAGE_OPTIONAL_HEADER32 OptionalHeader; <span class="hljs-comment">// 96 + 8x16 = 224(0xE0)</span><br>&#125; IMAGE_NT_HEADERS32, *PIMAGE_NT_HEADERS32; <span class="hljs-comment">// 0xF8</span><br></code></pre></td></tr></table></figure>
+
+<p>​        PE头部也存在类似DOS头部的标记，直接翻译过来就是签名，也是一个常数，即 4字节的字符串”PE\0\0”，如图 3显示了画图程序的签名标记。</p>
+<blockquote>
+<p>​        从以上定义的NT头结构分析可以得出结论，以NT头为基准，文件头(File Header)的偏移量为4，可选头(Optional Header)的偏移量为24，如果分析这两个头部数据信息，可以先找到NT头，然后定位到对应头部开始点，然后再继续分析各自头部的字段，分析起来会更方便。</p>
+</blockquote>
+<p><img src="http://wxjb.jspi.cn/g/query/48bbdbd3-82ca-4101-b3b8-f7dbd8b64e2a" srcset="/img/loading.gif" lazyload alt="PE头部签名"></p>
+<center>图3 PE头签名</center>
+
+<p>​        PE头部包括了签名，文件头和选项头。除了签名，另外2个字段又分别是IMAGE_FILE_HEADER和IMAGE_OPTIONAL_HEADER32两个结构体。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">IMAGE_FILE_HEADER</span> &#123;</span><br>    WORD  	Machine;  <span class="hljs-comment">//每个CPU都拥有的唯一的Machine码，兼容32位Intel x86芯片的Machine码为14C</span><br>    WORD  	NumberOfSections; <span class="hljs-comment">//★指出文件中存在的节区数量</span><br>    DWORD 	TimeDateStamp;<br>    DWORD 	PointerToSymbolTable;<br>    DWORD 	NumberOfSymbols;<br>    WORD  	SizeOfOptionalHeader; <span class="hljs-comment">//指出结构体IMAGE_OPTIONAL_HEADER32（32位系统）的长度★</span><br>    WORD  	Characteristics; <span class="hljs-comment">//标识文件属性，是否可运行、是否为DLL等，以bit OR形式进行组合</span><br>&#125; IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">IMAGE_OPTIONAL_HEADER</span> &#123;</span><br>    WORD     Magic;  <span class="hljs-comment">//IMAGE_OPTIONAL_HEADER32为0x10B，IMAGE_OPTIONAL_HEADER64为0x20B</span><br>    BYTE     MajorLinkerVersion;<br>    BYTE     MinorLinkerVersion;<br>    DWORD    SizeOfCode;<br>    DWORD    SizeOfInitializedData;<br>    DWORD    SizeOfUninitializedData;<br>    DWORD    AddressOfEntryPoint; <span class="hljs-comment">//★RVA值，指出程序最先执行的代码起始地址</span><br>    DWORD    BaseOfCode;<br>    DWORD    BaseOfData;<br>    DWORD    ImageBase;  <span class="hljs-comment">//★指出文件的优先装入地址（32位进程虚拟内存范围为：0～7FFFFFFF）</span><br>    DWORD    SectionAlignment; <span class="hljs-comment">//★节区在内存中的最小单位</span><br>    DWORD    FileAlignment;    <span class="hljs-comment">//★节区在磁盘文件中的最小单位</span><br>    WORD     MajorOperatingSystemVersion;<br>    WORD     MinorOperatingSystemVersion;<br>    WORD     MajorImageVersion;<br>    WORD     MinorImageVersion;<br>    WORD     MajorSubsystemVersion;<br>    WORD     MinorSubsystemVersion;<br>    DWORD    Win32VersionValue;<br>    DWORD    SizeOfImage;  <span class="hljs-comment">//指定了PE Image在虚拟内存中所占空间的大小</span><br>    DWORD    SizeOfHeaders;<br>    DWORD    CheckSum;<br>    WORD     Subsystem;   <span class="hljs-comment">//区分系统驱动文件和普通可执行文件</span><br>    WORD     DllCharacteristics;<br>    DWORD    SizeOfStackReserve;<br>    DWORD    SizeOfStackCommit;<br>    DWORD    SizeOfHeapReserve;<br>    DWORD    SizeOfHeapCommit;<br>    DWORD    LoaderFlags;<br>    DWORD    NumberOfRvaAndSizes;   <span class="hljs-comment">//指定Data Directory数组的大小</span><br>    IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES]; <span class="hljs-comment">//★数据目录数组</span><br> &#125; IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;<br><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>​        以上定义中，IMAGE_FILE_HEADER头部中SizeOfOptionalHeader字段给出了可选头部的长度信息，这将会方便二进制级别的分析中，快速定位节表，因为可选头后面紧跟的就是节表Section Table。SizeOfOptionalHeader位于NT头部20字节偏移位置。<br>​        另外，以上定义中DataDirectory（距离NT头偏移120字节）是可选头中的重要数据，但数组大小由IMAGE_OPTIONAL_HEADER.NumberOfRvaAndSizes确定，因为次字段在DataDirectory前面4字节，所以距离NT头部116字节。<br>​        AddressOfEntryPoint距离NT头40字节。</p>
+</blockquote>
+<p>​        通过以上的结构定义可以了解PE文件头由IMAGE_NT_HEADERS，IMAGE_FILE_HEADER和IMAGE_OPTIONAL_HEADER结构体定义其内部的数据含义。具体含义可以通过查询微软的官方文档获得。</p>
+<p>参考地址为：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_file_header">https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_file_header</a></p>
+<p>这里对其中关键的几个属性进行说明（请重点关注标注★符号）：</p>
+<p>（1）Machine 计算机架构。<br>        该字段表示PE文件执行的计算机架构环境，0x014c表示x86架构，而0x8664表示x64计算机架构环境。</p>
+<p>（2）NumberOfSections <sup>★</sup>节数<br>        该字段表示在PE头部后面紧跟的“节表”的大小，也就是“节数”，在Windows环境下最大节数为96。</p>
+<p>（3）SizeOfOptionalHeader <sup>★</sup>可选头的大小，单位是字节。</p>
+<p>（4）Characteristics 镜像特性</p>
+<p>​        该字段表示了文件镜像的一些属性特点，使用表格 1中列出了各种不同属性含义及其对应代码，多个属性可以使用“按位或”的方式计算得到最终值。反过来说，可以通过对Characteristics值使用按位或的计算，通过是否结果为零的方式判断是否具有对应属性。</p>
+<p>表格 1 Characteristics含义</p>
+<table>
+<thead>
+<tr>
+<th align="left">标志</th>
+<th align="left">值</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">IMAGE_FILE_RELOCS_STRIPPED</td>
+<td align="left">0x0001</td>
+<td align="left">纯映像、Windows CE 和 Microsoft Windows NT 及更高版本。 这表示该文件不包含基填重定位，因此必须加载到其首选基址。 如果基址不可用，则加载程序将报告错误。 链接器的默认行为是从可执行文件 (EXE) 文件中去除基址重定位。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_EXECUTABLE_IMAGE</td>
+<td align="left">0x0002</td>
+<td align="left">纯映像。 这表示映像文件有效并且可以运行。 如果未设置此标志，则表示有链接器错误。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_LINE_NUMS_STRIPPED</td>
+<td align="left">0x0004</td>
+<td align="left">COFF 行号已删除。 此标志已被弃用，应为零。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_LOCAL_SYMS_STRIPPED</td>
+<td align="left">0x0008</td>
+<td align="left">本地符号的 COFF 符号表条目已删除。 此标志已被弃用，应为零。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_AGGRESSIVE_WS_TRIM</td>
+<td align="left">0x0010</td>
+<td align="left">已过时。 主动剪裁工作集。 已针对 Windows 2000 及更高版本弃用此标志，此标志必须为零。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_LARGE_ADDRESS_ AWARE</td>
+<td align="left">0x0020</td>
+<td align="left">应用程序可以处理 &gt; 2 GB 地址。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">0x0040</td>
+<td align="left">此标志将保留以供将来使用。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_BYTES_REVERSED_LO</td>
+<td align="left">0x0080</td>
+<td align="left">Little endian：最低有效位 (LSB) 位于内存中最高有效位 (MSB) 之前。 此标志已被弃用，应为零。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_32BIT_MACHINE</td>
+<td align="left">0x0100</td>
+<td align="left">计算机基于 32 位字体系结构。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_DEBUG_STRIPPED</td>
+<td align="left">0x0200</td>
+<td align="left">从映像文件中删除了调试信息。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_REMOVABLE_RUN_ FROM_SWAP</td>
+<td align="left">0x0400</td>
+<td align="left">如果映像位于可移动媒体上，请完全加载该映像并将其复制到交换文件。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_NET_RUN_FROM_SWAP</td>
+<td align="left">0x0800</td>
+<td align="left">如果映像位于网络媒体上，请完全加载该映像并将其复制到交换文件。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_SYSTEM</td>
+<td align="left">0x1000</td>
+<td align="left">映像文件是系统文件，而不是用户程序。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_DLL</td>
+<td align="left">0x2000</td>
+<td align="left">图像文件是动态链接库 (DLL)。 虽然无法直接运行此类文件，但这些文件被视为几乎适用于所有用途的可执行文件。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_UP_SYSTEM_ONLY</td>
+<td align="left">0x4000</td>
+<td align="left">该文件应仅在单处理器计算机上运行。</td>
+</tr>
+<tr>
+<td align="left">IMAGE_FILE_BYTES_REVERSED_HI</td>
+<td align="left">0x8000</td>
+<td align="left">Big endian：MSB 在内存中的 LSB 之前。 此标志已被弃用，应为零。</td>
+</tr>
+</tbody></table>
+<p>（5）Magic魔术字</p>
+<p>​        该字段表示了文件的状态，可以使用表格 2查询其具体含义。</p>
+<p>表格 2 Magic字段含义</p>
+<table>
+<thead>
+<tr>
+<th><strong>标识符</strong></th>
+<th>值</th>
+<th><strong>含义解释</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IMAGE_NT_OPTIONAL_HDR_MAGIC</td>
+<td></td>
+<td>可执行文件映像。32位程序值为 0x10b；64位程序值为 0x20b</td>
+</tr>
+<tr>
+<td>IMAGE_NT_OPTIONAL_HDR32_MAGIC</td>
+<td>0x10b</td>
+<td>可执行文件映像。</td>
+</tr>
+<tr>
+<td>IMAGE_NT_OPTIONAL_HDR64_MAGIC</td>
+<td>0x20b</td>
+<td>可执行文件映像。</td>
+</tr>
+<tr>
+<td>IMAGE_ROM_OPTIONAL_HDR_MAGIC</td>
+<td>0x107</td>
+<td>ROM映像。</td>
+</tr>
+</tbody></table>
+<p> （6）AddressOfEntryPoint 入口地址<sup>★★★</sup></p>
+<p>​        相对于PE文件加载进入内存中，代码的起始入口地址，这个地址使用了相对地址，即相对于Image base地址的偏移地址。</p>
+<p>（7）BaseOfCode 代码节入口地址，该地址是代码节的开始位置，使用了相对地址表示。</p>
+<p>（8）ImageBase 镜像基地址<sup>★★</sup></p>
+<p>​        镜像基地址就是以上叙述中提及的Image base地址，即当PE文件加载到内存中，PE文件内存中开始位置的地址。通常在PE头部中的各类地址都是相对这个地址的偏移量，所以这是其他地址的基础，称为基地址。这个地址是64K的整倍数，通常默认Windows可执行文件（EXE）使用0x00400000,动态链接库（DLL）使用0x10000000。</p>
+<p>（9）SectionAlignment（节对齐）和FileAlignment（文件对齐）</p>
+<p>​        前者制定了节区在内存中的最小单位，后者制定了节区在磁盘文件中的最小单位。节对齐和文件对齐分别是PE文件中数据在内存和文件中数据存储的分块尺寸规定，无论是PE文件数据加载到内存中还是保存在文件中，都需要按照一定的尺寸划分存储块，默认情况下，加载到内存中的“节”的数据必须按照0x1000大小存放，这实际上就是操作系统默认的内存页面的大小（4K）；而相同的数据如果保存在文件中，那么需要按照FileAlignment大小保存，这个数值通常在512 到64K之间的2的整数次幂，默认值为512，即0x200。</p>
+<p>（10）Subsystem 镜像运行的子系统环境</p>
+<p>​        由于PE文件设计的时候是Windows NT开发的年代，当时考虑到底层对当时主流的操作系统的兼容，因此使用了子系统的方式进一步区别PE运行的环境。可以使用表格 3中查询对应的运行环境。</p>
+<p>表格 3 Subsystem取值表</p>
+<table>
+<thead>
+<tr>
+<th align="left">常量</th>
+<th align="left">值</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">IMAGE_SUBSYSTEM_UNKNOWN</td>
+<td align="left">0</td>
+<td align="left">未知子系统</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_NATIVE</td>
+<td align="left">1</td>
+<td align="left">设备驱动程序和本机 Windows 进程</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_WINDOWS_GUI</td>
+<td align="left">2</td>
+<td align="left">Windows 图形用户界面 (GUI) 子系统</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_WINDOWS_CUI</td>
+<td align="left">3</td>
+<td align="left">Windows 字符子系统</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_OS2_CUI</td>
+<td align="left">5</td>
+<td align="left">OS&#x2F;2 字符子系统</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_POSIX_CUI</td>
+<td align="left">7</td>
+<td align="left">Posix 字符子系统</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_NATIVE_WINDOWS</td>
+<td align="left">8</td>
+<td align="left">本机 Win9x 驱动程序</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_WINDOWS_CE_GUI</td>
+<td align="left">9</td>
+<td align="left">Windows CE</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_EFI_APPLICATION</td>
+<td align="left">10</td>
+<td align="left">可扩展固件接口 (EFI) 应用程序</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_EFI_BOOT_ SERVICE_DRIVER</td>
+<td align="left">11</td>
+<td align="left">具有启动服务的 EFI 驱动程序</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_EFI_RUNTIME_ DRIVER</td>
+<td align="left">12</td>
+<td align="left">具有运行时服务的 EFI 驱动程序</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_EFI_ROM</td>
+<td align="left">13</td>
+<td align="left">EFI ROM 映像</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_XBOX</td>
+<td align="left">14</td>
+<td align="left">XBOX</td>
+</tr>
+<tr>
+<td align="left">IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION</td>
+<td align="left">16</td>
+<td align="left">Windows 启动应用程序。</td>
+</tr>
+</tbody></table>
+<p>（11）DataDirectory 数据目录<sup>★</sup></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">IMAGE_DATA_DIRECTORY</span> &#123;</span><br>    DWORD   VirtualAddress;<br>    DWORD   Size;<br>&#125; IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;<br></code></pre></td></tr></table></figure>
+
+<p>​        PE头部中的一些关键的数据使用了“表格”的方式存放，DataDirectory的值指向了这个表格首地址。表格中数据每一行使用IMAGE_DATA_DIRECTORY结构体定义表格列，包括了一个地址(VirtualAddress)信息和所指向内存的大小(Size)信息。虽然每一行都是IMAGE_DATA_DIRECTORY结构体，但是每一行都预先定义好了PE文件中特殊的数据含义。表格 4列出了每一行的含义，第一行是导出表目录，第二行是导入表目录……。</p>
+<p>关于DataDirectory特别需要注意以下2点</p>
+<p>① DataDirectory中每一行实际上是指向另一个表格的地址，如第0行IMAGE_DIRECTORY_ENTRY_EXPORT是导出表的首地址。</p>
+<p>② DataDirectory使用表格 4指明了各行的数据含义，但是实际上DataDirectory最后一行是用于保留定义的，没有出现在表格 4的定义中，因此实际上DataDirectory的总行数最大值应该是16，实际表格行数会保存在NumberOfRvaAndSizes字段中，而因此DataDirectory所占用空间最大为8×16&#x3D;0x80。</p>
+<p>表格 4数据目录表各行含义</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th align="left">偏移量 (PE&#x2F;PE32+)</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td align="left">96&#x2F;112</td>
+<td align="left">导出表地址和大小 Export Table</td>
+</tr>
+<tr>
+<td>1</td>
+<td align="left">104&#x2F;120</td>
+<td align="left">导入表地址和大小 Import Table</td>
+</tr>
+<tr>
+<td>2</td>
+<td align="left">112&#x2F;128</td>
+<td align="left">资源表地址和大小 Resource Table</td>
+</tr>
+<tr>
+<td>3</td>
+<td align="left">120&#x2F;136</td>
+<td align="left">异常表地址和大小 Exception Table</td>
+</tr>
+<tr>
+<td>4</td>
+<td align="left">128&#x2F;144</td>
+<td align="left">证书表地址和大小 Certificate Table</td>
+</tr>
+<tr>
+<td>5</td>
+<td align="left">136&#x2F;152</td>
+<td align="left">基重定位表地址和大小 Base Relocation Table</td>
+</tr>
+<tr>
+<td>6</td>
+<td align="left">144&#x2F;160</td>
+<td align="left">调试信息起始地址和大小 Debug Table</td>
+</tr>
+<tr>
+<td>7</td>
+<td align="left">152&#x2F;168</td>
+<td align="left">特定于体系结构的数据地址和大小 Architecture Table</td>
+</tr>
+<tr>
+<td>8</td>
+<td align="left">160&#x2F;176</td>
+<td align="left">全局指针注册相对虚拟地址 Global Pointer Table</td>
+</tr>
+<tr>
+<td>9</td>
+<td align="left">168&#x2F;184</td>
+<td align="left">线程本地存储 (TLS) 表地址和大小 Thread Local Storage Table</td>
+</tr>
+<tr>
+<td>10</td>
+<td align="left">176&#x2F;192</td>
+<td align="left">加载配置表地址和大小 Load Configuration Table</td>
+</tr>
+<tr>
+<td>11</td>
+<td align="left">184&#x2F;200</td>
+<td align="left">绑定导入表地址和大小 Bound Import Table</td>
+</tr>
+<tr>
+<td>12</td>
+<td align="left">192&#x2F;208</td>
+<td align="left">导入地址表地址和大小 Import Address Table, IAT</td>
+</tr>
+<tr>
+<td>13</td>
+<td align="left">200&#x2F;216</td>
+<td align="left">延迟导入描述符地址和大小 Delay Import Table</td>
+</tr>
+<tr>
+<td>14</td>
+<td align="left">208&#x2F;224</td>
+<td align="left">CLR 标头地址和大小</td>
+</tr>
+<tr>
+<td>15</td>
+<td align="left">216&#x2F;232</td>
+<td align="left">预留</td>
+</tr>
+</tbody></table>
+<p>注意：偏移量PE32+是64位版本PE规范，以上偏移都是以NT头为基准。</p>
+<h3 id="3-节区头和节区（Sections）"><a href="#3-节区头和节区（Sections）" class="headerlink" title="3.  节区头和节区（Sections）"></a>3.  节区头和节区（Sections）</h3><p>​        PE文件中的数据是按照节（Section）进行管理存储的，一般有代码节区和数据节区等，节区的名称和个数都是可变的，因此通常需要从节区头中获得以上节的相关信息。</p>
+<p>​        节区头紧跟在PE头后面，因此可以通过计算获得其地址。节区头中定义了各节区的属性，包括不同的特性、访问权限等，结构体为IMAGE_SECTION_HEADER，重要成员有5个，以下使用代码注释标出。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">IMAGE_SECTION_HEADER</span> &#123;</span><br>    BYTE    Name[IMAGE_SIZEOF_SHORT_NAME];<br>    <span class="hljs-class"><span class="hljs-keyword">union</span> &#123;</span><br>            DWORD   PhysicalAddress;<br>            DWORD   VirtualSize;     <span class="hljs-comment">//内存中节区所占大小</span><br>    &#125; Misc;<br>    DWORD   VirtualAddress;          <span class="hljs-comment">//内存中节区起始地址（RVA）</span><br>    DWORD   SizeOfRawData;           <span class="hljs-comment">//磁盘文件中节区所占大小</span><br>    DWORD   PointerToRawData;        <span class="hljs-comment">//磁盘文件中节区的偏移地址</span><br>    DWORD   PointerToRelocations;<br>    DWORD   PointerToLinenumbers;<br>    WORD    NumberOfRelocations;<br>    WORD    NumberOfLinenumbers;<br>    DWORD   Characteristics;         <span class="hljs-comment">//节区属性（bit OR）</span><br>&#125; IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;<br></code></pre></td></tr></table></figure>
+
+<p>​        节区头从本质上就是一个表格，表格的每一行是一个IMAGE_SECTION_HEADER结构体，表格长度就是PE头中<strong>NumberOfSections</strong>字段中的数值。</p>
+<p>​        在Windows7操作系统画图程序（mspaint.exe）程序，使用HxD打开后，通过前面的分析，可以确定节区头的位置是<em>0xE8</em> +（<strong>0x04+0x14+0xE0</strong>）&#x3D; 0x1E0,等式左边分别是<em>DOS头长度</em>，**PE签名长度，PE文件头长度和PE可选头长度(这3部分实际上是PE头长度)**，因此在文件0x1E0位置开始就是第一个IMAGE_SECTION_HEADER结构体，如图 4。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/1d7a3607-78c6-44c6-bdd9-0405154bb5eb" srcset="/img/loading.gif" lazyload alt="mspaint节区"></p>
+<center>图 4 节区头的第一条记录</center>
+
+<p>​        使用以上的方式获取节表的数据不够方便，因此实际工作中，都是使用工具软件读取，典型的可以使用ExeInfo PE，和x64dbg PE view插件等查阅。</p>
+<h3 id="4-使用其他工具高效的查看以上实验步骤中的各类数据"><a href="#4-使用其他工具高效的查看以上实验步骤中的各类数据" class="headerlink" title="4. 使用其他工具高效的查看以上实验步骤中的各类数据"></a>4. 使用其他工具高效的查看以上实验步骤中的各类数据</h3><p>​        通过前面的实验步骤，可以发现虽然直接使用二进制分析工具能从字节底层对PE文件进行分析，但是工作效率不高，如果仅仅需要查询某个字段的数据，可以使用更方便的专用工具。例如Exeinfo PE，PE Viewer，LordPE，PEiD……，这些工具都能快速的分析PE文件。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/4b169243-420e-4a09-8df7-5a4619ea1125" srcset="/img/loading.gif" lazyload alt="使用Exeinfo PE打开画图程序"></p>
+<center>图5 使用Exeinfo PE打开画图程序</center>
+
+<p>​        使用Exeinfo PE工具能方便的查看PE头中的各类信息，如图 6可以清晰的查看头部的各项数据。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/d2413a6a-6c35-4ba5-a8bd-70addc5682c8" srcset="/img/loading.gif" lazyload alt="图 6 Exeinfo PE查看头部信息"></p>
+<center>图 6 Exeinfo PE查看头部信息</center>
+
+<p>​        也可以方便的查看节表中的信息，如图 7所示。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/d346913a-1dbb-4353-af09-bccc2a5d6351" srcset="/img/loading.gif" lazyload alt="图 7 查看节表信息"></p>
+<center>图 7 查看节表信息</center>
+
+<p>​        在实践工作中，x32dbg工具的PE Viewer插件能比较直观的显示PE头部的各类数据，同学们也可以尝试使用。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/498c2c64-5d85-4d73-a7d8-923bf59e8ecd" srcset="/img/loading.gif" lazyload alt="图 8 使用x32dbg工具查看PE可选头部信息"></p>
+<center>图 8 使用x32dbg工具查看PE可选头部信息</center>
+
+<p>​        如图 8的界面中，使用x32dbg工具的PE Viewer插件能直观的查看PE文件中的数据字段，其界面左侧的树状导航窗格给出了PE文件的基本数据架构，单击其中数据项，右侧就能以表格的方式显示具体相关的数据，使用起来非常方便。此外x32dbg是x64dbg动态调试工具的32位版本，是今后学习中动态调试PE文件的重要工具。</p>
+<h2 id="五、实验结果"><a href="#五、实验结果" class="headerlink" title="五、实验结果"></a>五、实验结果</h2><ol>
+<li>请使用HxD打开Windows操作系统自带的记事本程序（c:\Windows\SysWOW64\notepad.exe），完成以下的实验内容。</li>
+</ol>
+<p>（1）查找DOS头部e_lfanew字段的值（                ）,并提供截图。</p>
+<p>（2）查找PE头部AddressOfEntryPoint字段值（             ），并提供截图。</p>
+<p>（3）查找PE头部Characteristics，并解析出其含义：（                 ）</p>
+<p>（4）程序加载到内存中有（      ）个节，其中代码节（即.text节）的RAV地址是（          ）</p>
+<ol start="2">
+<li><p>使用Exeinfo PE和x32dbg工具完成题目1中内容。</p>
+</li>
+<li><p>其他实验中的问题和解决结论思考等。</p>
+</li>
+</ol>
+<h2 id="六、思考题"><a href="#六、思考题" class="headerlink" title="六、思考题"></a>六、思考题</h2><p>​        尝试分析一个Windows下64位可执行程序，如Windows 10操作系统中的notepad.exe文件。请独自查阅资料完成，并给出关键的不同之处。（可以参考微软官方文档，如<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_optional_header32%EF%BC%89">https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_optional_header32）</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>PE文件结构分析实验</div>
+      <div>http://example.com/2024/10/24/111/PE文件结构分析实验/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/Winrar%E8%BD%AF%E4%BB%B6%E7%AE%80%E5%8D%95%E5%8A%9F%E8%83%BD%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B8%8E%E4%BF%AE%E6%94%B9%E3%80%90IDA%20Pro%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E7%BB%BC%E5%90%88%E3%80%91/" title="Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E5%99%A8%E5%88%86%E6%9E%90WinRAR%E8%BD%AF%E4%BB%B6%E3%80%90x64dbg%E3%80%91/" title="使用动态调试器分析WinRAR软件【x64dbg】">
+                        <span class="hidden-mobile">使用动态调试器分析WinRAR软件【x64dbg】</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2023</span></a>
+    <a href="https://reicalg2003.github.io" target="_blank" rel="nofollow noopener">
+     <span>Re1ca1g‘s Blog</span></a>    <br>
+</div>
+
+<div style="line-height: 100px;text-align: center;margin:auto;width: 500px;height: 50px">
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("02/09/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "❤ for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/DynamicLine.js"></script>
+<script src="/js/yinghua.js"></script>
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

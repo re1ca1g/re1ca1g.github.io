@@ -1,0 +1,919 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <link rel="icon" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Winrar软件简单功能逆向分析与修改——IDA Pro动静态分析综合使用[toc] 1. 问题及相关分析​        WinRAR压缩软件是老牌经典解压缩软件，电脑装机必备软件之一，WinRAR支持目前绝大多数的压缩文件格式，Winrar包含强力压缩、分卷、加密和自解压模块，简单易用。WinRAR的优点在于压缩率大速度快，它能备份数据，减少E-mail 附件的大小，解压缩从 Internet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】">
+<meta property="og:url" content="http://example.com/2024/10/24/111/Winrar%E8%BD%AF%E4%BB%B6%E7%AE%80%E5%8D%95%E5%8A%9F%E8%83%BD%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B8%8E%E4%BF%AE%E6%94%B9%E3%80%90IDA%20Pro%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E7%BB%BC%E5%90%88%E3%80%91/index.html">
+<meta property="og:site_name" content="Re1ca1gの小破站">
+<meta property="og:description" content="Winrar软件简单功能逆向分析与修改——IDA Pro动静态分析综合使用[toc] 1. 问题及相关分析​        WinRAR压缩软件是老牌经典解压缩软件，电脑装机必备软件之一，WinRAR支持目前绝大多数的压缩文件格式，Winrar包含强力压缩、分卷、加密和自解压模块，简单易用。WinRAR的优点在于压缩率大速度快，它能备份数据，减少E-mail 附件的大小，解压缩从 Internet">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/b225c33d-1725-4d45-933f-023fec141567">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/7d3ccf13-135f-4486-93c5-382fb512deaf">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/e78828d5-e1fb-42aa-adf6-dc920006a5e0">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/aac46640-9bd5-4bfd-bc61-d4387c68e858">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/37b03203-cd21-42e8-9415-7019c11fb138">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/93ea0b78-4e31-4771-96e6-08fe127cb2d7">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/f39fb862-9c06-4622-80ce-33d762a3a366">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/f1955265-bbe6-42b8-b7bd-485dcc8d4c68">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/094e3963-30bd-4873-84c6-328da4c47bcd">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/0ffc7af1-da03-4fdc-8a3e-42c9103fb8d4">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/a85e7f72-ee40-4053-91ab-4280ebdeffe7">
+<meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
+<meta property="article:modified_time" content="2024-10-29T08:54:54.863Z">
+<meta property="article:author" content="Re1ca1g">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/b225c33d-1725-4d45-933f-023fec141567">
+  
+  
+  
+  <title>Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】 - Re1ca1gの小破站</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>re1ca1g·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://www.98qy.com/sjbz/api.php') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.6)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-24 14:23" pubdate>
+          2024年10月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          53 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Winrar软件简单功能逆向分析与修改——IDA-Pro动静态分析综合使用"><a href="#Winrar软件简单功能逆向分析与修改——IDA-Pro动静态分析综合使用" class="headerlink" title="Winrar软件简单功能逆向分析与修改——IDA Pro动静态分析综合使用"></a>Winrar软件简单功能逆向分析与修改——IDA Pro动静态分析综合使用</h1><p>[toc]</p>
+<h2 id="1-问题及相关分析"><a href="#1-问题及相关分析" class="headerlink" title="1. 问题及相关分析"></a>1. 问题及相关分析</h2><p>​        WinRAR压缩软件是老牌经典解压缩软件，电脑装机必备软件之一，WinRAR支持目前绝大多数的压缩文件格式，Winrar包含强力压缩、分卷、加密和自解压模块，简单易用。WinRAR的优点在于压缩率大速度快，它能备份数据，减少E-mail 附件的大小，解压缩从 Internet 上下载的RAR、ZIP和其他格式的压缩文件，并能创建RAR和ZIP格式的压缩文件。</p>
+<p>​        但是在国内中文网站（<a href="https://link.zhihu.com/?target=http://www.winrar.com.cn/">http://www.winrar.com.cn/</a>）和英文官方网站（<a href="https://link.zhihu.com/?target=https://www.rarlab.com/">https://www.rarlab.com/</a>）下载的简体中文版WinRAR，即使有授权文件，你会发现授权后的WinRAR还是有广告弹窗出现，使用体验大打折扣。</p>
+<p>​        本文就以清除广告弹窗为目标，介绍IDA Pro的动静态分析中的使用。最后介绍一种简单的去除注册提示窗口的方法，可以让未注册版本具有更好的使用体验。</p>
+<h3 id="1-1-弹窗问题分析"><a href="#1-1-弹窗问题分析" class="headerlink" title="1.1 弹窗问题分析"></a>1.1 弹窗问题分析</h3><p>​        以上所述的Winrar软件启动的弹窗界面如图1所示，软件打开后，随着主程序界面的打开过程，会弹出一个窗口打开网络上某个网址中的广告信息显示。该过程如果电脑没有连接网络，将会造成Winrar打开过程卡顿，造成使用上的极大不便。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/b225c33d-1725-4d45-933f-023fec141567" srcset="/img/loading.gif" lazyload alt="广告弹窗界面"></p>
+<center>图1 Winrar广告弹窗</center>
+
+<p>​         从窗口的表现行为，初步判断这是一个<strong>非模态</strong>的Windows窗口，也可能是一个非模态的对话框，也可能是一个标准的Windows程序窗口，关于这方面的判断，主要依赖读者对Windows编程知识的了解，这里不再深入探讨，可以参考<strong>《Windows程序设计第5版珍藏版》</strong>。该书是清华大学出版社发行的一本经典的Windows编程圣经，由美Charles Petzold编写的中译本。</p>
+<p>​        通过使用网络抓包分析工具，可以分析得到每次的弹窗都会通过网络连接到互联网上某个Web站点上的广告页面，然后显示。因此可以推测在这个Windows窗口中实现了对某个包含广告的网址的读取并显示。假设在程序的初始化阶段，能够获得这个窗口打开的代码位置，尝试去除这个窗口的调用显示，那么也许就能去除弹窗。</p>
+<p>​        按照这个思路，必须在代码中找到调用构建弹窗的代码。如果使用静态分析，则需要大量的时间分析复杂的反汇编代码，而使用动态调试的方式则可以更有效率的分析。</p>
+<p>动态分析要点：</p>
+<ul>
+<li>使用添加API断点，对目标代码进行调试代码执行，更方便的分析软件行为，例如本实验中可以使用对CreateWindowExW这个API设置断点，查找所有新建窗口的行为。</li>
+<li>为了提高断点捕获的效率，可以使用断点的条件选项设置断点激活的条件，提高分析效率。</li>
+</ul>
+<h3 id="1-2-获得关键弹窗参数"><a href="#1-2-获得关键弹窗参数" class="headerlink" title="1.2 获得关键弹窗参数"></a>1.2 获得关键弹窗参数</h3><p>​        Windows程序中的一个窗口包含很多参数，可以作为窗口的区别特征。常见包括<em>窗口句柄，窗口类，窗口标题文字，窗口样式</em>等。</p>
+<p>​        使用**Spy++**之类的窗口分析软件可以方便的获得这些参数。下图是WinRar弹窗的一些参数显示界面,使用Spy++软件查找窗口的功能，可以获得所需要的各项参数。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/7d3ccf13-135f-4486-93c5-382fb512deaf" srcset="/img/loading.gif" lazyload alt="弹窗参数"></p>
+<center>图2 Spy++软件查询窗口参数</center>
+
+<blockquote>
+<p>Spy++使用方法：</p>
+<ul>
+<li><p>Spy++分为32位和64位两个版本，通常在64位环境中选择使用Spy++64这个版本。</p>
+</li>
+<li><p>启动Spy++软件后，可以使用查找窗口的功能，即点击工具栏上望远镜图标，或使用Ctrl+F快捷键打开查找对话框。</p>
+</li>
+<li><p>使用鼠标选择对话框中瞄准镜，按住左键，将瞄准镜图标拖动到需要查找分析的窗口上即可。</p>
+<p><strong>注意：如果需要获得顶层窗口，请将瞄准镜托放到窗口的标题栏上。</strong></p>
+</li>
+</ul>
+</blockquote>
+<h2 id="2-动态调试分析"><a href="#2-动态调试分析" class="headerlink" title="2. 动态调试分析"></a>2. 动态调试分析</h2><p>​        动态调试分析就是在受限控制的环境中，逐条执行分析对象代码，通过代码执行的上下文环境，配合调用指令，API，变量数值等信息，综合的分析被调试代码的功能。</p>
+<p>通常进行动态调试分析采用工具有：</p>
+<ul>
+<li>ollydbg</li>
+<li>windbg</li>
+<li>x64dbg(x32dbg)</li>
+<li>……</li>
+</ul>
+<p>​        IDA Pro作为经典的静态代码分析工具，由于其静态分析强大的光环掩盖了其同样可以进行动态分析调试的功能。并且由于动静态分析集成在同一个工具中，在动态分析的过程中，可以同时获得静态分析强大的支持，将对分析工作有更大的帮助。因此，本文以下从IDA Pro工具的这两个方面进行介绍。</p>
+<h3 id="2-1-IDA-Pro动态调试"><a href="#2-1-IDA-Pro动态调试" class="headerlink" title="2.1 IDA Pro动态调试"></a>2.1 IDA Pro动态调试</h3><p>​        IDA Pro软件采用了可扩展方式开发，除了基本的静态分析功能，还支持通过扩展方式与常见的调试器协调工作。例如，常规的安装版本中，在“Debug”工具栏的下拉菜单中就能选择一些常见的调试器，例如windbg，Local Windows dubugger，……。</p>
+<p><strong>注意：以下的动态调试内容以选择Local Windows Debugger进行。</strong></p>
+<p>​        IDA Pro 启动后，通常都会显示一个“<strong>Quick start</strong>”窗口，让用户选择以前调式过的项目，或者选择“new”项目，引导用户打开新的文件进行调试；另外还可以选择“go”按钮，这样会直接打开空白的程序界面，这时只要将需要分析的程序直接拖进窗口就能进行分析。除了以上的3中方式外，还可以直接把需要调试的exe或dll文件直接拖放到IDA Pro程序的图标上，这种方式也能快速打开IDA Pro程序进行分析工作。</p>
+<p>​        IDA Pro加载了需要分析的文件后，会不断弹出一些信息确认窗口，基本上都选择默认或者Yes按钮就可以了。只需要注意其中有一个选项目是让用户是否使用pdb调试文件，这里一般选择“否”，如果选择了“Yes”，后续会弹出对话框要求用户指定pdb格式文件路径。</p>
+<blockquote>
+<p>知识点：IDA Pro数据库。</p>
+<p>​        IDA Pro打开文件后，会扫描分析文件，并将文件中的数据全部抽取出来，然后使用其特定的数据格式存储，一般会有一组文件，扩展名是类似id0,id1,id2,nam,……等格式的文件。当IDA Pro退出关闭分析的文件后，这些文件会整体打包成一个文件扩展名为idb。idb文件是IDA Pro数据库文件，IDA Pro程序可以直接加载数据库文件进行逆向代码分析，而不需要源文件。这种设计思路一方面能够方便在对分析数据内容进行标记和修改，另一方面也避免了一些病毒程序被触发执行的风险。因此当第一次打开被分析的exe或dll文件后，程序会自动的分析，并将所有的数据信息记录到数据库文件。当关闭程序的时候，会提示用户保存该数据库文件。</p>
+</blockquote>
+<p>IDA Pro打开后的界面，主要包括反汇编代码窗口，函数清单窗口，工具栏等。如图3所示。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/e78828d5-e1fb-42aa-adf6-dc920006a5e0" srcset="/img/loading.gif" lazyload alt="IDA Pro界面"></p>
+<center>图3 IDA Pro界面</center>
+
+<h4 id="2-1-1-动态调试步骤"><a href="#2-1-1-动态调试步骤" class="headerlink" title="2.1.1 动态调试步骤"></a>2.1.1 动态调试步骤</h4><ol>
+<li>选择调试器</li>
+<li>设置断点</li>
+<li>运行调试，直到断点处，程序停止。</li>
+<li>查看并分析断点处代码</li>
+<li>步骤2或得到调试结果退出。</li>
+</ol>
+<p>以下文章将详细介绍每个分析过程。</p>
+<h4 id="2-1-2-常用快捷键"><a href="#2-1-2-常用快捷键" class="headerlink" title="2.1.2 常用快捷键"></a>2.1.2 常用快捷键</h4><p>​        调试过程就是逐条运行指令或程序代码，可以使用以下快捷键控制程序的执行：</p>
+<ul>
+<li>F9：启动调试，如果设置了断点，那么执行到下一个断点暂停。</li>
+<li>F7：步进调试，逐条执行指令，每按一次该键，执行1条指令，遇到函数调用进入到函数内部逐条执行。</li>
+<li>F8：步过调试：和F7类似，区别是当遇到函数调用指令，不会进入到函数体内部，把函数执行当作1条指令执行。</li>
+</ul>
+<h4 id="2-1-3-调试中的数据"><a href="#2-1-3-调试中的数据" class="headerlink" title="2.1.3 调试中的数据"></a>2.1.3 调试中的数据</h4><p>​        动态调试的核心思想是抛开复杂的静态分析，让程序运行起来，然后对程序运行的状态进行分析，比如某条指令或函数执行的时候，某个变量的数据是否是预期的值，查看某个内存中特定时候的数据等。通过调试过程中获取到的信息，验证对程序功能，实现方式，调用规则等方面的推测。因此动态调试对内存和寄存器中的数据查看分析非常重要。</p>
+<p>​        由前面章节的学习，可知道一般的局部变量和函数传递的参数都使用当前栈帧保存的，部分函数调用规范还会使用ECX，EDX等寄存器传输参数。IDA Pro在进行动态调试时，这些数据都可以从 Stack View窗口读取到。调试时候，栈顶数据会使用高亮度表示。</p>
+<blockquote>
+<p>提示：常见的调用规范是 cdecl, stdcall, fastcall。微软给出支持的调用约定 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/cpp/cpp/calling-conventions">https://learn.microsoft.com/zh-cn/cpp/cpp/calling-conventions</a></p>
+</blockquote>
+<p>​        常见的32位操作系统下，Windows API调用采用的stdcall调用标准，因此当进入函数断点时，第一个参数应当保存在 [ESP+4], 第二个参数在[ESP+8],其他参数依次类推得到，请大家思考此时的[ESP]存放的是什么数据？</p>
+<p>​        Windows API 通常有明确的功能性特征，比如当系统中调用了ReadFile这个API函数，就能判断代码读取了文件，也可以查询API中的参数规范，获得当前读取文件的信息。所以在软件逆向分析中，如果遇到了标准的Windows API函数调用，可以辅助对程序的功能和行为的分析。</p>
+<p>​        以下调试过程中，为了确定是否能找到弹窗调用代码，就需要不断查看栈帧对应的参数，通过传输入的参数数据来判断当前执行到的指令是否是所期望的位置代码。</p>
+<h3 id="2-2-动态调试查找广告弹窗"><a href="#2-2-动态调试查找广告弹窗" class="headerlink" title="2.2 动态调试查找广告弹窗"></a>2.2 动态调试查找广告弹窗</h3><p>​        经过1.2小节的分析，假设这个广告窗口是通过CreateWindowExW函数创建的。后续的工作可以围绕其相关信息开展。</p>
+<p>​        在1.2节获得弹窗以下信息：</p>
+<ul>
+<li>窗口类名：RarReminder</li>
+<li>窗口样式：16CB0000</li>
+<li>标题文字：Winrar</li>
+<li>……</li>
+</ul>
+<p>​        通过这些信息在后续的调试过程中，可以从大量的函数调用中筛选出所需要的函数调用，定位分析的关注点。以下分别从查找API函数，设置断点和调试分析这三个步骤介绍调试过程。</p>
+<blockquote>
+<p>​        <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/api/winuser/nf-winuser-createwindowexw">CreateWindowExW</a>是User32.dll中提供的Windows API函数，提供对Windows窗口的创建功能。这里特别需要说明，常见的Windows图形化界面中，除了直接看到的窗口（Window）界面是可以由这个函数构造，其他几乎所有的图形化界面元素都是可以使用这个函数构造。比如常见的按钮，编辑框，下拉菜单等各类控件，本质上都是不同窗口类的窗口。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c">&gt;HWND <span class="hljs-title function_">CreateWindowExW</span><span class="hljs-params">(  </span><br><span class="hljs-params">	DWORD		dwExStyle,</span><br><span class="hljs-params">	LPCWSTR		lpClassName,	<span class="hljs-comment">//窗口类参数，可选</span></span><br><span class="hljs-params">	LPCWSTR		lpWindowName,  	<span class="hljs-comment">//窗口文本标题，可选</span></span><br><span class="hljs-params">	DWORD		dwStyle, 		<span class="hljs-comment">//窗口样式参数</span></span><br><span class="hljs-params">	<span class="hljs-type">int</span>			X, </span><br><span class="hljs-params">	<span class="hljs-type">int</span>			Y, </span><br><span class="hljs-params">	<span class="hljs-type">int</span>			nWidth,</span><br><span class="hljs-params">	<span class="hljs-type">int</span>			nHeight, </span><br><span class="hljs-params">	HWND		hWndParent, </span><br><span class="hljs-params">	HMENU		hMenu, </span><br><span class="hljs-params">	HINSTANCE	hInstance, </span><br><span class="hljs-params">	LPVOID		lpParam </span><br><span class="hljs-params">&gt;)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>​        以上定义中，LPCWSTR是使用了“宽字符”构成的字符串，简单说就是每个符号占用2个字节，而不是经典的C-Style字符串所定义的一个符号使用1字节表示。</p>
+</blockquote>
+<h4 id="2-2-1-查找API函数"><a href="#2-2-1-查找API函数" class="headerlink" title="2.2.1 查找API函数"></a>2.2.1 查找API函数</h4><p>​        通过分析可知创建弹窗的API有可能是CreateWindowExW，那么就可以设置这个API函数断点进行调试分析。使用IDA Pro可以有多种方式查找可以使用设置断点的API函数，这里介绍使用导入表查找可用的API函数。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/aac46640-9bd5-4bfd-bc61-d4387c68e858" srcset="/img/loading.gif" lazyload alt="导入表"></p>
+<center>图4 Import 导入函数列表</center>
+
+<p>​        IDA Pro默认打开分析程序后，会在窗口中自动打开名为Imports的标签页，其中显示的是当前分析PE格式文件的导入函数，表格中包含了常用的“函数地址”，“API函数名”和“函数所在的库”等数据列。在使用过程中可以通过单击列标题实现对数据的排序，方便快速查看所需要的函数。</p>
+<blockquote>
+<p>​        使用技巧：可以在imports界面输入所需要查找函数的前几个字符，这样导入表会按照输入进行快速筛选。例如图4中输入了createwin，界面中就自动高亮度筛选出了CreateWindowExW函数。</p>
+</blockquote>
+<p><img src="http://wxjb.jspi.cn/g/query/37b03203-cd21-42e8-9415-7019c11fb138" srcset="/img/loading.gif" lazyload alt="API函数"></p>
+<center>图5 CreateWindowExW函数</center>
+
+<p>​        查找到所需要的API函数后，可以双击该项目，就会进入到该函数的反汇编代码窗口，如图5所示。通过该界面获得函数的一些基本信息，如函数名，参数个数和类型，函数的返回值等。由于是库函数，这里是显示了函数的声明，并不显示具体的函数反汇编指令。</p>
+<h4 id="2-2-2-设置断点"><a href="#2-2-2-设置断点" class="headerlink" title="2.2.2 设置断点"></a>2.2.2 设置断点</h4><p>​        在图3中打开的Windows API函数界面中，具体就是在CreateWindowExW上单击右键，选择右键菜单中的“Add Breakpoint”项目，打开断点设置窗口。</p>
+<blockquote>
+<p>使用技巧：在代码中选择适合的API函数后单击F2键，可以快速打开以上断点设置窗口。</p>
+</blockquote>
+<p><img src="http://wxjb.jspi.cn/g/query/93ea0b78-4e31-4771-96e6-08fe127cb2d7" srcset="/img/loading.gif" lazyload alt="断点设置窗口"></p>
+<center>图6 断点设置对话框</center>
+
+<p>​        在打开的断点设置窗口中Location中已经自动填入了我们选择好的API函数的入口地址，不需要修改。单击OK按钮就能添加CreateWindowExW函数的访问断点。</p>
+<blockquote>
+<p>​        图6界面中Condition可以填入IDC脚本函数或表达式计算，当计算结果为真时，触发该断点。<br>例如输入 get_wide_dword(ESP+0x4) &#x3D;&#x3D; 0x100 表示当代码执行到CreateWindowExW时，如果当前的ESP+0x4这个内存位置中的DWORD数值为0x100，那么断点就触发。</p>
+<p>​        IDC函数可以参考：<a target="_blank" rel="noopener" href="https://www.hex-rays.com/products/ida/support/idadoc/162.shtml">https://www.hex-rays.com/products/ida/support/idadoc/162.shtml</a></p>
+</blockquote>
+<p>​        由前文分析可知广告弹窗的窗口样式的数值为16CB0000，是CreateWindowExW函数的第4个参数。函数调用规范是stadcall，因此所需参数可以使用以下方式获得：<br>​        栈顶可以使用get_wide_dword(ESP)获得，<br>​        第1个参数使用 get_wide_dword(ESP+4)，<br>​        第2个参数使用 get_wide_dword(ESP+8)，<br>​        …… 。</p>
+<p>​        图6界面中，Condition中填写 <code>get_wide_dword(ESP+0x10) == 0x16CB0000</code>。</p>
+<h4 id="2-2-3-调试分析"><a href="#2-2-3-调试分析" class="headerlink" title="2.2.3 调试分析"></a>2.2.3 调试分析</h4><ol>
+<li>启动调试</li>
+</ol>
+<p>​        完成以上的断点设置后，可以单击F9启动调试。理想的状态是运行后，触发断点后程序停止在我们所需要的断点位置。但实际情况往往会有各类的警告信息，以及系统的各类异常等情况的中断，因此一般情况下可以单击弹出的对话框确定继续，或者再次按下F9继续调试。</p>
+<p>​        <em>注意：在每次按下F9调试前，请检测以下Stack view，查看一下栈中的数据是否和需要捕获的窗口的数据一致。本例子中，就是需要查看 参数16CB0000是否出现在栈中。</em></p>
+<p><img src="http://wxjb.jspi.cn/g/query/f39fb862-9c06-4622-80ce-33d762a3a366" srcset="/img/loading.gif" lazyload alt="捕获"></p>
+<center>图7 中断界面</center>
+
+<p>​        图7中右下角的Stack View中，蓝色条标记的是栈顶，即<code>ESP==0x0104BBD8</code>，而<code>ESP+0x10==0x0104BBE8</code>,对应的内存中数据为0x16CB0000，正是我们查找的窗口，此时程序中断在构建广告窗口的代码中CreateWindowExW函数的调用前。</p>
+<ol start="2">
+<li>查看分析代码</li>
+</ol>
+<p>​        以上的断点暂停的位置是CreateWindowExW函数的入口，但此时并不需要分析该函数，需要分析的是调用该指令的代码块，即该函数执行完返回地址。按照函数调用的规范，此时栈顶中数据就是返回后执行代码地址，因此<strong>双击栈顶地址</strong>就能打开调用的代码。在上图界面中右下角子窗口中，双击Stack View界面中sub_1121410+3D2就进入如图6所示界面。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/f1955265-bbe6-42b8-b7bd-485dcc8d4c68" srcset="/img/loading.gif" lazyload alt="函数调用"></p>
+<center>图8 广告弹窗调用代码</center>
+
+<p>​        图8中反汇编代码显示的部分就是广告弹窗构造代码，代码使用<code>call ds:CreateWindowExW</code>指令调用CreateWindowExW函数，创建广告弹出窗口。</p>
+<p>​        以上反汇编代码中，call指令前是一系列的push指令，是采用栈传输函数所需的参数，期中就包含了窗口大小，位置以及窗口样式等信息，这些和API函数定义是一致的。</p>
+<p>​        通过以上的断点调试分析，可以初步确定广告弹窗启动代码地址，可以记录下当前的代码位置，然后使用Ctrl-F2快捷键关闭调试。</p>
+<h2 id="3-静态分析与破解"><a href="#3-静态分析与破解" class="headerlink" title="3.静态分析与破解"></a>3.静态分析与破解</h2><h3 id="3-1-弹窗静态代码分析"><a href="#3-1-弹窗静态代码分析" class="headerlink" title="3.1 弹窗静态代码分析"></a>3.1 弹窗静态代码分析</h3><p>​        由上一节的分析，可以获得广告弹窗的CreateWindowExW函数的调用代码段如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs assembly">.text:011217AD loc_11217AD:                            ; CODE XREF: sub_1121410+307↑j<br>.text:011217AD                                         ; sub_1121410+314↑j<br>.text:011217AD push    100h                            ; size_t<br>.text:011217B2 push    offset byte_11A6F18             ; char *<br>.text:011217B7 call    sub_1120AE0<br>.text:011217BC push    0                               ; lpParam          --start--<br>.text:011217BE push    hInstance                       ; hInstance<br>.text:011217C4 push    0                               ; hMenu<br>.text:011217C6 push    0                               ; hWndParent<br>.text:011217C8 push    edi                             ; nHeight<br>.text:011217C9 push    esi                             ; nWidth<br>.text:011217CA push    ebp                             ; Y<br>.text:011217CB push    [esp+1044h+X]                   ; X<br>.text:011217CF push    ebx                             ; dwStyle<br>.text:011217D0 push    offset WindowName               ; &quot;WinRAR&quot;<br>.text:011217D5 push    offset aRarreminder             ; &quot;RarReminder&quot;<br>.text:011217DA push    0                               ; dwExStyle<br>.text:011217DC call    ds:CreateWindowExW              ;                   ---end--<br>.text:011217E2 test    byte ptr dword_11A6BA8, 1<br>.text:011217E9 pop     edi<br>.text:011217EA pop     ebp<br></code></pre></td></tr></table></figure>
+
+<p>​        查看以上代码6-18行，是调用CreateWindowExW，构造弹窗。如果屏蔽call指令是否能禁止弹窗？按照这个思路下面介绍具体的实验方法，完成广告弹窗的屏蔽操作。</p>
+<h3 id="3-2-去弹窗修复"><a href="#3-2-去弹窗修复" class="headerlink" title="3.2 去弹窗修复"></a>3.2 去弹窗修复</h3><p>​        IDA Pro作为强大静态反编译分析工具，具有强大的二进制文件修改功能，这里主要使用的是汇编和补丁两个功能。</p>
+<ol>
+<li>修改汇编代码，绕过call指令调用。</li>
+</ol>
+<p>​        在IDA Pro汇编窗口中，找到入栈的第一个参数位置，即以上代码中的第6行代码（标记注释start位置）处。将光标点击这个地址，然后依次打开菜单项目<code>Edit-&gt;Patch Program-&gt;Assemble...</code>，在弹出的对话框中输入汇编指令，如图9。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/094e3963-30bd-4873-84c6-328da4c47bcd" srcset="/img/loading.gif" lazyload alt="汇编修改代码"></p>
+<center>图9 汇编修改的指令</center>
+
+<p>​        以上代码中JMP跳转指令，011217E2是Call指令的下一条指令地址。经过以上的修改，程序将跳过广告窗口的构造指令，实现去除广告弹窗的目的。</p>
+<ol start="2">
+<li>补丁文件输出，实现去弹窗。</li>
+</ol>
+<p>​        以上的修改仅仅是实现了IDA Pro数据库文件的修改，并没有对exe可执行文件进行修改，如果要将修改的结果写入可执行文件，就需要使用IDA Pro的补丁（patch）功能。</p>
+<p>​        操作菜单：<code>Edit-&gt;Patch Program-&gt;Apply patches to input file...</code></p>
+<p><img src="http://wxjb.jspi.cn/g/query/0ffc7af1-da03-4fdc-8a3e-42c9103fb8d4" srcset="/img/loading.gif" lazyload alt="补丁文件"></p>
+<center>图10 应用补丁</center>
+
+<p>​        单击Create backup选项后，单击OK即可补丁程序文件。</p>
+<p>​        <strong>注意：如果补丁文件时处于调式状态，将无法写入文件，因此在补丁文件前，需要终止代码调试。具体方法是单击调试工具栏中蓝色方块按钮。或者使用快捷键Ctrl-F2。</strong></p>
+<p>​       经过补丁后的程序启动后，将不再出现广告弹窗，但随之会出现一个软件注册提示框，以下介绍如果清除这个注册提示框。</p>
+<h3 id="3-3-注册弹窗静态代码分析与破解"><a href="#3-3-注册弹窗静态代码分析与破解" class="headerlink" title="3.3 注册弹窗静态代码分析与破解"></a>3.3 注册弹窗静态代码分析与破解</h3><p>​        从软件的执行顺序可以推测软件注册对话框的启动应该是在广告弹窗的代码后面，因此重新打开IDA Pro的代码窗口，定位到前面分析的弹窗地址。</p>
+<blockquote>
+<p>如果前面已经把弹窗地址记录下来，只要单击g，然后输入地址，就能打开到弹窗指令所在的代码位置。此时可以逐条向后分析指令，也可以继续使用调试器的F8指令，逐条指令分析。</p>
+</blockquote>
+<p>​        因为Winrar软件没有使用特殊的加密和混淆手段，所以可以使用更方便的方法，使用IDA Pro的Hex-Rays Decompiler插件，将汇编代码恢复成类C语言的代码分析，大大提高代码的分析效率。</p>
+<p>​        Hex-Rays插件的激活快捷按钮为<code>F5</code>，在反汇编窗口单击次快捷键后，将会自动反编译成C语言，如图11。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/a85e7f72-ee40-4053-91ab-4280ebdeffe7" srcset="/img/loading.gif" lazyload alt="Hex-Rays"></p>
+<center>图11 Hex-Ray反编译引擎反编译</center>
+
+<p>​        通过逐行阅读代码，注意到142行代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span> ( v7 )<br> &#123;<br>   byte_A6A064 = <span class="hljs-number">1</span>;<br>   v20 = GetFocus();<br>   DialogBoxParamW(hInst, <span class="hljs-string">L&quot;REMINDER&quot;</span>, v20, sub_9C3D40, <span class="hljs-number">0</span>);<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<p>​        DialogBoxParamW是Windows自带的一个API函数，用于构造一个对话框窗口，其中第4个参数是指向一个窗口指向代码，双击sub_9c3D40这个子程序，得到如下代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">BOOL __stdcall <span class="hljs-title">sub_9C3D40</span><span class="hljs-params">(HWND hDlg, UINT a2, WPARAM a3, LPARAM a4)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">const</span> <span class="hljs-type">wchar_t</span> *v4; <span class="hljs-comment">// esi</span><br>  <span class="hljs-type">int</span> v6; <span class="hljs-comment">// eax</span><br>  WCHAR Filename; <span class="hljs-comment">// [esp+8h] [ebp-1004h]</span><br><br>  <span class="hljs-keyword">if</span> ( (<span class="hljs-type">unsigned</span> __int8)<span class="hljs-built_in">sub_8FCD40</span>(hDlg, a2, a3, a4, <span class="hljs-string">L&quot;REMINDER&quot;</span>, (<span class="hljs-type">int</span>)<span class="hljs-string">L&quot;HELPLicenseAndRegistering&quot;</span>, <span class="hljs-number">0</span>) )<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">if</span> ( a2 == <span class="hljs-number">273</span> )<br>  &#123;<br>    <span class="hljs-keyword">switch</span> ( (<span class="hljs-type">unsigned</span> __int16)a3 )<br>    &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-number">1u</span>:<br>        <span class="hljs-built_in">EndDialog</span>(hDlg, <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-number">2u</span>:<br>        <span class="hljs-built_in">EndDialog</span>(hDlg, <span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-number">3u</span>:<br>     <span class="hljs-comment">// ......</span><br>     <span class="hljs-comment">// 此处省略部分代码</span><br>     <span class="hljs-comment">// ......</span><br>      <span class="hljs-keyword">case</span> <span class="hljs-number">0x64</span>u:<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-number">0x65</span>u:<br>        <span class="hljs-built_in">GetModuleFileNameW</span>(<span class="hljs-number">0</span>, &amp;Filename, <span class="hljs-number">0x800</span>u);<br>        <span class="hljs-built_in">sub_968FB0</span>(&amp;Filename, (<span class="hljs-type">int</span>)<span class="hljs-string">L&quot;order.htm&quot;</span>, <span class="hljs-number">2048</span>);<br>        <span class="hljs-built_in">sub_9782D0</span>(&amp;Filename, &amp;Filename, <span class="hljs-number">2048</span>);<br>        <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">GetFileAttributesW</span>(&amp;Filename) == <span class="hljs-number">-1</span> )<br>        &#123;<br>          v6 = <span class="hljs-built_in">sub_978530</span>(<span class="hljs-number">0x1F5</span>u);<br>          <span class="hljs-built_in">sub_9BF640</span>(v6, (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)&amp;Filename);<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>          <span class="hljs-built_in">ShellExecuteW</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, &amp;Filename, <span class="hljs-number">0</span>, &amp;Directory, <span class="hljs-number">1</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-number">0x66</span>u:<br>        v4 = (<span class="hljs-type">const</span> <span class="hljs-type">wchar_t</span> *)<span class="hljs-built_in">sub_978530</span>(<span class="hljs-number">0x4F7</span>u);<br>        <span class="hljs-keyword">if</span> ( <span class="hljs-built_in">wcschr</span>(v4, <span class="hljs-number">0x20</span>u) )<br>          v4 = (<span class="hljs-type">const</span> <span class="hljs-type">wchar_t</span> *)<span class="hljs-built_in">sub_978530</span>(<span class="hljs-number">0x4F6</span>u);<br>        <span class="hljs-built_in">ShellExecuteW</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, v4, <span class="hljs-number">0</span>, &amp;Directory, <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>​        此时发现第7行，27行代码中，出现的HELPLicenseAndRegistering和order.htm与软件授权注册和订单有关的英文，结合软件注册的功能，可以推测此处为注册对话框。</p>
+<p>​        分析至此，绕过注册对话框的方式可以通过修改142行c代码中的if语言即可。由于不能直接修改c代码，必须切换到IDA View-A反汇编界面，<strong>单击右键选择synchronize with菜单</strong>，然后选择刚才c语言伪代码窗口，笔者此时窗口为pseudocode-B，反汇编窗口会显示142行c代码中对应汇编代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs assembly">text:00991812 loc_991812:                             ; CODE XREF: sub_991410+117↑j<br>.text:00991812                 test    bl, bl<br>.text:00991814                 jz      short loc_99183C<br>.text:00991816                 push    0               ; dwInitParam<br>.text:00991818                 push    offset sub_9C3D40 ; lpDialogFunc<br>.text:0099181D                 mov     byte_A6A064, 1<br>.text:00991824                 call    ds:GetFocus<br>.text:0099182A                 push    eax             ; hWndParent<br>.text:0099182B                 push    offset aReminder ; &quot;REMINDER&quot;<br>.text:00991830                 push    hInst           ; hInstance<br>.text:00991836                 call    ds:DialogBoxParamW<br>.text:0099183C<br></code></pre></td></tr></table></figure>
+
+<p>​        分析以上代码第2行就是判断是否显示注册窗口，这里将jz修改成jmp指令就可以消除注册对话框。具体修改方法可以参考前面的补丁文件的方式。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>​        通过分析Winrar弹窗代码，并进行补丁修改。可以体会到IDA Pro不但是一款强大的静态分析工具，也是具有完整动态分析能力的。由于静态分析的强大，使得在动态分析的时候，可以看到很多软件自动分析出来的辅助信息，极大的方便了代码功能的判断。例如凡是出现一个地址指向了一个字符串的指令，往往都是在后面自动添加上注释。</p>
+<p>​        在软件逆向分析中，分析代码的行为与本次实验中查找弹窗，改变代码功能都有类似的地方。因此可以得到一些简单的结论。</p>
+<ol>
+<li>静态分析软件强大的分析功能可以有效的帮助分析人员了解代码功能和程序走向。</li>
+<li>动态分析需要静态分析的结果会更有助于分析。</li>
+<li>一般动态调试相比静态分析，更容易。</li>
+</ol>
+<h2 id="5-实验考核点及问题"><a href="#5-实验考核点及问题" class="headerlink" title="5.实验考核点及问题"></a>5.实验考核点及问题</h2><ul>
+<li><p>Spy++软件使用，能正确查找窗口参数，如CreateWindowsExW函数所需要的参数信息。</p>
+</li>
+<li><p>IDA Pro软件断点的设置，能正确对API访问设置断点；会简单的条件断点条件的设置。</p>
+</li>
+<li><p>掌握IDA Pro软件中正确汇编指令并制作补丁修改文件的能力。</p>
+</li>
+</ul>
+<ol>
+<li>在绕过Winrar广告窗口的操作中，需要设置断点的API是（                  ）。</li>
+<li>IDA Pro中使用（         ）插件能反编译机器指令，生成的伪C程序代码。</li>
+<li>在设置条件断点时，如果需要对左起第2个长度为4字节的参数值为0x12345678,那么条件断点的条件（Condition处）怎么写（             ）。</li>
+<li>IDA Pro将被分析的程序保存为扩展名为（      ）的数据库文件，在之后的分析过程中（要&#x2F;不要）原始程序文件。</li>
+<li>IDA Pro中类似<code>sub_1121410+3D2</code>这样标记含义是（                 ）。</li>
+<li>IDA Pro中给变量或者函数命名的快捷键是（             ）。</li>
+<li>实验调试时，针对CreateWindowEx设置的断点，当中断到断点时，可以使用那些方法找到（或者说是返回）到这个函数调用后的用户指令的位置？请给出至少3种方案。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】</div>
+      <div>http://example.com/2024/10/24/111/Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/%E4%BD%BF%E7%94%A8ESP%E5%AE%9A%E5%BE%8B%E8%84%B1%E5%A3%B3%E5%AE%9E%E9%AA%8C/" title="使用ESP定律脱壳实验">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用ESP定律脱壳实验</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%E5%AE%9E%E9%AA%8C/" title="PE文件结构分析实验">
+                        <span class="hidden-mobile">PE文件结构分析实验</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2023</span></a>
+    <a href="https://reicalg2003.github.io" target="_blank" rel="nofollow noopener">
+     <span>Re1ca1g‘s Blog</span></a>    <br>
+</div>
+
+<div style="line-height: 100px;text-align: center;margin:auto;width: 500px;height: 50px">
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("02/09/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "❤ for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/DynamicLine.js"></script>
+<script src="/js/yinghua.js"></script>
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

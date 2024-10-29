@@ -24,7 +24,7 @@
 <meta property="og:description" content="渗透测试">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-12-17T11:57:00.000Z">
-<meta property="article:modified_time" content="2024-06-27T07:13:50.897Z">
+<meta property="article:modified_time" content="2024-10-21T02:41:54.000Z">
 <meta property="article:author" content="Re1ca1g">
 <meta property="article:tag" content="渗透测试">
 <meta name="twitter:card" content="summary_large_image">
@@ -259,7 +259,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          262 字
+          309 字
         
       </span>
     
@@ -317,18 +317,22 @@
               <div class="markdown-body">
                 
                 <p>linux命令</p>
-<p>算MD5 sha之类</p>
+<h3 id="MD5sum"><a href="#MD5sum" class="headerlink" title="MD5sum"></a>MD5sum</h3><p>算MD5 sha之类</p>
 <p>类型加上sum 例如 md5sum sha256sum 之类</p>
-<p> echo -n ‘EU4EkcST8xWjIsUj1wovCw&#x3D;&#x3D;’ | md5sum | cut -d ‘ ‘ -f1</p>
-<p>这个是算字符串的 </p>
-<p>md5sum xxx.txt 这个是算文件的</p>
-<p>update-alternatives –config java  更换java版本</p>
-<p>查找文件 </p>
-<p>find &#x2F; -name “flag”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> -n <span class="hljs-string">&#x27;EU4EkcST8xWjIsUj1wovCw==&#x27;</span> | <span class="hljs-built_in">md5sum</span> | <span class="hljs-built_in">cut</span> -d <span class="hljs-string">&#x27; &#x27;</span> -f1<br></code></pre></td></tr></table></figure>
+
+<p>这个是算字符串的<br>md5sum xxx.txt 这个是算文件的</p>
+<h3 id="更换python-java版本"><a href="#更换python-java版本" class="headerlink" title="更换python java版本"></a>更换python java版本</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">update-alternatives --config java  <span class="hljs-comment">//更换java版本</span><br></code></pre></td></tr></table></figure>
+
+
+<h3 id="find查找文件"><a href="#find查找文件" class="headerlink" title="find查找文件"></a>find查找文件</h3><p>find &#x2F; -name “flag”</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/l_liangkk/article/details/81294260">Linux下find命令详解_linux find 命令-CSDN博客</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/crisprx/article/details/104110725">小记 SUID find提权-CSDN博客</a></p>
-<p>tar –xvf file.tar  解压 tar包<br>tar -xzvf file.tar.gz 解压tar.gz<br>tar -xjvf file.tar.bz2   解压 tar.bz2<br>tar –xZvf file.tar.Z   解压tar.Z<br>unrar e file.rar 解压rar<br>unzip file.zip 解压zip</p>
+<h3 id="tar-解压"><a href="#tar-解压" class="headerlink" title="tar(解压)"></a>tar(解压)</h3><p>tar –xvf file.tar  解压 tar包<br>tar -xzvf file.tar.gz 解压tar.gz<br>tar -xjvf file.tar.bz2   解压 tar.bz2<br>tar –xZvf file.tar.Z   解压tar.Z<br>unrar e file.rar 解压rar<br>unzip file.zip 解压zip</p>
 <p>tar –cvf jpg.tar *.jpg  将目录里所有jpg文件打包成tar.jpg<br>tar –czf jpg.tar.gz *.jpg   将目录里所有jpg文件打包成jpg.tar后，并且将其用gzip压缩，生成一个gzip压缩过的包，命名为jpg.tar.gz<br>tar –cjf jpg.tar.bz2 *.jpg 将目录里所有jpg文件打包成jpg.tar后，并且将其用bzip2压缩，生成一个bzip2压缩过的包，命名为jpg.tar.bz2<br>tar –cZf jpg.tar.Z *.jpg   将目录里所有jpg文件打包成jpg.tar后，并且将其用compress压缩，生成一个umcompress压缩过的包，命名为jpg.tar.Z<br>rar a jpg.rar *.jpg rar格式的压缩，需要先下载rar for linux<br>zip jpg.zip *.jpg   zip格式的压缩，需要先下载zip for linux</p>
+<h3 id="xargs（批量处理流文件）"><a href="#xargs（批量处理流文件）" class="headerlink" title="xargs（批量处理流文件）"></a>xargs（批量处理流文件）</h3><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs excel"><span class="hljs-built_in">find</span> ./ -name <span class="hljs-string">&quot;*.rst&quot;</span> | xargs  -I %  sh -c &#x27;pandoc % -f rst -<span class="hljs-built_in">t</span> markdown -o %.md<br><br></code></pre></td></tr></table></figure>
+
+<p>-I % 代表将前面的文件名流用%来代替</p>
 
                 
               </div>

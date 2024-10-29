@@ -1,0 +1,867 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <link rel="icon" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="实验：使用ESP定律脱壳实验一、实验目的： 通过实验理解ESP定律基本原理及其应用  掌握PE文件分析常用工具的使用  掌握UPX壳手动脱壳方法  掌握x32dbg调试工具硬件断点的使用方法   二、实验环境：操作系统：Windows 7&#x2F;8&#x2F;10 实验对象：DiskProbe.exe 实验软件：ExeinfoPE，x32dbg 三、实验内容：1. 实验背景​        软">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用ESP定律脱壳实验">
+<meta property="og:url" content="http://example.com/2024/10/24/111/%E4%BD%BF%E7%94%A8ESP%E5%AE%9A%E5%BE%8B%E8%84%B1%E5%A3%B3%E5%AE%9E%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Re1ca1gの小破站">
+<meta property="og:description" content="实验：使用ESP定律脱壳实验一、实验目的： 通过实验理解ESP定律基本原理及其应用  掌握PE文件分析常用工具的使用  掌握UPX壳手动脱壳方法  掌握x32dbg调试工具硬件断点的使用方法   二、实验环境：操作系统：Windows 7&#x2F;8&#x2F;10 实验对象：DiskProbe.exe 实验软件：ExeinfoPE，x32dbg 三、实验内容：1. 实验背景​        软">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/4cc1fc8f-e841-4999-9dd9-4d6b3de2e861">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/edf7b1db-bbe3-445f-beaa-3229e28880c9">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/80e6587a-af48-4cae-8c2a-8ea7d8883ff5">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/8ee4a139-9d6f-414e-8ec8-d0102711fe89">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/4d6df311-e249-4ef8-8730-91a7abc05449">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/d256ad2f-bf6e-4b48-bf7b-2d0a9fe6d7a5">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/f2283da2-3ceb-457a-998a-94eb037520fd">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/49d86054-fe6a-4bd9-b8a0-1b9b4327ec58">
+<meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
+<meta property="article:modified_time" content="2024-10-29T08:54:40.548Z">
+<meta property="article:author" content="Re1ca1g">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d">
+  
+  
+  
+  <title>使用ESP定律脱壳实验 - Re1ca1gの小破站</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>re1ca1g·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://www.98qy.com/sjbz/api.php') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.6)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="使用ESP定律脱壳实验"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-24 14:23" pubdate>
+          2024年10月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          34 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">使用ESP定律脱壳实验</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="实验：使用ESP定律脱壳实验"><a href="#实验：使用ESP定律脱壳实验" class="headerlink" title="实验：使用ESP定律脱壳实验"></a>实验：使用ESP定律脱壳实验</h1><h2 id="一、实验目的："><a href="#一、实验目的：" class="headerlink" title="一、实验目的："></a>一、实验目的：</h2><ol>
+<li><p>通过实验理解ESP定律基本原理及其应用</p>
+</li>
+<li><p>掌握PE文件分析常用工具的使用</p>
+</li>
+<li><p>掌握UPX壳手动脱壳方法</p>
+</li>
+<li><p>掌握x32dbg调试工具硬件断点的使用方法</p>
+</li>
+</ol>
+<h2 id="二、实验环境："><a href="#二、实验环境：" class="headerlink" title="二、实验环境："></a>二、实验环境：</h2><p>操作系统：Windows 7&#x2F;8&#x2F;10</p>
+<p>实验对象：<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/DiskProbe.exe">DiskProbe.exe</a></p>
+<p>实验软件：<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/ExeinfoPE%20v0.0.6.1%20II.zip">ExeinfoPE</a>，<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/x96dbg.zip">x32dbg</a></p>
+<h2 id="三、实验内容："><a href="#三、实验内容：" class="headerlink" title="三、实验内容："></a>三、实验内容：</h2><h3 id="1-实验背景"><a href="#1-实验背景" class="headerlink" title="1. 实验背景"></a>1. 实验背景</h3><p>​        软件逆向工程和恶意代码分析过程中，经常分析到经过<strong>加壳</strong>的PE文件，因此必须首先进行<strong>脱壳</strong>操作。加壳和脱壳是相反的两种操作，加壳是对PE文件数据进行变换操作，从而实现对文件数据的压缩或加密操作；而脱壳则是加壳的逆向操作，就是将加壳的程序数据还原到加壳之前的原始数据状态。为了能够让加了壳的程序正常运行（操作系统的PE加载机制并不能识别加了壳以后的数据），加壳后的程序在运行时会先进行自身脱壳，然后再执行原始的程序。这个特性也是下文中采用手动的方式脱壳的基本思路来源。</p>
+<p>​        加壳操作一般使用专用的加壳程序实现对目标程序的加壳，而脱壳相对比较复杂。在实际工作中，先使用工具软件查出壳的类型，比如ExeinfoPE工具，然后再使用对应的脱壳程序进行自动化脱壳，此类方法的关键是准确判断加壳类型并找到对应的脱壳程序，操作相对简单，这里不进行介绍。</p>
+<p>​        如果遇到比较特殊的某种“壳”，或无法使用工具自动脱壳的时候，可以采用人工手动脱壳方法，本次实验就是介绍了一种手动脱壳技术，基于ESP定律的脱壳。实验主要使用动态调试工具，如ollydbg或x96dbg（软件包含x64dbg和x32dbg，分别针对64位和32位的程序）等工具，通过动态分析，获得程序<strong>真实的入口代码地址OEP（Original Entry Point）</strong>，最后使用相关工具将内存中的程序保存到文件中，实现最终的脱壳操作。</p>
+<blockquote>
+<p>​        加壳后的软件在运行时，必须先将加了可的代码指令“解密&#x2F;释放”到内存中，这时只要找到指令的起点，即OEP地址，那么就可以使用一些工具软件将内存中已经“解密”的程序转存（dump）出来，保存在本地文件，实现了脱壳。转存过程中涉及到PE格式修复，地址重定位修改等一系列操作，通常都是使用工具软件自动完成。</p>
+</blockquote>
+<h3 id="2-实验内容"><a href="#2-实验内容" class="headerlink" title="2. 实验内容"></a>2. 实验内容</h3><p>​        实验目标程序一款磁盘文件系统检测和数据恢复软件。软件作者在软件的编写过程中对程序执行的时间做了限制，如果系统时间超过了设定的期限，程序将显示提示信息并退出程序，如图 1所示。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d" srcset="/img/loading.gif" lazyload alt="程序执行时间限制"></p>
+<center>图 1 程序执行时间限制</center>
+
+<p>​        为了实现破解该软件的升级提示对话框，首先要对目标进行脱壳。本次实验就是通过学习使用动态调试工具，利用ESP栈平衡定律实现对加壳的软件进行脱壳操作,最终得到脱壳后的DiskProbe.exe。</p>
+<h2 id="四、实验步骤："><a href="#四、实验步骤：" class="headerlink" title="四、实验步骤："></a>四、实验步骤：</h2><h3 id="1-PE文件基本信息分析。"><a href="#1-PE文件基本信息分析。" class="headerlink" title="1. PE文件基本信息分析。"></a>1. PE文件基本信息分析。</h3><p><img src="http://wxjb.jspi.cn/g/query/4cc1fc8f-e841-4999-9dd9-4d6b3de2e861" srcset="/img/loading.gif" lazyload alt="ExeinfoPE工具"></p>
+<center>图 2 使用ExeinfoPE工具检查“壳”的类型</center> 
+
+<p>​        为了实现对PE文件的逆向分析和破解，通常首先需要获得PE文件的一些基本信息，如图 2所示的界面中，对DiskProbe.exe分析，发现其文件经过了UPX软件的压缩加壳，软件初步分析给出加壳软件版本是0.50-0.72。单击旁边<strong>“Scan&#x2F;t”</strong>按钮，分析结果为UPX 0.70。</p>
+<blockquote>
+<p>​        图2中可以看到diskprobe.exe程序OEP是0007c037H，代码入口点所在的节是UPX2等信息。这里UPX实际上是使用UPX加壳软件加壳后的软件的一个节的名称，具有很明显的特征性。这里查看到的OEP是加壳以后的程序运行的程序开始点，而不是程序真实的OEP，脱壳过程就是要找的这个OEP。</p>
+</blockquote>
+<h3 id="2-手动脱壳基本原理"><a href="#2-手动脱壳基本原理" class="headerlink" title="2. 手动脱壳基本原理"></a>2. 手动脱壳基本原理</h3><p>​        实践工作中会使用脱壳软件实现自动化脱壳,快捷方便效率高，如本题目可以使用LinxerUnpacker实现全自动脱壳。但本次实验目标是通过使用手动脱壳加深对脱壳的一般过程的理解。</p>
+<p>​        手动脱壳通常的关键是找到软件OEP（Original Entry Point）也就是加壳的软件中真正的软件执行的代码起点，又称“原始代码入口点”。按照查找OEP的方法可以将手动脱壳分为“手动单步跟踪法”、“ESP定律方式”和“内存二次断点法”。</p>
+<p>​        本文重点采用ESP定律法进行脱壳操作。</p>
+<h4 id="（1）手动单步跟踪法"><a href="#（1）手动单步跟踪法" class="headerlink" title="（1）手动单步跟踪法"></a>（1）手动单步跟踪法</h4><p>​        手动单步追踪法是使用调试器的单步调试，如使用调试器的动态调试功能，如快捷键F8（单步执行）和F4（执行到指定位置）。通过对反编译代码的分析和执行，查找OEP。这种方式的缺点是效率低下，对分析人员的综合能力要求较高。</p>
+<h4 id="（2）内存二次断点法"><a href="#（2）内存二次断点法" class="headerlink" title="（2）内存二次断点法"></a>（2）内存二次断点法</h4><p>​        内存二次断点法是利用经过加壳的程序在执行的时候需要分别解压缩不同区段(Segment)中内容，按照解压缩的先后顺序的特点，通过分别在资源段和代码段添加断点的方式，通过2次断点，就能确定OEP的大概位置。</p>
+<ul>
+<li>首先在资源段上下一个断点，那么在解压缩代码的时候，程序依旧可以正常的运行，因为是先解压缩代码再解压缩资源的。当开始解压缩资源的时候，程序就会中断下来，因为已经在资源段上下了一个断点，此时中断的时候，代码已经全部解压，资源段正在准备解压…</li>
+<li>然后在代码段上下一个断点，再继续运行，此时程序开始解压缩资源和其他的一些内容，等到全部解压缩完成以后，解压缩程序就需要跳转到OEP上运行，即跳转到代码段上运行，此时中断下来。</li>
+<li>最后手动F8往下跟几步，就到达跨段跳转到OEP的指令位置。</li>
+</ul>
+<h4 id="（3）ESP定律法"><a href="#（3）ESP定律法" class="headerlink" title="（3）ESP定律法"></a>（3）ESP定律法</h4><p>​        ESP定律方式相对以上的方式更方便高效，因此本次实验将采用这个方法。</p>
+<ul>
+<li>什么是ESP定律？</li>
+</ul>
+<p>​        每一个函数的调用在堆栈里都必须开辟一个栈帧，而这个栈帧是建立在原有的栈基础上的，所以当代码执行进入函数的时候，开辟新的栈帧前必须将原来的栈信息进行保存。</p>
+<img src="http://wxjb.jspi.cn/g/query/edf7b1db-bbe3-445f-beaa-3229e28880c9" srcset="/img/loading.gif" lazyload alt="The-layout-of-function-stack-frames" style="zoom:67%;" />
+
+<center>图3 栈帧在内存中布局</center>
+
+<p>​        如图3所示的栈帧布局中，新开辟的栈帧是叠加在原来函数栈帧”上“面的。为了后面的描述方便，“上”面的函数栈帧这里成为子函数栈帧或被调用函数栈帧，“下面”的栈帧称为父函数栈帧或调用函数栈帧。实际以上的描述也表明了以上2个栈帧以及函数之间调用关系。</p>
+<blockquote>
+<p>注意：ESP寄存器值指向当前栈的栈顶，EBP寄存器指向当前栈的栈底。一般使用[ESP+4]表示ESP向栈底方向移动4字节的栈中的数值。图3中，_stack frame of calling function:源栈帧；stack of called function:被调用函数开辟的新栈帧_。 </p>
+</blockquote>
+<p>​        被调用函数的栈帧在“上面”，调用函数栈帧在“下面”。当代码执行从调用函数进入被调用函数时，在被调用函数（called function）中需要执行一条PUSH EBP指令，将调用函数（calling function）的EBP保存在栈中，如图3中EBP是被调用栈帧的栈底，并指向了调用栈的栈底。请同学们思考为什么只需要将EBP入栈保存，而不需要保存ESP？</p>
+<p>​        在函数退出前，函数的栈需要还原到函数调用之前的状态，这通常会执行对栈的逆向操作。也就是当前函数返回前，必须使用一系列的指令让ESP指向图3中EBP位置，然后会执行一个POP EBP指令，这样就能还原EBP和ESP的数值，然后在执行函数最后的ret返回指令，就能使用栈低的返回地址完全退出子函数。</p>
+<p>​        在以上函数进入以及函数退出的过程中，分别对EBP执行了PUSH和POP操作。而这两个操作的时候，ESP寄存器的值时相等的。也就是说函数执行前后的栈是“平衡”的。更通俗的说就是函数执行前ESP会指向一个值，函数执行完毕后ESP也应该重新指向这个数值。</p>
+<p>​        而经过加壳的程序在运行时，类似是先调用了脱壳函数，然后再执行脱壳后的代码。所以只要重点关注ESP的两次访问，就能确定脱壳函数的调用，从而找到脱壳后的代码。</p>
+<ul>
+<li>如何使用ESP定律？</li>
+</ul>
+<p>​        由ESP定律的原理可得到函数执行完成后，ESP指针会进行还原为先前的状态（第二次指向栈中某个位置）。因此可以对ESP寄存器下一个硬件断点，使得ESP还原为调用函数之前状态的时候触发中断，代码中段的位置就是“壳”的解压缩的函数执行完毕的位置，这样就能方便的得到已经”脱壳“的程序代码在内存中的位置。</p>
+<blockquote>
+<p>​        假设将一个壳的解压缩的方式当作一个函数的调用。如经过UPX加壳的程序在运行的时候，使用调试器能较为方便的找到UPX解压缩的函数，此时它会保存EBP，然后移动ESP，给函数留出足够的栈帧，当所有的解压缩完成后，它需要把所有的栈帧再进行还原，使得ESP恢复为调用函数之前的状态，此时会触发以上所述的硬件断点，而代码中断的位置正好为解压缩函数执行结束位置，而解压缩完成后，就会进行跳转到OEP，此时我们只需要F8（单步执行）往下跟几步，就能很快的找到OEP了！</p>
+</blockquote>
+<ul>
+<li>为什么需要使用ESP定律？</li>
+</ul>
+<p>​        经过加壳的程序，在运行时首先会调用自身的”解密程序“实现脱壳操作，然后在执行经过”解密“的原始程序的代码。虽然能在分析代码中找到调用解密程序call指令，但是却不太容易找到解密后执行指令的位置，这时候利用栈帧的平衡原则，使用ESP定律就能方便找到解密后的指令，继续就可以找到OEP，就能实现手动的脱壳。</p>
+<h3 id="3-ESP定律脱壳实验步骤"><a href="#3-ESP定律脱壳实验步骤" class="headerlink" title="3. ESP定律脱壳实验步骤"></a>3. ESP定律脱壳实验步骤</h3><h4 id="（1）加载分析程序"><a href="#（1）加载分析程序" class="headerlink" title="（1）加载分析程序"></a>（1）加载分析程序</h4><p>​        打开x32dbg软件，将需要分析的程序diskprobe.exe拖入软件主窗口，此时会自动加载并进入调试分析状态。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/80e6587a-af48-4cae-8c2a-8ea7d8883ff5" srcset="/img/loading.gif" lazyload alt="脱壳代码入口"></p>
+<center>图 4 进入壳函数</center>
+
+<p>​        x32dbg程序打开后默认显示的代码是系统库函数调用的代码，并不是分析的diskprobe中代码，按<code>alt+F9</code>快捷键可以快速执行到”用户代码“，也就diskprobe程序的代码。程序会停在如图4所示的代码位置，经过分析前两行的代码，推测 call diskprobe.47c04d 这段代码是进入”壳“的自释放代码入口。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/8ee4a139-9d6f-414e-8ec8-d0102711fe89" srcset="/img/loading.gif" lazyload alt="调用前ESP"></p>
+<center>图 5 查看ESP值</center>
+
+<p>​        <strong>按<code>F7</code>快捷键</strong>执行一条指令，使EIP寄存器指向  call diskprobe.47c04d 这条指令，如图5。按照ESP定律，当call指令执行完毕后，必定会再次访问当前ESP所指向的栈地址，此时可以记录下栈顶也就是ESP的地址为0019FF54。</p>
+<h4 id="（2）添加断点"><a href="#（2）添加断点" class="headerlink" title="（2）添加断点"></a>（2）添加断点</h4><p>​        对当前ESP地址加一个<strong>访问硬件断点</strong>，程序执行完对”壳“的解密后，必然会触发这个中断。x32dbg中增加硬件断点，可以直接在栈地址上单击右键，选择硬件访问断点。也可以在命令行执行以下命令添加硬件断点，在程序界面下方的命令输入栏，输入以下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asm">bph esp, r, 4<br></code></pre></td></tr></table></figure>
+
+<p><img src="http://wxjb.jspi.cn/g/query/4d6df311-e249-4ef8-8730-91a7abc05449" srcset="/img/loading.gif" lazyload alt="中断ESP"></p>
+<center>图6 硬件中断到函数结束</center>
+
+<p>​        设置好硬件中断后，按F9继续执行代码到中断位置。注意该断点是访问断点，因此第一次中断是进入函数前，第二次中断是执行完函数，这里需要找到解密后的代码执行，所以需要查看第二次中断，如图 6所示。</p>
+<p>注意到中断中如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs asm">0047C1CF  | E9 96AFFCFF      | jmp diskprobe.44716A                    |<br>0047C1D4  | 55               | push ebp                                |<br>0047C1D5  | 50               | push eax                                |<br>0047C1D6  | 58               | pop eax                                 |<br></code></pre></td></tr></table></figure>
+
+<p>其中jmp diskprobe.447167A是一个跨节（section）的长跳转，说明前面的指令一直是在解密加了壳的指令代码，而解密后的指令代码放在了另外的节中，所以执行就必须一个远距离的跨节跳转指令衔接。</p>
+<blockquote>
+<p>​        这里看出是跨节跳转，主要是比较当前地址和目标地址是否在同一个代码节中。而具体的节的区域，可以通过查看节表获得。比较方便的是使用PE Viewer插件查看。</p>
+<p>本实验中，查询到 </p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>VirtualAddress</th>
+<th>VirtualSize</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UPX0</td>
+<td>00001000</td>
+<td>00079000</td>
+</tr>
+<tr>
+<td>UPX1</td>
+<td>0007a000</td>
+<td>00001266</td>
+</tr>
+<tr>
+<td>UPX2</td>
+<td>0007c000</td>
+<td>00031b56</td>
+</tr>
+</tbody></table>
+<p>​        将以上的Virtual Address加上基址0x400000,可以判定出 47C1CF在UPX2节，而跳转目标地址44716A在UPX0节中，所以是跨节长跳转。</p>
+</blockquote>
+<h4 id="（3）导出脱壳后程序"><a href="#（3）导出脱壳后程序" class="headerlink" title="（3）导出脱壳后程序"></a>（3）导出脱壳后程序</h4><p>​        图6程序中断在jmp指令，此时按快捷键<code>F7</code>可以单步执行到目标地址，代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs asm">0044716A  | 55               | push ebp                                |<br>0044716B  | 8BEC             | mov ebp,esp                             |<br>0044716D  | 6A FF            | push FFFFFFFF                           |<br>0044716F  | 68 48DE4400      | push diskprobe.44DE48                   |<br>00447174  | 68 D4724400      | push &lt;JMP.&amp;_except_handler3&gt;            |<br>00447179  | 64:A1 00000000   | mov eax,dword ptr fs:[0]                |<br></code></pre></td></tr></table></figure>
+
+<p>​        此时判断0044716A是OEP，只需将内存中从OEP开始的内存中数据“DUMP”到文件中就可以实现脱壳。但实际dump时，必须按照PE文件的格式要求修复其中的各项数据，纯手工操作需要修改很多参数，复杂低效率，通常这些操作会使用一些工具。在x32dbg中的可以使用scally插件自动完成。</p>
+<ul>
+<li>Dump程序文件</li>
+</ul>
+<p><img src="http://wxjb.jspi.cn/g/query/d256ad2f-bf6e-4b48-bf7b-2d0a9fe6d7a5" srcset="/img/loading.gif" lazyload alt="scally插件"></p>
+<center>图7 启动scally插件</center>
+
+<p>​        在x32dbg的插件菜单中选择scally插件启动，如图 7所示。在OEP中填入上一节中找到的地址。依次单击IAT Autosearch和 Get Imports按钮。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/f2283da2-3ceb-457a-998a-94eb037520fd" srcset="/img/loading.gif" lazyload alt="scally运行"></p>
+<center>图8 Scally插件</center>
+
+<p>​        如果一切正常，插接显示如图8。最后单击Dump按钮将数据保存。</p>
+<ul>
+<li>导入并修复程序文件</li>
+</ul>
+<p>​        Dump出的文件需要进一步的修复才可以使用。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/49d86054-fe6a-4bd9-b8a0-1b9b4327ec58" srcset="/img/loading.gif" lazyload alt="scallyfix"></p>
+<center>图9 Fix Dump</center>
+
+<p>​        点击Fix Dump按钮，然后选中上一步Dump出的文件，会自动修复保存，如图9所示，修复的文件是“DiskProbe_dump_SCY.exe”，保存在桌面文件夹中。</p>
+<p>​        最后运行修复的文件，如果能正常打开说明手动脱壳成功。</p>
+<h2 id="五、实验结果："><a href="#五、实验结果：" class="headerlink" title="五、实验结果："></a>五、实验结果：</h2><ol>
+<li><p>x32dbg加载目标程序后，用户代码的第一条指令截图。</p>
+</li>
+<li><p>PUSHAD指令地址（          ）</p>
+</li>
+<li><p>第二次硬件中断的地址（            ）</p>
+</li>
+<li><p>OEP地址（         ）</p>
+</li>
+<li><p>全部脱壳后程序有（             ）个节（Section）</p>
+</li>
+</ol>
+<h2 id="六、思考题："><a href="#六、思考题：" class="headerlink" title="六、思考题："></a>六、思考题：</h2><ol>
+<li><p>如何在硬件断点后找到OEP地址？</p>
+</li>
+<li><p>请尝试查找专用工具对本实验中的程序进行自动化脱壳，给出实验软件截图。</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>使用ESP定律脱壳实验</div>
+      <div>http://example.com/2024/10/24/111/使用ESP定律脱壳实验/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/Winrar%E8%BD%AF%E4%BB%B6%E7%AE%80%E5%8D%95%E5%8A%9F%E8%83%BD%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B8%8E%E4%BF%AE%E6%94%B9%E3%80%90IDA%20Pro%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E7%BB%BC%E5%90%88%E3%80%91/" title="Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】">
+                        <span class="hidden-mobile">Winrar软件简单功能逆向分析与修改【IDA Pro动静态分析综合】</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2023</span></a>
+    <a href="https://reicalg2003.github.io" target="_blank" rel="nofollow noopener">
+     <span>Re1ca1g‘s Blog</span></a>    <br>
+</div>
+
+<div style="line-height: 100px;text-align: center;margin:auto;width: 500px;height: 50px">
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("02/09/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "❤ for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/DynamicLine.js"></script>
+<script src="/js/yinghua.js"></script>
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

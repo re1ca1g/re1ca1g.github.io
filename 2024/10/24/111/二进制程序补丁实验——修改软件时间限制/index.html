@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <link rel="icon" href="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/bg/user.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Re1ca1g">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1. 实验概述​        在“ESP定律脱壳实验“中，脱壳后的DiskProbe_dump_SCY.exe程序就可以进入下一步的分析工作，为了模拟恶意代码分析训练，本实验要求使用动态分析的方法，分析已经脱壳后的DiskProbe_dump_SCY.exe，找到其时间限制的代码，并进行代码修补，最终得到一个破解时间限制的DiskProbe软件。 1.1 实验软件 x32dbg  【http:&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二进制程序补丁实验——修改软件时间限制">
+<meta property="og:url" content="http://example.com/2024/10/24/111/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%A8%8B%E5%BA%8F%E8%A1%A5%E4%B8%81%E5%AE%9E%E9%AA%8C%E2%80%94%E2%80%94%E4%BF%AE%E6%94%B9%E8%BD%AF%E4%BB%B6%E6%97%B6%E9%97%B4%E9%99%90%E5%88%B6/index.html">
+<meta property="og:site_name" content="Re1ca1gの小破站">
+<meta property="og:description" content="1. 实验概述​        在“ESP定律脱壳实验“中，脱壳后的DiskProbe_dump_SCY.exe程序就可以进入下一步的分析工作，为了模拟恶意代码分析训练，本实验要求使用动态分析的方法，分析已经脱壳后的DiskProbe_dump_SCY.exe，找到其时间限制的代码，并进行代码修补，最终得到一个破解时间限制的DiskProbe软件。 1.1 实验软件 x32dbg  【http:&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/54c5db37-874d-4708-8f65-c82561fe669b">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/3705b203-05e8-4b67-a2ae-ba3d8b210191">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/99ae7b55-f481-48bb-9ae7-c8b59c4bbe1b">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/a80ba0b7-5370-4f9d-b61e-95a0dd9b4e77">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/c584c92c-d7ce-4dfa-b48e-144d55374699">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/7fc59cbb-996d-4a82-b169-11ec101c8eca">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/daf8297e-b4e5-4c04-a560-4d4d74bec414">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/3784d175-09a7-4b95-90c7-d6e05cba822d">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/9de5f6cc-0fee-4e4a-bbc1-7b1fca7dfc4c">
+<meta property="og:image" content="http://wxjb.jspi.cn/g/query/609f6962-d462-4bc1-9607-1e3920601371">
+<meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
+<meta property="article:modified_time" content="2024-10-29T08:54:25.394Z">
+<meta property="article:author" content="Re1ca1g">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d">
+  
+  
+  
+  <title>二进制程序补丁实验——修改软件时间限制 - Re1ca1gの小破站</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>re1ca1g·blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://www.98qy.com/sjbz/api.php') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.6)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="二进制程序补丁实验——修改软件时间限制"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-24 14:23" pubdate>
+          2024年10月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">二进制程序补丁实验——修改软件时间限制</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1-实验概述"><a href="#1-实验概述" class="headerlink" title="1. 实验概述"></a>1. 实验概述</h2><p>​        在“ESP定律脱壳实验“中，脱壳后的DiskProbe_dump_SCY.exe程序就可以进入下一步的分析工作，为了模拟恶意代码分析训练，本实验要求使用动态分析的方法，分析已经脱壳后的DiskProbe_dump_SCY.exe，找到其时间限制的代码，并进行代码修补，最终得到一个破解时间限制的DiskProbe软件。</p>
+<h3 id="1-1-实验软件"><a href="#1-1-实验软件" class="headerlink" title="1.1 实验软件"></a>1.1 实验软件</h3><ul>
+<li>x32dbg  【<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/x96dbg.zip%E3%80%91">http://172.17.200.225/gyf/Malware/x96dbg.zip】</a></li>
+<li>Ida Pro （软件在教学电脑上已经安装）【<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/IDAPro.zip%E3%80%91">http://172.17.200.225/gyf/Malware/IDAPro.zip】</a></li>
+<li>DiskProbe.exe 【<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/DiskProbe.exe%E3%80%91">http://172.17.200.225/gyf/Malware/DiskProbe.exe】</a></li>
+</ul>
+<h3 id="1-2-实验目标"><a href="#1-2-实验目标" class="headerlink" title="1.2  实验目标"></a>1.2  实验目标</h3><ul>
+<li>掌握动态分析工具x32dbg的使用</li>
+<li>掌握静态分析工具ida pro的使用</li>
+<li>了解Windows应用程序文件逆向操作流程</li>
+</ul>
+<h2 id="2-实验原理及方法"><a href="#2-实验原理及方法" class="headerlink" title="2. 实验原理及方法"></a>2. 实验原理及方法</h2><p><img src="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d" srcset="/img/loading.gif" lazyload alt="程序执行时间限制"></p>
+<center>图1 DiskProbe提示框</center>
+
+<p><strong>实验思路：</strong></p>
+<p>​        DiskPro软件在启动后会显示更新提示对话框，如图1，表明程序在启动后会自动版本检测。如果能够在代码中定位检测代码的位置，就可以实现对这个时间限制的修改。</p>
+<p>​         版本的检测有多种方式，比较简单的方式是检测发布时间和用户当前电脑时间的差值，当时间差超过特定值就认为版本过期。这是早期的一些软件常用的检测方法，因为其实现简单，现在还有很多软件采用这种方式。这里首先假设是采用的这种时间检测法，然后展开对应的分析和破解流程。（实际分析后发现diskprobe确实使用了简单的时间检测）。</p>
+<p>​        因为时间检测法必须要获得当前系统的时间，所以必定会调用读取当前系统时间的API函数，通过查阅Window API，常见的获取系统时间的API是GetSystemTime函数。以下是函数原型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetSystemTime</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">  [out] LPSYSTEMTIME lpSystemTime</span></span><br><span class="hljs-params"><span class="hljs-function">)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>​         按照这个假设，使用动态调试的方式，在调试器添加API函数断点，然后启动调试，调试代码在访问的API函数的地址时，断点会被触发，此时就能找到函数被调用的代码位置。</p>
+<p><strong>注意：</strong></p>
+<p>​        实验软件提供的diskpro.exe是未脱壳版本软件，请按照”使用ESP定律脱壳实验“中的方法首先将软件脱壳，得到脱壳后的软件，DiskProbe_dump_SCY.exe，再进行以下实验。</p>
+<p>​        以下分别使用x32dbg和Ida Pro两款软件进行实验。</p>
+<h3 id="2-1-使用x32dbg动态分析实验"><a href="#2-1-使用x32dbg动态分析实验" class="headerlink" title="2.1 使用x32dbg动态分析实验"></a>2.1 使用x32dbg动态分析实验</h3><h4 id="2-1-1-添加断点"><a href="#2-1-1-添加断点" class="headerlink" title="2.1.1 添加断点"></a>2.1.1 添加断点</h4><ul>
+<li>使用x32dbg打开脱壳后的软件 DiskProbe_dump_SCY.exe</li>
+</ul>
+<p><img src="http://wxjb.jspi.cn/g/query/54c5db37-874d-4708-8f65-c82561fe669b" srcset="/img/loading.gif" lazyload alt="GetSystemTime"></p>
+<center>图2 查找GetSystemTime API</center>
+
+<ul>
+<li><p>在x32dbg中切换到”符号“标签页面，并选择DiskProbe_dump_SCY.exe模块，然后在右侧搜索中输入<code>GetSystemTime</code>。如图2中，输入”Get“字符后就已经筛出所需的API函数了，不一定需要输入全部的函数名称。</p>
+</li>
+<li><p>单击右键GetSystemTime，然后单击”切换断点“菜单项添加断点（选择GetSystemTime项后，使用<code>F2</code>快捷键也可以添加断点）。添加断点后，可以点击”断点“标签页查看是否添加成功。</p>
+<blockquote>
+<p>以上查找GetSystemTime的过程可以直接使用命令而不需要进行前面两部的操作。对于熟练使用了x32dbg，推荐使用命令添加断点。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在调试器底端的命令输入框输入命令添加访问GetSystemTime函数的断点</span><br>bp GetSystemTime<br></code></pre></td></tr></table></figure>
+
+
+</blockquote>
+</li>
+<li><p>断点添加完毕后，可以打开“断点”子页面查看是否正确添加断点，另外开启调试器后会自动添加一些断点，可以把这些断点删除。</p>
+</li>
+</ul>
+<h4 id="2-1-2-分析断点代码"><a href="#2-1-2-分析断点代码" class="headerlink" title="2.1.2 分析断点代码"></a>2.1.2 分析断点代码</h4><ul>
+<li>在上一小节中正确添加断点后，可以使用<code>F9</code>快捷键启动调试。</li>
+</ul>
+<p><img src="http://wxjb.jspi.cn/g/query/3705b203-05e8-4b67-a2ae-ba3d8b210191" srcset="/img/loading.gif" lazyload alt="GetSystemTime BreakPoint Stop"></p>
+<center>图3 GetSystemTime断点</center>
+
+<p>​        在图3中EIP指向地址为75E72300，为系统动态链接库的载入地址，此时调试器中断在GetSystemTime函数内部，但实验需要分析得到的是调用GetSystemTime函数的<strong>用户代码</strong>的位置，也就是调用GetSystemTime这个函数的代码段。找到位置可以有以下两种方法，同学们可以都尝试一下。</p>
+<p>​        （1）利用函数调用栈帧的内存结构布局，可以查看当前栈顶数据，这个数据地址就是调用GetSystemTime函数后面下一条指令地址，就是实验所需要定位的用户代码段。通过<strong>右键单击栈顶地址</strong>，在弹出的菜单中选择“在反汇编中转到指定DWORD”，如图4，就能进入GetSystemTime函数被调用后下一条指令的地址。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/99ae7b55-f481-48bb-9ae7-c8b59c4bbe1b" srcset="/img/loading.gif" lazyload alt="GetSystemTime调用地址"></p>
+<center>图4 跳转到函数调用位置</center>
+
+<p>​        （2）利用调试器的<em>运行到用户代码</em>功能，执行代码到GetSystemTime函数后的指令位置。事实上调试器中断的位置是GetSystemTime函数开头代码，但GetSystemTime是系统函数代码，属于系统地址空间，这时使用快捷键<code>Alt+F9</code>（<em>运行到用户代码</em>功能）就能快速执行GetSystemTime函数代码，暂停在用户代码位置，即GetSystemTime调用后的位置。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/a80ba0b7-5370-4f9d-b61e-95a0dd9b4e77" srcset="/img/loading.gif" lazyload alt="GetSystemTime调用下一条指令"></p>
+<center>图5 GetSystemTime调用代码位置</center>
+
+<p>​        使用以上两种方法都能正确的导航到GetSystemTime被调用的位置下一条指令，滚动上翻几行指令，就能看到如图5所示的完整调用代码。</p>
+<ul>
+<li>代码功能分析</li>
+</ul>
+<p>​        找到调用函数位置后，需要阅读调用后的相关代码，按照推测思路，查找对时间比较的代码。</p>
+<p>​        在汇编指令代码中，常见的比较都会使用<code>cmp</code>指令进行比较操作，在比较操作后，会使用各类<strong>条件跳转指令</strong>进行分支操作，常见的<strong>条件跳转指令</strong>有<code>jg,jle,jb,je,jz,……</code></p>
+<img src="http://wxjb.jspi.cn/g/query/c584c92c-d7ce-4dfa-b48e-144d55374699" srcset="/img/loading.gif" lazyload alt="比较时间用户代码" style="zoom: 67%;" />
+
+<center>图6 时间比较指令</center>
+
+<p>​        查看在GetSystemTime函数调用后代码段，如图6所示。其中有一条指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs asm">00435471  | 6A 00       | push 0                              |<br>00435473  | FF15 A0B644 | call dword ptr ds:[&lt;&amp;exit&gt;]         |  &lt;= 退出程序<br></code></pre></td></tr></table></figure>
+
+<p>​        这与软件在运行后，弹出升级对话框后，点击确定就退出程序的行为一致。所以主要分析GetSystemTime和这条指令之间的代码。</p>
+<p>​        地址0x00435431是在获取到当前系统时间后的一次比较，然后下一条指令按照比较结果，可以跳转到地址0x00435463，而这个地址向下执行就到达了退出程序的代码段，因此这里可以将0x00435433地址处的比较跳转进行逻辑上的相反，那么程序就不会退出了。按照这个思路可以做如下操作：</p>
+<p>具体步骤：</p>
+<p>（1）单击图6中地址为 00435433指令，使其被选中状态。</p>
+<p>（2）单击空格键，在汇编窗口中，将原有的<code>jg</code>指令替换成<code>jle</code>，其他不变。（这里也可以用NOP填充代码进行修改）</p>
+<p>（3）单击快捷键<code>F9</code>,继续调试运行程序代码。</p>
+<p>完成以上3步操作后，发现diskprobe程序主界面已经正常显示，且没有了原来的时间对话框，修改代码有效。</p>
+<blockquote>
+<p>以上指令修改中，<code>jg</code>和<code>jle</code>分别是“大于跳转”和“小于等于跳转”两种相反逻辑的跳转指令，因此当修改指令后，程序不再弹出时间对话框，软件正常运行全部功能。</p>
+<p>以上的步骤是经过整理优化的分析过程，实际的分析过程中需要多次的尝试，除了阅读代码，还需要经历大量的失败才能找到最终的结果，所以实际工作不会如实验这样顺利完成。</p>
+</blockquote>
+<h4 id="2-1-3-补丁文件"><a href="#2-1-3-补丁文件" class="headerlink" title="2.1.3 补丁文件"></a>2.1.3 补丁文件</h4><p>当以上动态调试成功后，可以使用x32dbg的补丁功能，将内存中已经修改好的程序保存在磁盘上。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/7fc59cbb-996d-4a82-b169-11ec101c8eca" srcset="/img/loading.gif" lazyload alt="补丁时间条状逻辑"></p>
+<center>图7 补丁修改文件</center>
+
+<ul>
+<li>单击工具栏上补丁按钮或使用快捷键<code>Ctrl+P</code>,打开图7对话框。</li>
+<li>单击“修补文件”完成补丁修改。</li>
+<li>测试：打开修补后的可执行程序文件。</li>
+</ul>
+<h3 id="2-2-使用Ida-pro静态分析实验"><a href="#2-2-使用Ida-pro静态分析实验" class="headerlink" title="2.2 使用Ida pro静态分析实验"></a>2.2 使用Ida pro静态分析实验</h3><p>​        Ida Pro是典型的恶意代码静态分析工具，可以将各类二进制执行文件逆向出汇编指令，甚至是类C语言的伪代码，极大的提高了逆向分析效率，其中自动对函数的识别，标识变量的自动标注非常的方便。本节实验利用其静态分析功能，分析关键代码并使用补丁功能最终完成对目标软件的功能破解。</p>
+<h4 id="2-2-1-查找GetSystemTime函数调用代码"><a href="#2-2-1-查找GetSystemTime函数调用代码" class="headerlink" title="2.2.1 查找GetSystemTime函数调用代码"></a>2.2.1 查找GetSystemTime函数调用代码</h4><ul>
+<li>查找GetSystemTime函数调用内存地址</li>
+</ul>
+<p><img src="http://wxjb.jspi.cn/g/query/daf8297e-b4e5-4c04-a560-4d4d74bec414" srcset="/img/loading.gif" lazyload alt="idapro_import"></p>
+<center>图8 查找导入函数</center>
+
+<p>​        IDA Pro的Import子视图能够显示程序导入的外部函数，GetSystemTime是系统kernel32.dll中的函数，因此可以从这里查看到导入的内存地址。默认启动IDA Pro就会自动在主界面中显示Imports页面，如果没有显示，可以在菜单中打开，菜单路径为：<code>View-&gt;Open subviews-&gt;imports</code>。</p>
+<p>​        在Imports视图中会显示大量的导入函数，为了方便查找，可以输入查找函数的前几个符号筛选。查找到GetSystemTime函数的内存地址为0044B04C，记录这个地址。</p>
+<ul>
+<li><p>定位GetSystemTime函数内存</p>
+<p>在图8界面中切换显示反汇编视图，即IDA-View-A页面，然后单击快捷键<code>g</code>,然后输入记录的GetSystemTime内存地址，就能在在反汇编窗口显示GetSystemTime函数，如图9。</p>
+</li>
+</ul>
+<p><img src="http://wxjb.jspi.cn/g/query/3784d175-09a7-4b95-90c7-d6e05cba822d" srcset="/img/loading.gif" lazyload alt="GetSystemTimeAddress"></p>
+<center>图9 GetSystemTime函数</center>
+
+<ul>
+<li>定位GetSystemTime函数调用位置</li>
+</ul>
+<p>​        在图9界面中，在单击GetSystemTime，然后使用快捷键<code>x</code>,打开交叉引用列表，如图10，在这个列表中，列出了GetSystemTime被调用的位置，选择其中项目单击OK就能定位到对应的函数调用的位置。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/9de5f6cc-0fee-4e4a-bbc1-7b1fca7dfc4c" srcset="/img/loading.gif" lazyload alt="函数引用"></p>
+<center>图10 查找引用GetSystemTime的引用</center>
+
+<p>​        这里只有一处引用了GetSystemTime代码，打开后就能显示函数调用处的反汇编，如图11。</p>
+<p><img src="http://wxjb.jspi.cn/g/query/609f6962-d462-4bc1-9607-1e3920601371" srcset="/img/loading.gif" lazyload alt="调用GetSystemTime位置代码"></p>
+<center>图11 GetSystemTime调用的用户代码段</center>
+
+<h4 id="2-2-2-分析代码并制作补丁文件"><a href="#2-2-2-分析代码并制作补丁文件" class="headerlink" title="2.2.2 分析代码并制作补丁文件"></a>2.2.2 分析代码并制作补丁文件</h4><ul>
+<li>代码分析</li>
+</ul>
+<p>在图11中，能直观的看到GetSystemTime调用后有两条红色的虚线箭头，这表示有两处进行了条件指令跳转，特别是顺着第一个跳转，可以看到是调用AfxMessageBox函数。</p>
+<blockquote>
+<p>AfxMessageBox是使用Visual C++的MFC开发框架中的个显示对话框的函数，由于这是一个C++函数，所以在编译后函数名会有些变化，看上去会增加一些杂乱的符号。IDA Pro软件识别了这个函数，并且在右侧使用灰色文字注释了这个函数的调用原型。</p>
+</blockquote>
+<p>通过查看AfxMessageBox函数的调用原型，可以发现其调的第一个参数是char const*，也就是输入的是字符串，联系前面的代码，可以确定是call指令上一条的push代码中引用的参数，offset unk_46C6D0就是这个参数字符串。IDA Pro中，如果确定所数据是字符串数据，可以使用快捷键<code>a</code>对二进制的数据进行转换。</p>
+<p>（1）双击offset offset unk_46C6D0后，在窗口打开其对应的数据。</p>
+<p>（2）在显示的窗口中，单击<code>a</code>键，此时会自动对数据进行字串解析，转换后显示如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs asm">:0046C6CF                 align 10h<br>UPX0:0046C6D0 aBghuangSinaCom db &#x27;对不起，到期该升级了。(bghuang@sina.com)&#x27;,0<br>UPX0:0046C6D0                                         ; DATA XREF: UPX0:00435467↑o<br></code></pre></td></tr></table></figure>
+
+<p>（3）单击键盘左上角<code>ESC</code>键，退出，此时发现此时反汇编代码更新了标识和备注，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs asm">UPX0:00435463       push    0<br>UPX0:00435465       push    0<br>UPX0:00435467       push    offset aBghuangSinaCom ; &quot;对不起，到期该升级了。(bghuang@sina.com)&quot;<br>UPX0:0043546C       call    j_?AfxMessageBox@@YGHPBDII@Z ; AfxMessageBox(char const *,uint,uint)<br>UPX0:00435471       push    0<br>UPX0:00435473       call    exit<br></code></pre></td></tr></table></figure>
+
+<p>到此已经能确认这里代码就是程序中弹出对话框的代码位置，图1显示的对话框，就是以上代码的执行效果。再参考图11中的代码，可以确认代码中第一个条件跳转指令是去除对话框的关键。</p>
+<ul>
+<li>补丁制作</li>
+</ul>
+<p>（1）单击选择地址00435433，使用菜单 <code>Edit -&gt; Patch Program -&gt; Assemble... </code>打开反汇编窗口，将原来jg指令修改为jle指令。</p>
+<p>（2）使用菜单命令<code>Edit -&gt; Patch Program -&gt; Apply patches to input file... </code>，打开补丁文件对话框。单击确定，就能将原来的文件进行补丁。如果需要备份补丁前文件，可以勾选backup选项。</p>
+<h4 id="2-2-3-测试"><a href="#2-2-3-测试" class="headerlink" title="2.2.3 测试"></a>2.2.3 测试</h4><p>​        直接打开补丁后的文件，发现已经去除了对话框，说明修改有效。</p>
+<h2 id="3-实验结论"><a href="#3-实验结论" class="headerlink" title="3. 实验结论"></a>3. 实验结论</h2><ul>
+<li>使用动态分析软件的行文相对比较简单，因此可以通过对比参考软件运行效果，查看运行数据，以及使用断点来提高对关键代码的定位。</li>
+<li>使用静态分析需要更高的技术知识储备，需要非常熟悉分析的代码相关知识，例如对Windows MFC开发程序，就需要了解框架中相关的关键类以及函数，这里通过AfxMessageBox函数快速确定了弹出的对话框，辅助对代码功能的分析。</li>
+<li>无论动态分析工具还是静态分析工具，都提供了自动化较强的“汇编”和“补丁”工具，这样可以方便对原程序的修改。</li>
+</ul>
+<h2 id="4-习题"><a href="#4-习题" class="headerlink" title="4. 习题"></a>4. 习题</h2><ol>
+<li>对于本实验内容，除了修改为jle指令，还可以怎么修改？</li>
+<li>在使用ida pro静态分析一段数据时，如果怀疑是一段字符串，那么如何使其能正确显示其内容，而不是默认显示16进制编码？</li>
+<li>请查阅资料，说明本文提到的各类条件跳转指令的含义以及区别。</li>
+<li>每当进入一个函数，开辟新的栈帧，此时栈顶数据是什么？</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>二进制程序补丁实验——修改软件时间限制</div>
+      <div>http://example.com/2024/10/24/111/二进制程序补丁实验——修改软件时间限制/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Re1ca1g</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/24/111/%E5%8B%92%E7%B4%A2%E7%97%85%E6%AF%92%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/" title="勒索病毒程序分析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">勒索病毒程序分析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/21/penetration/%E4%BA%91%E9%95%9C/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2023</span></a>
+    <a href="https://reicalg2003.github.io" target="_blank" rel="nofollow noopener">
+     <span>Re1ca1g‘s Blog</span></a>    <br>
+</div>
+
+<div style="line-height: 100px;text-align: center;margin:auto;width: 500px;height: 50px">
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("02/09/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "❤ for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/DynamicLine.js"></script>
+<script src="/js/yinghua.js"></script>
+<script src="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
