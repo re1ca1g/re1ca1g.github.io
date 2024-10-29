@@ -23,22 +23,22 @@
 <meta property="og:site_name" content="Re1ca1gの小破站">
 <meta property="og:description" content="Winrar软件简单功能逆向分析与修改——IDA Pro动静态分析综合使用[toc] 1. 问题及相关分析​        WinRAR压缩软件是老牌经典解压缩软件，电脑装机必备软件之一，WinRAR支持目前绝大多数的压缩文件格式，Winrar包含强力压缩、分卷、加密和自解压模块，简单易用。WinRAR的优点在于压缩率大速度快，它能备份数据，减少E-mail 附件的大小，解压缩从 Internet">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/b225c33d-1725-4d45-933f-023fec141567">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/7d3ccf13-135f-4486-93c5-382fb512deaf">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/e78828d5-e1fb-42aa-adf6-dc920006a5e0">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/aac46640-9bd5-4bfd-bc61-d4387c68e858">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/37b03203-cd21-42e8-9415-7019c11fb138">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/93ea0b78-4e31-4771-96e6-08fe127cb2d7">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/f39fb862-9c06-4622-80ce-33d762a3a366">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/f1955265-bbe6-42b8-b7bd-485dcc8d4c68">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/094e3963-30bd-4873-84c6-328da4c47bcd">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/0ffc7af1-da03-4fdc-8a3e-42c9103fb8d4">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/a85e7f72-ee40-4053-91ab-4280ebdeffe7">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/9ynw3.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/0egs0.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/tg1kt.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/uf9k2.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/747pt.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/0xrwf.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/z71yc.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/wckc3.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/t09en.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/gpfke.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/iiaeu.png">
 <meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
-<meta property="article:modified_time" content="2024-10-29T08:54:54.863Z">
+<meta property="article:modified_time" content="2024-10-29T08:58:39.309Z">
 <meta property="article:author" content="Re1ca1g">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/b225c33d-1725-4d45-933f-023fec141567">
+<meta name="twitter:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/9ynw3.png">
   
   
   
@@ -332,7 +332,7 @@
 <p>​        但是在国内中文网站（<a href="https://link.zhihu.com/?target=http://www.winrar.com.cn/">http://www.winrar.com.cn/</a>）和英文官方网站（<a href="https://link.zhihu.com/?target=https://www.rarlab.com/">https://www.rarlab.com/</a>）下载的简体中文版WinRAR，即使有授权文件，你会发现授权后的WinRAR还是有广告弹窗出现，使用体验大打折扣。</p>
 <p>​        本文就以清除广告弹窗为目标，介绍IDA Pro的动静态分析中的使用。最后介绍一种简单的去除注册提示窗口的方法，可以让未注册版本具有更好的使用体验。</p>
 <h3 id="1-1-弹窗问题分析"><a href="#1-1-弹窗问题分析" class="headerlink" title="1.1 弹窗问题分析"></a>1.1 弹窗问题分析</h3><p>​        以上所述的Winrar软件启动的弹窗界面如图1所示，软件打开后，随着主程序界面的打开过程，会弹出一个窗口打开网络上某个网址中的广告信息显示。该过程如果电脑没有连接网络，将会造成Winrar打开过程卡顿，造成使用上的极大不便。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/b225c33d-1725-4d45-933f-023fec141567" srcset="/img/loading.gif" lazyload alt="广告弹窗界面"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/9ynw3.png" srcset="/img/loading.gif" lazyload></p>
 <center>图1 Winrar广告弹窗</center>
 
 <p>​         从窗口的表现行为，初步判断这是一个<strong>非模态</strong>的Windows窗口，也可能是一个非模态的对话框，也可能是一个标准的Windows程序窗口，关于这方面的判断，主要依赖读者对Windows编程知识的了解，这里不再深入探讨，可以参考<strong>《Windows程序设计第5版珍藏版》</strong>。该书是清华大学出版社发行的一本经典的Windows编程圣经，由美Charles Petzold编写的中译本。</p>
@@ -345,7 +345,7 @@
 </ul>
 <h3 id="1-2-获得关键弹窗参数"><a href="#1-2-获得关键弹窗参数" class="headerlink" title="1.2 获得关键弹窗参数"></a>1.2 获得关键弹窗参数</h3><p>​        Windows程序中的一个窗口包含很多参数，可以作为窗口的区别特征。常见包括<em>窗口句柄，窗口类，窗口标题文字，窗口样式</em>等。</p>
 <p>​        使用**Spy++**之类的窗口分析软件可以方便的获得这些参数。下图是WinRar弹窗的一些参数显示界面,使用Spy++软件查找窗口的功能，可以获得所需要的各项参数。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/7d3ccf13-135f-4486-93c5-382fb512deaf" srcset="/img/loading.gif" lazyload alt="弹窗参数"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/0egs0.png" srcset="/img/loading.gif" lazyload></p>
 <center>图2 Spy++软件查询窗口参数</center>
 
 <blockquote>
@@ -378,7 +378,7 @@
 <p>​        IDA Pro打开文件后，会扫描分析文件，并将文件中的数据全部抽取出来，然后使用其特定的数据格式存储，一般会有一组文件，扩展名是类似id0,id1,id2,nam,……等格式的文件。当IDA Pro退出关闭分析的文件后，这些文件会整体打包成一个文件扩展名为idb。idb文件是IDA Pro数据库文件，IDA Pro程序可以直接加载数据库文件进行逆向代码分析，而不需要源文件。这种设计思路一方面能够方便在对分析数据内容进行标记和修改，另一方面也避免了一些病毒程序被触发执行的风险。因此当第一次打开被分析的exe或dll文件后，程序会自动的分析，并将所有的数据信息记录到数据库文件。当关闭程序的时候，会提示用户保存该数据库文件。</p>
 </blockquote>
 <p>IDA Pro打开后的界面，主要包括反汇编代码窗口，函数清单窗口，工具栏等。如图3所示。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/e78828d5-e1fb-42aa-adf6-dc920006a5e0" srcset="/img/loading.gif" lazyload alt="IDA Pro界面"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/tg1kt.png" srcset="/img/loading.gif" lazyload></p>
 <center>图3 IDA Pro界面</center>
 
 <h4 id="2-1-1-动态调试步骤"><a href="#2-1-1-动态调试步骤" class="headerlink" title="2.1.1 动态调试步骤"></a>2.1.1 动态调试步骤</h4><ol>
@@ -419,14 +419,14 @@
 <p>​        以上定义中，LPCWSTR是使用了“宽字符”构成的字符串，简单说就是每个符号占用2个字节，而不是经典的C-Style字符串所定义的一个符号使用1字节表示。</p>
 </blockquote>
 <h4 id="2-2-1-查找API函数"><a href="#2-2-1-查找API函数" class="headerlink" title="2.2.1 查找API函数"></a>2.2.1 查找API函数</h4><p>​        通过分析可知创建弹窗的API有可能是CreateWindowExW，那么就可以设置这个API函数断点进行调试分析。使用IDA Pro可以有多种方式查找可以使用设置断点的API函数，这里介绍使用导入表查找可用的API函数。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/aac46640-9bd5-4bfd-bc61-d4387c68e858" srcset="/img/loading.gif" lazyload alt="导入表"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/uf9k2.png" srcset="/img/loading.gif" lazyload></p>
 <center>图4 Import 导入函数列表</center>
 
 <p>​        IDA Pro默认打开分析程序后，会在窗口中自动打开名为Imports的标签页，其中显示的是当前分析PE格式文件的导入函数，表格中包含了常用的“函数地址”，“API函数名”和“函数所在的库”等数据列。在使用过程中可以通过单击列标题实现对数据的排序，方便快速查看所需要的函数。</p>
 <blockquote>
 <p>​        使用技巧：可以在imports界面输入所需要查找函数的前几个字符，这样导入表会按照输入进行快速筛选。例如图4中输入了createwin，界面中就自动高亮度筛选出了CreateWindowExW函数。</p>
 </blockquote>
-<p><img src="http://wxjb.jspi.cn/g/query/37b03203-cd21-42e8-9415-7019c11fb138" srcset="/img/loading.gif" lazyload alt="API函数"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/747pt.png" srcset="/img/loading.gif" lazyload></p>
 <center>图5 CreateWindowExW函数</center>
 
 <p>​        查找到所需要的API函数后，可以双击该项目，就会进入到该函数的反汇编代码窗口，如图5所示。通过该界面获得函数的一些基本信息，如函数名，参数个数和类型，函数的返回值等。由于是库函数，这里是显示了函数的声明，并不显示具体的函数反汇编指令。</p>
@@ -434,7 +434,7 @@
 <blockquote>
 <p>使用技巧：在代码中选择适合的API函数后单击F2键，可以快速打开以上断点设置窗口。</p>
 </blockquote>
-<p><img src="http://wxjb.jspi.cn/g/query/93ea0b78-4e31-4771-96e6-08fe127cb2d7" srcset="/img/loading.gif" lazyload alt="断点设置窗口"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/0xrwf.png" srcset="/img/loading.gif" lazyload></p>
 <center>图6 断点设置对话框</center>
 
 <p>​        在打开的断点设置窗口中Location中已经自动填入了我们选择好的API函数的入口地址，不需要修改。单击OK按钮就能添加CreateWindowExW函数的访问断点。</p>
@@ -449,7 +449,7 @@
 </ol>
 <p>​        完成以上的断点设置后，可以单击F9启动调试。理想的状态是运行后，触发断点后程序停止在我们所需要的断点位置。但实际情况往往会有各类的警告信息，以及系统的各类异常等情况的中断，因此一般情况下可以单击弹出的对话框确定继续，或者再次按下F9继续调试。</p>
 <p>​        <em>注意：在每次按下F9调试前，请检测以下Stack view，查看一下栈中的数据是否和需要捕获的窗口的数据一致。本例子中，就是需要查看 参数16CB0000是否出现在栈中。</em></p>
-<p><img src="http://wxjb.jspi.cn/g/query/f39fb862-9c06-4622-80ce-33d762a3a366" srcset="/img/loading.gif" lazyload alt="捕获"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/z71yc.png" srcset="/img/loading.gif" lazyload></p>
 <center>图7 中断界面</center>
 
 <p>​        图7中右下角的Stack View中，蓝色条标记的是栈顶，即<code>ESP==0x0104BBD8</code>，而<code>ESP+0x10==0x0104BBE8</code>,对应的内存中数据为0x16CB0000，正是我们查找的窗口，此时程序中断在构建广告窗口的代码中CreateWindowExW函数的调用前。</p>
@@ -457,7 +457,7 @@
 <li>查看分析代码</li>
 </ol>
 <p>​        以上的断点暂停的位置是CreateWindowExW函数的入口，但此时并不需要分析该函数，需要分析的是调用该指令的代码块，即该函数执行完返回地址。按照函数调用的规范，此时栈顶中数据就是返回后执行代码地址，因此<strong>双击栈顶地址</strong>就能打开调用的代码。在上图界面中右下角子窗口中，双击Stack View界面中sub_1121410+3D2就进入如图6所示界面。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/f1955265-bbe6-42b8-b7bd-485dcc8d4c68" srcset="/img/loading.gif" lazyload alt="函数调用"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/wckc3.png" srcset="/img/loading.gif" lazyload></p>
 <center>图8 广告弹窗调用代码</center>
 
 <p>​        图8中反汇编代码显示的部分就是广告弹窗构造代码，代码使用<code>call ds:CreateWindowExW</code>指令调用CreateWindowExW函数，创建广告弹出窗口。</p>
@@ -472,7 +472,7 @@
 <li>修改汇编代码，绕过call指令调用。</li>
 </ol>
 <p>​        在IDA Pro汇编窗口中，找到入栈的第一个参数位置，即以上代码中的第6行代码（标记注释start位置）处。将光标点击这个地址，然后依次打开菜单项目<code>Edit-&gt;Patch Program-&gt;Assemble...</code>，在弹出的对话框中输入汇编指令，如图9。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/094e3963-30bd-4873-84c6-328da4c47bcd" srcset="/img/loading.gif" lazyload alt="汇编修改代码"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/t09en.png" srcset="/img/loading.gif" lazyload></p>
 <center>图9 汇编修改的指令</center>
 
 <p>​        以上代码中JMP跳转指令，011217E2是Call指令的下一条指令地址。经过以上的修改，程序将跳过广告窗口的构造指令，实现去除广告弹窗的目的。</p>
@@ -481,7 +481,7 @@
 </ol>
 <p>​        以上的修改仅仅是实现了IDA Pro数据库文件的修改，并没有对exe可执行文件进行修改，如果要将修改的结果写入可执行文件，就需要使用IDA Pro的补丁（patch）功能。</p>
 <p>​        操作菜单：<code>Edit-&gt;Patch Program-&gt;Apply patches to input file...</code></p>
-<p><img src="http://wxjb.jspi.cn/g/query/0ffc7af1-da03-4fdc-8a3e-42c9103fb8d4" srcset="/img/loading.gif" lazyload alt="补丁文件"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/gpfke.png" srcset="/img/loading.gif" lazyload></p>
 <center>图10 应用补丁</center>
 
 <p>​        单击Create backup选项后，单击OK即可补丁程序文件。</p>
@@ -493,7 +493,7 @@
 </blockquote>
 <p>​        因为Winrar软件没有使用特殊的加密和混淆手段，所以可以使用更方便的方法，使用IDA Pro的Hex-Rays Decompiler插件，将汇编代码恢复成类C语言的代码分析，大大提高代码的分析效率。</p>
 <p>​        Hex-Rays插件的激活快捷按钮为<code>F5</code>，在反汇编窗口单击次快捷键后，将会自动反编译成C语言，如图11。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/a85e7f72-ee40-4053-91ab-4280ebdeffe7" srcset="/img/loading.gif" lazyload alt="Hex-Rays"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/iiaeu.png" srcset="/img/loading.gif" lazyload></p>
 <center>图11 Hex-Ray反编译引擎反编译</center>
 
 <p>​        通过逐行阅读代码，注意到142行代码。</p>

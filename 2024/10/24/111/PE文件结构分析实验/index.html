@@ -23,19 +23,19 @@
 <meta property="og:site_name" content="Re1ca1gの小破站">
 <meta property="og:description" content="实验：PE文件结构分析实验一、 实验目的 掌握PE文件基本结构 掌握PE文件分析常用工具的使用  二、实验环境操作系统：Windows 7&#x2F;8&#x2F;10 实验对象：PE文件（实验主机随机选取，如notepad.exe） 实验软件：HxD，ExeinfoPE，PEViewer，LordPE，PEiD 三、实验内容1. 实验背景​        PE文件是Windows操作系统中可执行">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/113b5189-3638-496f-82ed-672bcd913c39">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/1939ae4e-9e76-45b9-ad59-e7d03ecc93c8">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/48bbdbd3-82ca-4101-b3b8-f7dbd8b64e2a">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/1d7a3607-78c6-44c6-bdd9-0405154bb5eb">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/4b169243-420e-4a09-8df7-5a4619ea1125">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/d2413a6a-6c35-4ba5-a8bd-70addc5682c8">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/d346913a-1dbb-4353-af09-bccc2a5d6351">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/498c2c64-5d85-4d73-a7d8-923bf59e8ecd">
+<meta property="og:image" content="http://example.com/image/54gpq.jpg">
+<meta property="og:image" content="http://example.com/image/3va6i.png">
+<meta property="og:image" content="http://example.com/image/owxs8.png">
+<meta property="og:image" content="http://example.com/image/li4hp.png">
+<meta property="og:image" content="http://example.com/image/ov57t.png">
+<meta property="og:image" content="http://example.com/image/41hko.png">
+<meta property="og:image" content="http://example.com/image/l4ngp.png">
+<meta property="og:image" content="http://example.com/image/dkma5.png">
 <meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
-<meta property="article:modified_time" content="2024-10-29T08:54:46.240Z">
+<meta property="article:modified_time" content="2024-10-29T08:58:31.088Z">
 <meta property="article:author" content="Re1ca1g">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/113b5189-3638-496f-82ed-672bcd913c39">
+<meta name="twitter:image" content="http://example.com/image/54gpq.jpg">
   
   
   
@@ -339,7 +339,7 @@
 <p>​        PE头中包含文件执行时所需的一般信息，包括执行文件时最初执行代码的起始部分信息，驱动应用程序的平台信息等。</p>
 <p>​        PE节区中包含组成程序的汇编代码，通常恶意代码分析中逆向分析的对象；源代码中声明的全局变量与static变量；以及程序中使用的图片、文档文件等资源。</p>
 <p>​        PE文件结构如图 1所示。本次实验需要使用常用的PE文件查看分析软件工具，对Windows中的PE文件进行分析，查找主要的组成结构，对关键的数据，如IMAGE_DOS_HEADER和IMAGE_NT_HEADER结构体的数据进行查看，了解掌握关键字段，如<strong>e_lfanew</strong>，PE标志字段……</p>
-<p><img src="http://wxjb.jspi.cn/g/query/113b5189-3638-496f-82ed-672bcd913c39" srcset="/img/loading.gif" lazyload alt="pe文件结构"></p>
+<p><img src="/image/54gpq.jpg" srcset="/img/loading.gif" lazyload></p>
 <center> 图1 PE文件结构</center>
 
 <blockquote>
@@ -353,7 +353,7 @@
 <blockquote>
 <p>​         本课程实验分析环境为Windows64位，如果分析32位系统自带的程序，例如记事本（notepad.exe）就应该打开<code>C:\Windows\SysWoW64\notepad.exe</code>，而不能打开System32文件夹内的64位程序版本。</p>
 </blockquote>
-<p><img src="http://wxjb.jspi.cn/g/query/1939ae4e-9e76-45b9-ad59-e7d03ecc93c8" srcset="/img/loading.gif" lazyload alt="mspaint文件分析"></p>
+<p><img src="/image/3va6i.png" srcset="/img/loading.gif" lazyload></p>
 <center> 图2 mspaint.exe的e_magic字段</center>
 
 <p>​        IMAGE_DOS_HEADER结构最后一个字段e_lfanew是4字节数据，用来表示DOS头之后的PE头的位置，即相对文件起始地址的偏移位置。<strong>通过IMAGE_DOS_HEADER结构体各字段的长度可以计算出e_lfanew字段是位于文件头偏移0x3c位置</strong>，图 2中其值为0x000000E8，这里请特别注意长度为4字节的数据，在文件中存储使用了小端存储，也就是32位数据中低位先存储，这样E8会先存储在0x3c位置，而且3个字节的0会以此向后保存。这是在文件中阅读数据时需要注意的。</p>
@@ -367,7 +367,7 @@
 <blockquote>
 <p>​        从以上定义的NT头结构分析可以得出结论，以NT头为基准，文件头(File Header)的偏移量为4，可选头(Optional Header)的偏移量为24，如果分析这两个头部数据信息，可以先找到NT头，然后定位到对应头部开始点，然后再继续分析各自头部的字段，分析起来会更方便。</p>
 </blockquote>
-<p><img src="http://wxjb.jspi.cn/g/query/48bbdbd3-82ca-4101-b3b8-f7dbd8b64e2a" srcset="/img/loading.gif" lazyload alt="PE头部签名"></p>
+<p><img src="/image/owxs8.png" srcset="/img/loading.gif" lazyload></p>
 <center>图3 PE头签名</center>
 
 <p>​        PE头部包括了签名，文件头和选项头。除了签名，另外2个字段又分别是IMAGE_FILE_HEADER和IMAGE_OPTIONAL_HEADER32两个结构体。</p>
@@ -699,24 +699,24 @@
 
 <p>​        节区头从本质上就是一个表格，表格的每一行是一个IMAGE_SECTION_HEADER结构体，表格长度就是PE头中<strong>NumberOfSections</strong>字段中的数值。</p>
 <p>​        在Windows7操作系统画图程序（mspaint.exe）程序，使用HxD打开后，通过前面的分析，可以确定节区头的位置是<em>0xE8</em> +（<strong>0x04+0x14+0xE0</strong>）&#x3D; 0x1E0,等式左边分别是<em>DOS头长度</em>，**PE签名长度，PE文件头长度和PE可选头长度(这3部分实际上是PE头长度)**，因此在文件0x1E0位置开始就是第一个IMAGE_SECTION_HEADER结构体，如图 4。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/1d7a3607-78c6-44c6-bdd9-0405154bb5eb" srcset="/img/loading.gif" lazyload alt="mspaint节区"></p>
+<p><img src="/image/li4hp.png" srcset="/img/loading.gif" lazyload></p>
 <center>图 4 节区头的第一条记录</center>
 
 <p>​        使用以上的方式获取节表的数据不够方便，因此实际工作中，都是使用工具软件读取，典型的可以使用ExeInfo PE，和x64dbg PE view插件等查阅。</p>
 <h3 id="4-使用其他工具高效的查看以上实验步骤中的各类数据"><a href="#4-使用其他工具高效的查看以上实验步骤中的各类数据" class="headerlink" title="4. 使用其他工具高效的查看以上实验步骤中的各类数据"></a>4. 使用其他工具高效的查看以上实验步骤中的各类数据</h3><p>​        通过前面的实验步骤，可以发现虽然直接使用二进制分析工具能从字节底层对PE文件进行分析，但是工作效率不高，如果仅仅需要查询某个字段的数据，可以使用更方便的专用工具。例如Exeinfo PE，PE Viewer，LordPE，PEiD……，这些工具都能快速的分析PE文件。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/4b169243-420e-4a09-8df7-5a4619ea1125" srcset="/img/loading.gif" lazyload alt="使用Exeinfo PE打开画图程序"></p>
+<p><img src="/image/ov57t.png" srcset="/img/loading.gif" lazyload></p>
 <center>图5 使用Exeinfo PE打开画图程序</center>
 
 <p>​        使用Exeinfo PE工具能方便的查看PE头中的各类信息，如图 6可以清晰的查看头部的各项数据。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/d2413a6a-6c35-4ba5-a8bd-70addc5682c8" srcset="/img/loading.gif" lazyload alt="图 6 Exeinfo PE查看头部信息"></p>
+<p><img src="/image/41hko.png" srcset="/img/loading.gif" lazyload></p>
 <center>图 6 Exeinfo PE查看头部信息</center>
 
 <p>​        也可以方便的查看节表中的信息，如图 7所示。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/d346913a-1dbb-4353-af09-bccc2a5d6351" srcset="/img/loading.gif" lazyload alt="图 7 查看节表信息"></p>
+<p><img src="/image/l4ngp.png" srcset="/img/loading.gif" lazyload></p>
 <center>图 7 查看节表信息</center>
 
 <p>​        在实践工作中，x32dbg工具的PE Viewer插件能比较直观的显示PE头部的各类数据，同学们也可以尝试使用。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/498c2c64-5d85-4d73-a7d8-923bf59e8ecd" srcset="/img/loading.gif" lazyload alt="图 8 使用x32dbg工具查看PE可选头部信息"></p>
+<p><img src="/image/dkma5.png" srcset="/img/loading.gif" lazyload></p>
 <center>图 8 使用x32dbg工具查看PE可选头部信息</center>
 
 <p>​        如图 8的界面中，使用x32dbg工具的PE Viewer插件能直观的查看PE文件中的数据字段，其界面左侧的树状导航窗格给出了PE文件的基本数据架构，单击其中数据项，右侧就能以表格的方式显示具体相关的数据，使用起来非常方便。此外x32dbg是x64dbg动态调试工具的32位版本，是今后学习中动态调试PE文件的重要工具。</p>

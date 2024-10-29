@@ -23,22 +23,22 @@
 <meta property="og:site_name" content="Re1ca1gの小破站">
 <meta property="og:description" content="1. 实验概述​        在“ESP定律脱壳实验“中，脱壳后的DiskProbe_dump_SCY.exe程序就可以进入下一步的分析工作，为了模拟恶意代码分析训练，本实验要求使用动态分析的方法，分析已经脱壳后的DiskProbe_dump_SCY.exe，找到其时间限制的代码，并进行代码修补，最终得到一个破解时间限制的DiskProbe软件。 1.1 实验软件 x32dbg  【http:&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/54c5db37-874d-4708-8f65-c82561fe669b">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/3705b203-05e8-4b67-a2ae-ba3d8b210191">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/99ae7b55-f481-48bb-9ae7-c8b59c4bbe1b">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/a80ba0b7-5370-4f9d-b61e-95a0dd9b4e77">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/jpa2y.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/l8dvl.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/qn301.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/62w0g.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/h1pz8.png">
 <meta property="og:image" content="http://wxjb.jspi.cn/g/query/c584c92c-d7ce-4dfa-b48e-144d55374699">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/7fc59cbb-996d-4a82-b169-11ec101c8eca">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/daf8297e-b4e5-4c04-a560-4d4d74bec414">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/3784d175-09a7-4b95-90c7-d6e05cba822d">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/9de5f6cc-0fee-4e4a-bbc1-7b1fca7dfc4c">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/609f6962-d462-4bc1-9607-1e3920601371">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/anckg.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/fvew3.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/n4kxg.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/3eqty.png">
+<meta property="og:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/su4y9.png">
 <meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
-<meta property="article:modified_time" content="2024-10-29T08:54:25.394Z">
+<meta property="article:modified_time" content="2024-10-29T08:58:15.978Z">
 <meta property="article:author" content="Re1ca1g">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d">
+<meta name="twitter:image" content="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/jpa2y.png">
   
   
   
@@ -338,7 +338,7 @@
 <li>掌握静态分析工具ida pro的使用</li>
 <li>了解Windows应用程序文件逆向操作流程</li>
 </ul>
-<h2 id="2-实验原理及方法"><a href="#2-实验原理及方法" class="headerlink" title="2. 实验原理及方法"></a>2. 实验原理及方法</h2><p><img src="http://wxjb.jspi.cn/g/query/b3bcda5c-59b5-4ae0-8cc7-0d0e2707887d" srcset="/img/loading.gif" lazyload alt="程序执行时间限制"></p>
+<h2 id="2-实验原理及方法"><a href="#2-实验原理及方法" class="headerlink" title="2. 实验原理及方法"></a>2. 实验原理及方法</h2><p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/jpa2y.png" srcset="/img/loading.gif" lazyload></p>
 <center>图1 DiskProbe提示框</center>
 
 <p><strong>实验思路：</strong></p>
@@ -354,7 +354,7 @@
 <h3 id="2-1-使用x32dbg动态分析实验"><a href="#2-1-使用x32dbg动态分析实验" class="headerlink" title="2.1 使用x32dbg动态分析实验"></a>2.1 使用x32dbg动态分析实验</h3><h4 id="2-1-1-添加断点"><a href="#2-1-1-添加断点" class="headerlink" title="2.1.1 添加断点"></a>2.1.1 添加断点</h4><ul>
 <li>使用x32dbg打开脱壳后的软件 DiskProbe_dump_SCY.exe</li>
 </ul>
-<p><img src="http://wxjb.jspi.cn/g/query/54c5db37-874d-4708-8f65-c82561fe669b" srcset="/img/loading.gif" lazyload alt="GetSystemTime"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/l8dvl.png" srcset="/img/loading.gif" lazyload></p>
 <center>图2 查找GetSystemTime API</center>
 
 <ul>
@@ -374,16 +374,16 @@
 <h4 id="2-1-2-分析断点代码"><a href="#2-1-2-分析断点代码" class="headerlink" title="2.1.2 分析断点代码"></a>2.1.2 分析断点代码</h4><ul>
 <li>在上一小节中正确添加断点后，可以使用<code>F9</code>快捷键启动调试。</li>
 </ul>
-<p><img src="http://wxjb.jspi.cn/g/query/3705b203-05e8-4b67-a2ae-ba3d8b210191" srcset="/img/loading.gif" lazyload alt="GetSystemTime BreakPoint Stop"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/qn301.png" srcset="/img/loading.gif" lazyload></p>
 <center>图3 GetSystemTime断点</center>
 
 <p>​        在图3中EIP指向地址为75E72300，为系统动态链接库的载入地址，此时调试器中断在GetSystemTime函数内部，但实验需要分析得到的是调用GetSystemTime函数的<strong>用户代码</strong>的位置，也就是调用GetSystemTime这个函数的代码段。找到位置可以有以下两种方法，同学们可以都尝试一下。</p>
 <p>​        （1）利用函数调用栈帧的内存结构布局，可以查看当前栈顶数据，这个数据地址就是调用GetSystemTime函数后面下一条指令地址，就是实验所需要定位的用户代码段。通过<strong>右键单击栈顶地址</strong>，在弹出的菜单中选择“在反汇编中转到指定DWORD”，如图4，就能进入GetSystemTime函数被调用后下一条指令的地址。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/99ae7b55-f481-48bb-9ae7-c8b59c4bbe1b" srcset="/img/loading.gif" lazyload alt="GetSystemTime调用地址"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/62w0g.png" srcset="/img/loading.gif" lazyload></p>
 <center>图4 跳转到函数调用位置</center>
 
 <p>​        （2）利用调试器的<em>运行到用户代码</em>功能，执行代码到GetSystemTime函数后的指令位置。事实上调试器中断的位置是GetSystemTime函数开头代码，但GetSystemTime是系统函数代码，属于系统地址空间，这时使用快捷键<code>Alt+F9</code>（<em>运行到用户代码</em>功能）就能快速执行GetSystemTime函数代码，暂停在用户代码位置，即GetSystemTime调用后的位置。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/a80ba0b7-5370-4f9d-b61e-95a0dd9b4e77" srcset="/img/loading.gif" lazyload alt="GetSystemTime调用下一条指令"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/h1pz8.png" srcset="/img/loading.gif" lazyload></p>
 <center>图5 GetSystemTime调用代码位置</center>
 
 <p>​        使用以上两种方法都能正确的导航到GetSystemTime被调用的位置下一条指令，滚动上翻几行指令，就能看到如图5所示的完整调用代码。</p>
@@ -411,7 +411,7 @@
 <p>以上的步骤是经过整理优化的分析过程，实际的分析过程中需要多次的尝试，除了阅读代码，还需要经历大量的失败才能找到最终的结果，所以实际工作不会如实验这样顺利完成。</p>
 </blockquote>
 <h4 id="2-1-3-补丁文件"><a href="#2-1-3-补丁文件" class="headerlink" title="2.1.3 补丁文件"></a>2.1.3 补丁文件</h4><p>当以上动态调试成功后，可以使用x32dbg的补丁功能，将内存中已经修改好的程序保存在磁盘上。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/7fc59cbb-996d-4a82-b169-11ec101c8eca" srcset="/img/loading.gif" lazyload alt="补丁时间条状逻辑"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/anckg.png" srcset="/img/loading.gif" lazyload></p>
 <center>图7 补丁修改文件</center>
 
 <ul>
@@ -423,7 +423,7 @@
 <h4 id="2-2-1-查找GetSystemTime函数调用代码"><a href="#2-2-1-查找GetSystemTime函数调用代码" class="headerlink" title="2.2.1 查找GetSystemTime函数调用代码"></a>2.2.1 查找GetSystemTime函数调用代码</h4><ul>
 <li>查找GetSystemTime函数调用内存地址</li>
 </ul>
-<p><img src="http://wxjb.jspi.cn/g/query/daf8297e-b4e5-4c04-a560-4d4d74bec414" srcset="/img/loading.gif" lazyload alt="idapro_import"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/fvew3.png" srcset="/img/loading.gif" lazyload></p>
 <center>图8 查找导入函数</center>
 
 <p>​        IDA Pro的Import子视图能够显示程序导入的外部函数，GetSystemTime是系统kernel32.dll中的函数，因此可以从这里查看到导入的内存地址。默认启动IDA Pro就会自动在主界面中显示Imports页面，如果没有显示，可以在菜单中打开，菜单路径为：<code>View-&gt;Open subviews-&gt;imports</code>。</p>
@@ -433,18 +433,18 @@
 <p>在图8界面中切换显示反汇编视图，即IDA-View-A页面，然后单击快捷键<code>g</code>,然后输入记录的GetSystemTime内存地址，就能在在反汇编窗口显示GetSystemTime函数，如图9。</p>
 </li>
 </ul>
-<p><img src="http://wxjb.jspi.cn/g/query/3784d175-09a7-4b95-90c7-d6e05cba822d" srcset="/img/loading.gif" lazyload alt="GetSystemTimeAddress"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/n4kxg.png" srcset="/img/loading.gif" lazyload></p>
 <center>图9 GetSystemTime函数</center>
 
 <ul>
 <li>定位GetSystemTime函数调用位置</li>
 </ul>
 <p>​        在图9界面中，在单击GetSystemTime，然后使用快捷键<code>x</code>,打开交叉引用列表，如图10，在这个列表中，列出了GetSystemTime被调用的位置，选择其中项目单击OK就能定位到对应的函数调用的位置。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/9de5f6cc-0fee-4e4a-bbc1-7b1fca7dfc4c" srcset="/img/loading.gif" lazyload alt="函数引用"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/3eqty.png" srcset="/img/loading.gif" lazyload></p>
 <center>图10 查找引用GetSystemTime的引用</center>
 
 <p>​        这里只有一处引用了GetSystemTime代码，打开后就能显示函数调用处的反汇编，如图11。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/609f6962-d462-4bc1-9607-1e3920601371" srcset="/img/loading.gif" lazyload alt="调用GetSystemTime位置代码"></p>
+<p><img src="https://blog-1318287398.cos.ap-nanjing.myqcloud.com/img/su4y9.png" srcset="/img/loading.gif" lazyload></p>
 <center>图11 GetSystemTime调用的用户代码段</center>
 
 <h4 id="2-2-2-分析代码并制作补丁文件"><a href="#2-2-2-分析代码并制作补丁文件" class="headerlink" title="2.2.2 分析代码并制作补丁文件"></a>2.2.2 分析代码并制作补丁文件</h4><ul>

@@ -23,19 +23,19 @@
 <meta property="og:site_name" content="Re1ca1gの小破站">
 <meta property="og:description" content="实验：使用动态调试器分析WinRAR软件  广告弹窗代码一、实验目的： 了解常用动态调试器及其基本使用  掌握Windows PE程序逆向分析的一般过程   二、实验环境：操作系统：Windows 10 实验对象：WinRAR 5.40 32位版本   调试器工具：x32dbg，Spy++ 三、实验内容：1. 实验背景​        WinRAR是Windows操作系统环境中经典的压缩和解压缩工">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/c702ce57-b9fd-4410-8e1b-893691468e87">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/5ab8d580-c961-4889-8df2-8473077669ac">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/ad086130-87ff-4185-907b-8fd7b66185ec">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/4ff1552b-f721-4ceb-afff-df628d5e7caf">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/6ee152d5-a559-4870-90e9-6d24c250d944">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/bb15f84c-7c4b-440a-832e-aba0da61607e">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/d62455fb-ade2-48ac-957b-8665b0528f52">
-<meta property="og:image" content="http://wxjb.jspi.cn/g/query/b4896737-f078-4c2c-a89a-8ef9ccde218d">
+<meta property="og:image" content="http://example.com/image/n0u6z.png">
+<meta property="og:image" content="http://example.com/image/l66g7.png">
+<meta property="og:image" content="http://example.com/image/l2oir.png">
+<meta property="og:image" content="http://example.com/image/gqal9.png">
+<meta property="og:image" content="http://example.com/image/yqji4.png">
+<meta property="og:image" content="http://example.com/image/tqwbe.png">
+<meta property="og:image" content="http://example.com/image/j2e1a.png">
+<meta property="og:image" content="http://example.com/image/tgeaw.png">
 <meta property="article:published_time" content="2024-10-24T06:23:04.000Z">
-<meta property="article:modified_time" content="2024-10-29T08:55:20.228Z">
+<meta property="article:modified_time" content="2024-10-29T08:58:22.771Z">
 <meta property="article:author" content="Re1ca1g">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://wxjb.jspi.cn/g/query/c702ce57-b9fd-4410-8e1b-893691468e87">
+<meta name="twitter:image" content="http://example.com/image/n0u6z.png">
   
   
   
@@ -334,7 +334,7 @@
 <p>实验对象：<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/testexes/wrar540scp.zip">WinRAR 5.40 32位版本</a>  </p>
 <p>调试器工具：<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/x96dbg.zip">x32dbg</a>，<a target="_blank" rel="noopener" href="http://172.17.200.225/gyf/Malware/spy++.zip">Spy++</a></p>
 <h3 id="三、实验内容："><a href="#三、实验内容：" class="headerlink" title="三、实验内容："></a>三、实验内容：</h3><h4 id="1-实验背景"><a href="#1-实验背景" class="headerlink" title="1. 实验背景"></a>1. 实验背景</h4><p>​        WinRAR是Windows操作系统环境中经典的压缩和解压缩工具软件，曾经是Windows平台装机必装的软件，然而近几年的简体中文版中植入了广告弹窗代码，每次打开软件会弹出如图 1所示的广告窗口，特别是当电脑是网络离线状态的时候，这个弹窗由于无法加载广告地址上的内容，会造成电脑的卡顿，WinRAR软件的界面无法显示等问题。<br>​        简体中文版的WinRAR无论是否输入了注册码都无法取消这个弹窗，而其他语言版本中都不存在这个问题，因此屏蔽这段广告代码将能让这款经典的软件焕然一新，更好的为我们服务。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/c702ce57-b9fd-4410-8e1b-893691468e87" srcset="/img/loading.gif" lazyload alt="WinRAR启动后的广告弹窗"></p>
+<p><img src="/image/n0u6z.png" srcset="/img/loading.gif" lazyload></p>
 <center>图 1 WinRAR启动后的广告弹窗</center>
 
 <h4 id="2-实验内容"><a href="#2-实验内容" class="headerlink" title="2. 实验内容"></a>2. 实验内容</h4><p>​        通过前面的恶意代码分析课程的学习，我们知道WinRAR是典型的Windows PE可执行文件。通过使用动态调试工具，对程序进行汇编语言级别的分析，可以查找并分析弹窗广告部分的程序代码。<br>​        实验通过使用动态分析工具，如x64dbg，对广告弹窗代码进行动态调试分析，定位并修改PE文件中引起广告弹窗的代码，就可以实现去除弹窗的干扰，达到在没有源代码的条件下对一款软件进行修改的目标。</p>
@@ -345,14 +345,14 @@
 </blockquote>
 <p><strong>大家可以先运行一下Winrar实验程序，亲自体验一下这个广告窗口非模态窗口特点。</strong></p>
 <h4 id="2-使用Spy-查看相关特征参数。"><a href="#2-使用Spy-查看相关特征参数。" class="headerlink" title="2.   使用Spy++查看相关特征参数。"></a>2.   使用Spy++查看相关特征参数。</h4><p>​        使用Spy++软件查找窗口功能，查看需要分析的广告弹出窗口如图 2所示。请大家注意窗口的一些属性，特别关注图中“类”和“样式”这两个属性值，后面调试分析会用到。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/5ab8d580-c961-4889-8df2-8473077669ac" srcset="/img/loading.gif" lazyload alt="广告弹窗相关的参数"></p>
+<p><img src="/image/l66g7.png" srcset="/img/loading.gif" lazyload></p>
 <center>图 2 广告弹窗相关的参数 </center>
 
 <blockquote>
 <p>提示：Spy++软件启动后，可以使用Ctrl-F快捷键打开查找窗口。将瞄准器光标拖放到需要分析的Windows窗口上就可以得到所需参数信息。</p>
 </blockquote>
 <h4 id="3-动态调试广告弹窗代码，定位启动代码调用点。"><a href="#3-动态调试广告弹窗代码，定位启动代码调用点。" class="headerlink" title="3.   动态调试广告弹窗代码，定位启动代码调用点。"></a>3.   动态调试广告弹窗代码，定位启动代码调用点。</h4><p>​         判断弹窗使用的API函数名称，然后使用动态调试器的断点功能，设置API断点进行调试分析是本实验基本思路。通常打开窗口使用的是CreateWindow和CreateWindowEx两种API，每个API函数分别有多字节和Unicode编码2个版本，例如CreateWindowEx函数在实际的程序发布编译后，可以分别使用CreateWindowExA和CreateWindowExW两个版本，所以调试时需要注意调试所用版本情况，如图3所示的实验截图显示当前的是Unicode版本。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/ad086130-87ff-4185-907b-8fd7b66185ec" srcset="/img/loading.gif" lazyload alt="查看主模块API函数"></p>
+<p><img src="/image/l2oir.png" srcset="/img/loading.gif" lazyload></p>
 <center> 图 3 查看主模块API函数 </center>
 
 <p>​        实验可以使用x32dbg调试器的<strong>“符号”</strong>窗口功能，查看<strong>WinRAR主模块</strong>(图3界面中单击左侧模块列表中winrar.exe)中调用的API函数清单。本质是查看主模块的导入表，如图 3所示表明主模块中使用了CreateWindowExW函数。结合前面步骤中分析得到的结果，广告窗口是非模态窗口，而CreateWindowExW函数正是能够创建非模态窗口的函数，因此大胆推测广告窗口的构建代码和此函数关系密切。因此可以考虑使用API函数断点调试的方式查找广告窗口启动代码位置。</p>
@@ -380,11 +380,11 @@
 </blockquote>
 <h5 id="4-2-断点调试"><a href="#4-2-断点调试" class="headerlink" title="4.2 断点调试"></a>4.2 断点调试</h5><p>​        添加断点后，使用F9执行代码，当遇到断点触发，调试器会停在断点代码位置。本实验中，加载的断点函数CreateWindowExW是比较常见的Windows API，除了目标代码调用外，还会有很多地方调用，这就需要不断使用F9执行调试，每次触发到断点的代码时候，需要检查是否是查找的广告窗口。</p>
 <p>​        广告窗口具有的特征由Spy++软件获得，包括窗口类名称，窗口样式和窗口句柄等数值。当断点触发的时候，将以上窗口的参数数值和x32dbg寄存器中看到的数值进行对比，x32dbg工具提供了一个单独的窗口显示当前函数调用的参数，如图 4中红色线框区域，如果内部的值和Spy++截获的广告窗口参数一致,就可以确定广告代码了窗口调用。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/4ff1552b-f721-4ceb-afff-df628d5e7caf" srcset="/img/loading.gif" lazyload alt="函数参数显示区域"></p>
+<p><img src="/image/gqal9.png" srcset="/img/loading.gif" lazyload></p>
 <center> 图 4 函数参数显示区域 </center>
 
 <p>​        此时蓝色线框区域显示的就是CreateWindowExW函数执行的汇编代码，在此函数中找到RET指令，双击就能显示调用此函数的代码，即这里需要查找的新建广告窗口的代码位置，如图 5所示中第3行代码。</p>
-<p><img src="http://wxjb.jspi.cn/g/query/6ee152d5-a559-4870-90e9-6d24c250d944" srcset="/img/loading.gif" lazyload alt="启动广告窗口CreateWindowExW代码"></p>
+<p><img src="/image/yqji4.png" srcset="/img/loading.gif" lazyload></p>
 <center> 图 5 启动广告窗口CreateWindowExW代码</center>
 
 <p>​        这里请同学们思考，以上是通过多次执行F9，利用断点使程序停止后，人工检查断点是否是我们需要查找的位置，有没有办法让调试器自动查找这个位置？这个问题也是实验最后的思考题，请大家结合条件断点设置分析（提示：条件断点）。</p>
@@ -392,17 +392,17 @@
 <blockquote>
 <p>注意：汇编代码必须选择正确的编码引擎后，右下脚显示绿色“指令编码成功”字样才有效。</p>
 </blockquote>
-<p><img src="http://wxjb.jspi.cn/g/query/bb15f84c-7c4b-440a-832e-aba0da61607e" srcset="/img/loading.gif" lazyload alt="JMP修改替换指令"></p>
+<p><img src="/image/tqwbe.png" srcset="/img/loading.gif" lazyload></p>
 <center> 图 6 JMP修改替换指令</center>
 
 <h4 id="6-制作补丁，持久化保存PE可执行文件"><a href="#6-制作补丁，持久化保存PE可执行文件" class="headerlink" title="6.   制作补丁，持久化保存PE可执行文件"></a>6.   制作补丁，持久化保存PE可执行文件</h4><p>​        通过以上的汇编指令修改只更改了PE文件加载到内存中的机器指令，并没有修改可执行PE文件。如果需要在修改PE文件，需要使用二进制文件编辑器修改，如HxD等软件编辑。HxD等文件编辑器打开PE文件后，采用的是文件偏移地址，和调试器中使用的虚拟地址不同，需要将以上调试的内存地址映射到文件偏移地址。</p>
 <p>​         地址转换公式：<code>文件偏移地址=RVA+PointerToRawData-VirtualAddress</code></p>
-<p><img src="http://wxjb.jspi.cn/g/query/d62455fb-ade2-48ac-957b-8665b0528f52" srcset="/img/loading.gif" lazyload alt="PE文件节表"></p>
+<p><img src="/image/j2e1a.png" srcset="/img/loading.gif" lazyload></p>
 <center> 图 7 PE文件节表</center>
 
 <p>​        以上公式中，RVA是相对虚拟地址，即指令在内存中的地址减去PE文件加载到内存中的起始地址（通常是PE头部中ImageBase字段值，但如果冲突可能会加载到其他位置！）。PointerToRawData和VirtualAddress分别是PE文件的节表（如图 7）中的两列数据，分别表示具体某一个“节”分别在文件和内存中的相对位置，因此在使用以上公式前，应确认需要计算的地址在哪个节中。另外需要注意的是以上节表中数据都是相对数据，即相对文件加载到内存或文件头的位置，其中VirtualAddress一列数据起始也是相对地址RVA，而不是通常内存分析中提到的虚拟地址。<br>​        x32dbg工具在汇编窗口中，对需要查看的指令单击右键，在弹出的右键菜单中，可以方便的获得虚拟地址，RVA，文件偏移地址等信息，给实际工作提高了效率，但本实验中，请同学们使用以上的信息和公式计算并验证文件偏移地址和内存虚拟地址之间的转换。</p>
 <p>​        以上是在使用HxD这类底层二进制文件编辑工具的修改方法，不过由于其操作繁琐效率低下，本次实验使用x64dbg套件中的补丁功能一键完成。    </p>
-<p><img src="http://wxjb.jspi.cn/g/query/b4896737-f078-4c2c-a89a-8ef9ccde218d" srcset="/img/loading.gif" lazyload alt="补丁窗口"></p>
+<p><img src="/image/tgeaw.png" srcset="/img/loading.gif" lazyload></p>
 <center> 图 8 补丁窗口</center>
 
 <p>​        x64dbg工具提供了补丁功能，单击工具栏中的<strong>补丁</strong>按钮就能弹出图 8所示的补丁保存窗口，单击“修补文件”按钮就能方便将修改过的内存中的文件镜像保存到PE文件中。实验中可以保存在Winrar.exe相同的文件夹中，并使用Winrar1.exe。</p>
